@@ -1,0 +1,24 @@
+$full-white : #FFFFFF;
+$light-white : #F0F0F0;
+$sky-blue:#18A9CA;
+
+$blue : #0C2C43;
+$semi-dark-blue:#082233;
+$fully-dark-blue:#041622;
+
+@mixin centerChild{
+    // this style for the parent div, and the the child will be centered. 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+@mixin flexParent{
+    // this style for the parent div, and the the child will be centered. 
+    display: flex;
+    align-items: center;
+}
+
+@mixin link{
+    text-decoration: none;
+    color:#000
+}

@@ -6,10 +6,12 @@ const app = express();
 
 app.use(cors());
 
-dotenv.config()
+dotenv.config();    // configure environement varables
+
 const port =  process.env.PORT || 6000;
 
 app.listen(port,()=>{
     console.log(process.env.PORT)
     console.log(`http://localhost:${port}`)
 })
+
