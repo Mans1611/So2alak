@@ -1,0 +1,65 @@
+@import '../../.mainstyle.scss';
+.course-card{
+    width: 40%;
+    margin: auto;
+    background-color: #8deaff5a;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    color: $blue;
+    justify-content: space-between;
+    align-items: center;
+    .course-name{
+        font-size: 30px;
+        font-weight: 700;
+    }
+    .course-code{
+        font-size: 20px;
+        font-weight: 400;
+    }
+    .folw-btn{
+        padding: 7px 10px;
+        color: $full-white;
+        background-color: #009AC8;
+        font-size: 22px;
+        font-weight: 600;
+        border: none;
+        border-radius: 10px;
+        height: fit-content;
+        cursor: pointer;
+        transition: all 200ms;
+        &:hover{
+            background-color: $semi-dark-blue;
+        }
+    }
+}
+.dark{
+    .course-card{
+        background-color: #1C4052;
+        color: $full-white;
+        justify-content: space-between;
+        align-items: center;
+        .course-name{
+            font-size: 30px;
+            font-weight: 700;
+        }
+        .course-code{
+            font-size: 20px;
+        }
+        .folw-btn{
+            padding: 7px 10px;
+            color: $full-white;
+            background-color: #009AC8;
+            font-size: 22px;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            height: fit-content;
+            cursor: pointer;
+            transition: all 200ms;
+            &:hover{
+                background-color: $semi-dark-blue;
+            }
+        }
+    }
+}
