@@ -2,8 +2,9 @@ import React from 'react'
 import logo from '../../assets/logo.png';
 import avatar from '../../assets/photoperson.png';
 import moon from '../../assets/moon.png';
-
-const SimpleNavBar = ({setDark}) => {
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+const SimpleNavBar = ({dark,setDark}) => {
 
   return (
     <div className='welcome-nav-bar'>
@@ -12,7 +13,15 @@ const SimpleNavBar = ({setDark}) => {
             <div className="avatar-wrapper">
                 <img src={avatar} alt="person"/>
             </div>
-            <img onClick={()=>setDark(dark=>!dark)} src={moon} alt='moon'/>
+            <div className="theme-wrapper">
+                {
+                    dark?
+                    <Brightness7Icon onClick={()=>setDark(dark=>!dark)}/>
+                    :
+                    <DarkModeIcon onClick={()=>setDark(dark=>!dark)}/>
+                }
+            </div>
+           
         </div>
     </div>
   )

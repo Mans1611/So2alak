@@ -17,6 +17,14 @@ $fully-dark-blue:#041622;
     display: flex;
     align-items: center;
 }
+@mixin btn{
+    border: none;
+    padding: 2px;
+    border-radius: 5px;
+    &:focus{
+        outline: none;
+    }
+}
 
 @mixin link{
     text-decoration: none;

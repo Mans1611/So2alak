@@ -1,14 +1,15 @@
 @import '../../.mainstyle.scss';
 .course-card{
     width: 40%;
-    margin: auto;
     background-color: #8deaff5a;
     border-radius: 10px;
     padding: 10px;
     display: flex;
     color: $blue;
+    margin: 5px auto;
     justify-content: space-between;
     align-items: center;
+    filter: drop-shadow(0px 13px 13px #0000005b);
     .course-name{
         font-size: 30px;
         font-weight: 700;
@@ -30,6 +31,10 @@
         transition: all 200ms;
         &:hover{
             background-color: $semi-dark-blue;
+        }
+        &.followed-btn{
+            background-color: $semi-dark-blue !important;
+            @include centerChild;
         }
     }
 }
