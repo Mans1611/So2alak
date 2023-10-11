@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="App">
       {/*<div>So?alak</div>*/}
-      <Login />
+      <Login theme="light" />
     </div>
   );
 }

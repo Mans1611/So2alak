@@ -3,10 +3,12 @@ import React, { useState } from "react";
 
 import "./login.css";
 
-const Login = () => {
+const Login = (props) => {
   const [form, setForm] = useState({
     email: "",
     password: "",
+    theme: props.theme,
+    showPassword: false,
     remember_me: false,
   });
 
@@ -15,11 +17,39 @@ const Login = () => {
     password: "",
   });
 
+  const handleTheme = () => {
+    let formData = { ...form };
+    if (formData["theme"] === "light") {
+      formData["theme"] = "dark";
+    } else {
+      formData["theme"] = "light";
+    }
+    setForm(formData);
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     let formData = { ...form };
     formData[name] = value;
     setForm(formData);
+  };
+
+  const handleShow = (e) => {
+    if (form["showPassword"] === false) {
+      form["showPassword"] = true;
+      e.target.nextElementSibling.type = "text";
+      e.target.className = "eye show";
+    } else {
+      form["showPassword"] = false;
+      e.target.nextElementSibling.type = "password";
+      e.target.className = "eye";
+    }
+  };
+
+  const handleFocus = (e) => {
+    let errorData = { ...errors };
+    delete errorData[e.target.name];
+    setErrors(errorData);
   };
 
   const handleCheck = (e) => {
@@ -54,7 +84,15 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container ">
+    <div
+      className={`login-container ${
+        form.theme === "dark" ? "dark-container" : ""
+      }`}
+    >
+      <div
+        className={`theme ${form.theme === "dark" ? "dark" : ""}`}
+        onClick={handleTheme}
+      ></div>
       <div className="logo">
         <img src="./images/logo.svg" alt="" />
       </div>
@@ -73,10 +111,15 @@ const Login = () => {
             value={form.email}
             onBlur={handleCheck}
             onChange={handleChange}
+            onFocus={handleFocus}
           />
           {errors.email && <div>{errors.email}</div>}
         </div>
         <div className="error">
+          <span
+            className="eye" //{`eye ${form.showPassword === true ? "show" : ""}`}
+            onClick={handleShow}
+          ></span>
           <input
             id="pass"
             minLength="8"
@@ -88,6 +131,7 @@ const Login = () => {
             value={form.password}
             onBlur={handleCheck}
             onChange={handleChange}
+            onFocus={handleFocus}
           />
           {errors.password && <div>{errors.password}</div>}
         </div>

@@ -9,15 +9,14 @@
   height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: center;
   background: #fffffe url(../../../public/images/wavel.svg) no-repeat bottom;
+  background-size: 100%;
 }
 
 form {
-  flex: 1 1 40%;
+  flex: 50%;
   text-align: center;
   display: flex;
-  justify-content: space-evenly;
   align-items: center;
   flex-flow: column;
 }
@@ -45,11 +44,7 @@ p {
   margin-bottom: 30px;
 }
 
-#id::before {
-  content: "hi";
-}
-
-::placeholder {
+.login-container ::placeholder {
   color: #0c2c43;
   opacity: 1;
 }
@@ -59,14 +54,40 @@ p {
 }
 .error div {
   position: absolute;
-  top: 45px;
+  top: 46px;
   width: 300px;
   padding: 5px;
   text-align: center;
   font-size: 12px;
   font-weight: bold;
-  background-color: rgb(240, 173, 78);
-  border-radius: 10px;
+  background-color: #ffbebe;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.error div::before {
+  content: "";
+  width: 5px;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: #af0000;
+}
+
+.eye {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 25px;
+  height: 25px;
+  background: url(../../../public/images/invisible.svg) no-repeat center;
+  background-size: contain;
+}
+
+.show {
+  background: url(../../../public/images/visible.svg) no-repeat center;
+  background-size: contain;
 }
 
 button {
@@ -79,8 +100,10 @@ button {
   font-size: 16px;
   font-weight: bolder;
   border-radius: 10px;
+  box-shadow: 0 2px 5px #000;
 }
 
+/*
 .options {
   display: flex;
   align-items: center;
@@ -96,6 +119,7 @@ button {
 #remember {
   margin-right: 5px;
 }
+*/
 
 .identifier::before {
   content: "@eng.asu.edu.eg";
@@ -110,5 +134,92 @@ button {
 }
 
 .logo {
-  flex: 1.5 1.5 60%;
+  flex: 1 1 50%;
+}
+
+.logo img {
+  width: 100%;
+}
+
+.theme {
+  position: fixed;
+  bottom: 25px;
+  left: 25px;
+  width: 50px;
+  height: 50px;
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme::before,
+.theme::after {
+  content: "";
+  position: absolute;
+  width: 35px;
+  height: 35px;
+  background-color: black;
+  border-radius: 50%;
+}
+.theme::after {
+  width: 25px;
+  height: 25px;
+  background-image: linear-gradient(to right, black 50%, white 50%);
+}
+
+/* =========================== Dark Theme =========================== */
+
+.dark-container {
+  background: #082233 url(../../../public/images/waved.svg) no-repeat bottom;
+  background-size: 100%;
+}
+
+.dark-container form h1,
+.dark-container p {
+  color: #fffffe;
+}
+
+.dark-container .eye {
+  filter: invert(1);
+}
+
+.dark::after {
+  background-image: linear-gradient(to left, black 50%, white 50%);
+}
+
+.dark-container button {
+  background-color: #007a9f;
+}
+
+.dark-container .error input {
+  background-color: rgba(141, 234, 255, 0.15);
+}
+
+.dark-container .identifier::before {
+  background-color: #007a9f;
+}
+
+.dark-container ::placeholder {
+  color: #fffffe;
+}
+
+/* =========================== Phone =========================== */
+
+@media screen and (max-width: 480px) {
+  .login-container {
+    flex-flow: column;
+    justify-content: space-around;
+  }
+  .logo img {
+    width: 80%;
+  }
+  form {
+    align-self: center;
+    flex-basis: auto;
+    position: absolute;
+    z-index: 9;
+  }
 }
