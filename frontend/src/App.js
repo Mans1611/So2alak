@@ -1,13 +1,17 @@
 import React from "react";
 import "./App.css";
-import Login from "./components/login/Login";
+import Login from "./pages/login/Login";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      {/*<div>So?alak</div>*/}
-      <Login theme="light" />
-    </div>
+    <Router>
+      <div className="App">
+          <Routes>
+            <Route path='/signin' element={<Login theme='Light'/>}/> 
+          </Routes>
+      </div>
+  </Router>
   );
 }
 

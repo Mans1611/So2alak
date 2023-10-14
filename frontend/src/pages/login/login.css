@@ -1,15 +1,10 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
 .login-container {
   width: 100%;
   height: 100vh;
   display: flex;
   align-items: center;
-  background: #fffffe url(../../../public/images/wavel.svg) no-repeat bottom;
+  background: #fffffe url(../../assets/wavel.svg) no-repeat bottom;
   background-size: 100%;
 }
 
@@ -81,16 +76,16 @@ p {
   top: 10px;
   width: 25px;
   height: 25px;
-  background: url(../../../public/images/invisible.svg) no-repeat center;
+  background: url(../../assets/invisible.svg) no-repeat center;
   background-size: contain;
 }
 
 .show {
-  background: url(../../../public/images/visible.svg) no-repeat center;
+  background: url(../../assets/visible.svg) no-repeat center;
   background-size: contain;
 }
 
-button {
+.sign-in-btn {
   background-color: #0c2c43;
   text-align: center;
   width: 300px;
@@ -100,7 +95,7 @@ button {
   font-size: 16px;
   font-weight: bolder;
   border-radius: 10px;
-  box-shadow: 0 2px 5px #000;
+  box-shadow: 0 2px 5px #000000;
 }
 
 /*
@@ -173,7 +168,7 @@ button {
 /* =========================== Dark Theme =========================== */
 
 .dark-container {
-  background: #082233 url(../../../public/images/waved.svg) no-repeat bottom;
+  background: #082233 url(../../assets/waved.svg) no-repeat bottom;
   background-size: 100%;
 }
 

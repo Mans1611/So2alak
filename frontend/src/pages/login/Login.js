@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 //import { Link } from "react-router-dom";
-
+import logo from '../../assets/logo.svg'; // this how to import an images
 import "./login.css";
 
 const Login = (props) => {
+
   const [form, setForm] = useState({
     email: "",
     password: "",
-    theme: props.theme,
+    theme: props.theme, // we will change the position of the theme to be in the parent in the provider
     showPassword: false,
-    remember_me: false,
   });
 
   const [errors, setErrors] = useState({
@@ -19,7 +19,7 @@ const Login = (props) => {
 
   const handleTheme = () => {
     let formData = { ...form };
-    if (formData["theme"] === "light") {
+    if (formData["theme"] === "light") { 
       formData["theme"] = "dark";
     } else {
       formData["theme"] = "light";
@@ -59,7 +59,7 @@ const Login = (props) => {
       if (!e.target.value) {
         errorData["email"] = "ID is required";
       } else if (
-        !new RegExp(/^\d\d(\d|p|q|t|w)*\d\d\d\d$/i).test(e.target.value)
+        !new RegExp(/^\d\d(\d|p|q|t|w)\d\d\d\d$/i).test(e.target.value)
       ) {
         errorData["email"] = "Please enter a valid ID";
       } else {
@@ -89,12 +89,13 @@ const Login = (props) => {
         form.theme === "dark" ? "dark-container" : ""
       }`}
     >
+      {/* for changing the them */}
       <div
         className={`theme ${form.theme === "dark" ? "dark" : ""}`}
         onClick={handleTheme}
       ></div>
       <div className="logo">
-        <img src="./images/logo.svg" alt="" />
+        <img src={logo} alt="So?alak"/>
       </div>
       <form>
         <h1>Sign in</h1>
@@ -146,7 +147,7 @@ const Login = (props) => {
           </Link>
         </div>
   */}
-        <button type="submit" onClick={onSubmitForm}>
+        <button className="sign-in-btn" type="submit" onClick={onSubmitForm}>
           Login
         </button>
       </form>
