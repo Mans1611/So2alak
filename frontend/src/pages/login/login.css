@@ -1,0 +1,220 @@
+
+.login-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  background: #fffffe url(../../assets/wavel.svg) no-repeat bottom;
+  background-size: 100%;
+}
+
+form {
+  flex: 50%;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  flex-flow: column;
+}
+
+form > h1 {
+  color: #0c2c43;
+  font-size: 64px;
+}
+p {
+  color: #0c2c43;
+  margin-bottom: 20px;
+}
+
+.error input {
+  background-color: rgba(141, 234, 255, 0.4);
+  color: #0c2c43;
+  width: 300px;
+  height: 45px;
+  line-height: 45px;
+  border-radius: 10px;
+  border: 1px solid #0c2c43;
+  padding-left: 15px;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.login-container ::placeholder {
+  color: #0c2c43;
+  opacity: 1;
+}
+
+.error {
+  position: relative;
+}
+.error div {
+  position: absolute;
+  top: 46px;
+  width: 300px;
+  padding: 5px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  background-color: #ffbebe;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.error div::before {
+  content: "";
+  width: 5px;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: #af0000;
+}
+
+.eye {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 25px;
+  height: 25px;
+  background: url(../../assets/invisible.svg) no-repeat center;
+  background-size: contain;
+}
+
+.show {
+  background: url(../../assets/visible.svg) no-repeat center;
+  background-size: contain;
+}
+
+.sign-in-btn {
+  background-color: #0c2c43;
+  text-align: center;
+  width: 300px;
+  height: 45px;
+  line-height: 45px;
+  color: #fffffe;
+  font-size: 16px;
+  font-weight: bolder;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px #000000;
+}
+
+/*
+.options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 300px;
+  padding-bottom: 10px;
+}
+
+.forgot {
+  text-decoration: none;
+}
+
+#remember {
+  margin-right: 5px;
+}
+*/
+
+.identifier::before {
+  content: "@eng.asu.edu.eg";
+  position: absolute;
+  right: 0;
+  background-color: #0c2c43;
+  border-radius: 0 10px 10px 0;
+  height: 45px;
+  width: 60%;
+  line-height: 45px;
+  color: #e7e7e7;
+}
+
+.logo {
+  flex: 1 1 50%;
+}
+
+.logo img {
+  width: 100%;
+}
+
+.theme {
+  position: fixed;
+  bottom: 25px;
+  left: 25px;
+  width: 50px;
+  height: 50px;
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme::before,
+.theme::after {
+  content: "";
+  position: absolute;
+  width: 35px;
+  height: 35px;
+  background-color: black;
+  border-radius: 50%;
+}
+.theme::after {
+  width: 25px;
+  height: 25px;
+  background-image: linear-gradient(to right, black 50%, white 50%);
+}
+
+/* =========================== Dark Theme =========================== */
+
+.dark-container {
+  background: #082233 url(../../assets/waved.svg) no-repeat bottom;
+  background-size: 100%;
+}
+
+.dark-container form h1,
+.dark-container p {
+  color: #fffffe;
+}
+
+.dark-container .eye {
+  filter: invert(1);
+}
+
+.dark::after {
+  background-image: linear-gradient(to left, black 50%, white 50%);
+}
+
+.dark-container button {
+  background-color: #007a9f;
+}
+
+.dark-container .error input {
+  background-color: rgba(141, 234, 255, 0.15);
+}
+
+.dark-container .identifier::before {
+  background-color: #007a9f;
+}
+
+.dark-container ::placeholder {
+  color: #fffffe;
+}
+
+/* =========================== Phone =========================== */
+
+@media screen and (max-width: 480px) {
+  .login-container {
+    flex-flow: column;
+    justify-content: space-around;
+  }
+  .logo img {
+    width: 80%;
+  }
+  form {
+    align-self: center;
+    flex-basis: auto;
+    position: absolute;
+    z-index: 9;
+  }
+}

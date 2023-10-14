@@ -1,13 +1,14 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import './welcomepage.scss'
 import SimpleNavBar from '../../components/SimpleNavBar/SimpleNavBar'
 import wave from '../../assets/wave.png';
 import CourseCard, { DefaultCourse } from '../../components/CourseToFollow/CourseCard';
 import { defaultCourses} from '../../fakedata/FakeCourses';
+import { AppState } from '../../App';
 
 const WelcomePage = () => {
     document.title = "Welcome";
-    const [dark,setDark] = useState(true);
+    const {dark,setDark} = useContext(AppState);
     const [username,setUsername]=useState('Manosur');
     const [followedCourses,setFollowedCourses]=useState(defaultCourses);
 
