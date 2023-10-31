@@ -23,9 +23,15 @@ CREATE TABLE IF NOT EXISTS students
 	student_id INTEGER PRIMARY KEY NOT NULL ,
 	studnet_name VARCHAR(90) NOT NULL,
 	student_level VARCHAR(60) NOT NULL,
-	student_department VARCHAR(60) NOT NULL,
+	student_department VARCHAR(40) ,
 	password VARCHAR(255) NOT NULL,
 	points INTEGER DEFAULT 0,
+	student_subDepartment VARCHAR(30),
+	
+	FOREIGN KEY ( student_subDepartment)
+	REFERENCES sub_departments(department_id)
+	ON UPDATE CASCADE
+	ON DELETE SET NULL,
 	FOREIGN KEY (student_department) REFERENCES departments (department_id)
 	ON UPDATE CASCADE
 	ON DELETE SET NULL,
@@ -45,7 +51,7 @@ VALUES ('Mechinical');
 
 INSERT INTO sub_departments 
 (department_id,department_name,belongs_to)
-VALUES ('MPE','Mechinical & Power','Mechinical');
+VALUES ('MPP','Production & Power','Mechinical');
 
 
 INSERT INTO sub_departments 
@@ -71,9 +77,3 @@ INSERT INTO levels (level_id) VALUES ('Joinior');
 INSERT INTO levels (level_id) VALUES ('Senior1');
 INSERT INTO levels (level_id) VALUES ('Senior2');
 
-
-INSERT INTO courses (course_id,course_name,course_department,course_level)
-VALUES ('CSE451','Data Science','CSE','Senior2');
-
-INSERT INTO courses (course_id,course_name,course_department,course_level)
-VALUES ('CSE351','Data Structure','CSE','Senior1');
