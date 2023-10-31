@@ -21,7 +21,11 @@ person.post('/signup',async(req,res)=>{
         console.log("done")
         sqlCommand = `SELECT * FROM courses WHERE course_department = '${student_department}' AND course_level = '${studnet_level}';`;
         const courses = await conn.query(sqlCommand);
-
+        /*
+            SELECT c.course_id,c.course_name FROM courses AS c, sub_departments AS sd 
+            WHERE c.course_department = sd.department_id
+            AND sd.belongs_to = 'Electrical' AND c.course_level = 'Somophore';                                                           
+        */
         conn.release(); // release the connection with the database
         res.status(200).json({sugesstedCourses : courses.rows})
     }   
