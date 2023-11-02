@@ -1,4 +1,4 @@
-export const levelsDepartments = [
+export const departments = [
     {
         department : "Electrical",
         subDep:
