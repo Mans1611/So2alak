@@ -11,7 +11,7 @@ const WelcomePage = () => {
     const {dark,setDark} = useContext(AppState);
     const [username,setUsername]=useState('Manosur');
     const [followedCourses,setFollowedCourses]=useState(defaultCourses);
-
+    
     return (
     <div className={`welcome-page ${dark?'dark':''}`}>
         <SimpleNavBar dark={dark} setDark={setDark}/>
@@ -27,12 +27,14 @@ const WelcomePage = () => {
                 <CourseCard key={id} course={course} followedCourses={followedCourses} setFollowedCourses={setFollowedCourses}/>
                 )}
         </div>
-        <div className="course-card-container default-courses">
+        <div className="default-courses-container">
             <h2 className='default-courses-title'>Your courses</h2>
-            {
-                followedCourses?.map((course,id)=> <DefaultCourse key={id} setFollowedCourses={setFollowedCourses} 
+            <div className="grid-courses">
+                {
+                    followedCourses?.map((course,id)=> <DefaultCourse key={id} setFollowedCourses={setFollowedCourses} 
                     course={course}/>)
-            }
+                }
+            </div>
         </div>
         
     </div>

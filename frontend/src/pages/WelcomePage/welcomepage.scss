@@ -10,7 +10,7 @@
         display: flex;
         justify-content: space-between ;
         align-items: center;
-        .logo{
+        .Logo{
             width: 200px;
             height: 100px;
         }
@@ -67,10 +67,23 @@
         &.default-courses{
             margin: 10px 0;
         }
-        .default-courses-title{
-            font-size: 30px;
-            font-weight: 600;
-            text-align: center;
+    }
+    .default-courses-title{
+        font-size: 40px;
+        font-weight: 600;
+        text-align: center;
+        margin-top: 10px;
+    }
+    .default-courses-container{
+        color: $semi-dark-blue;
+        .grid-courses{
+            padding: 10px;
+            background-color: #68a0c842;
+            display: flex;
+            flex-wrap: wrap;
+            width: 55%;
+            border-radius: 10px;
+            margin: auto;
         }
     }
     .wave{
@@ -102,5 +115,12 @@
              }
             }
          }
+         .default-courses-container{
+            color: $full-white;
+            .grid-courses{
+                background-color: #061824;
+               
+            }
+        }
     }
 }

@@ -18,12 +18,11 @@ const CourseCard = ({course,followedCourses,setFollowedCourses}) => {
 
 export const DefaultCourse = ({course,setFollowedCourses})=>{
   return(
-    <div className='course-card'>
+    <div className='default course-card'>
       <div className="course-details">
         <h2 className='course-name'>{course?.courseName}</h2>
         <h5 className='course-code'>{course?.courseCode}</h5>
       </div>
-      
         <button onClick={()=>setFollowedCourses(courses=>courses.filter(Course=>Course.courseCode!==course.courseCode))} className='folw-btn followed-btn'>
           Followed
           <CheckCircleOutlineIcon style={{marginLeft:'5px'}}/>
@@ -32,4 +31,4 @@ export const DefaultCourse = ({course,setFollowedCourses})=>{
   )
 }
 
-export default CourseCard
+export default CourseCard;
