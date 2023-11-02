@@ -1,13 +1,45 @@
 export const levelsDepartments = [
-    {level : "Freshmen",showSubDep : false,subDep:[]},
     {
-        level : "Somophore",
-        showSubDep : true,
-        dep:['Electrical','Civil','Architucture',"Mechinical"]
+        department : "Electrical",
+        subDep:
+        [
+            {
+                id:'CSE',
+                name: 'Computer & System'
+            },
+            {
+                id:'EPM',
+                name: 'Power & Machines'
+            },
+            {
+                id:'ECE',
+                name: 'Electronics & Communication'
+            },
+    ]
     },
-    {level : "Joinior",showSubDep : true,subDep:[
-
+    {
+        department : "Mechanical",
+        subDep:[
+            {
+                id:'PME',
+                name: 'Power & Machines'
+            },
+            {
+                id:'PMM',
+                name: 'Production'
+        }]
+    },
+    {
+        department : "Civial",
+        subDep:[
+            {
+                id:'ERM',
+                name: 'Bridges & Roads'
+            },
+            {
+                id:'EMP',
+                name: 'Urban Cival Engineering'
+        }
     ]},
-    {level : "Freshmen",showSubDep : false,subDep:[]},
-    {level : "Freshmen",showSubDep : false,subDep:[]},
+    
 ] 
