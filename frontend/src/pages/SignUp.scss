@@ -91,12 +91,14 @@
 
             .alarm-container {
                 width: 280px;
+                display: flex;
             }
 
             .alarm {
                 color: rgb(212, 6, 6);
                 align-self: flex-start;
                 font-size: 0.85em;
+                margin-top: 5px;
             }
 
             .password-container {
