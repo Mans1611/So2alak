@@ -50,15 +50,15 @@
        @include centerChild;
        padding: 10px;
        input{
-        background-color: #0c2c431f;
+        background-color: #0c2c4310;
         border: none;
         border-bottom: 3px solid #0C2C43;
         width: 300px;
         height: 40px;
         padding: 5px;
         font-size: 18px;
+        border-radius: 5px;
         &:focus{
-            border-bottom: 7px solid #0C2C43;
             outline: none;
         }
        }

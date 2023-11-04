@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import logo from '../../assets/logo.png';
 import avatar from '../../assets/photoperson.png';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-const SimpleNavBar = ({dark,setDark}) => {
+import { AppState } from '../../App';
 
+const SimpleNavBar = () => {
+    
+    const {dark,setDark} = useContext(AppState);
   return (
     <div className='welcome-nav-bar'>
         <img className='Logo' src={logo} alt="So2alak"/>

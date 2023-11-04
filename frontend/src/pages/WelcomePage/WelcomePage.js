@@ -5,25 +5,39 @@ import wave from '../../assets/wave.png';
 import CourseCard, { DefaultCourse } from '../../components/CourseToFollow/CourseCard';
 import { defaultCourses} from '../../fakedata/FakeCourses';
 import { AppState } from '../../App';
+import axios from 'axios';
 
 const WelcomePage = () => {
     document.title = "Welcome";
-    const {dark,setDark} = useContext(AppState);
+    const {dark} = useContext(AppState);
     const [username,setUsername]=useState('Manosur');
     const [followedCourses,setFollowedCourses]=useState(defaultCourses);
+    const [searchedCourses,setSearchedCourses]=useState([]);
+    const [search,setSearch] = useState(null);
+    
+    const searchForCourse = async(e)=>{
+        /*
+            1 - Check if string is empty.
+            2 - multiple requests will be sent if the function is invoked onChange.
+            3 - check if the request returned with an empty array. 
+        */
+        const {data} = await axios.get(`http://localhost:8000/post/searchcourse/${e.target.value}`)   
+        console.log(data.courses)
+        setSearchedCourses(data.courses);
+    }
     
     return (
     <div className={`welcome-page ${dark?'dark':''}`}>
-        <SimpleNavBar dark={dark} setDark={setDark}/>
+        <SimpleNavBar/>
         <h1 className='welcome-sentance'>
             Welcome <span>{username.split(" ")[0]},</span>
         </h1>
         <div className="search-wrapper">
-            <input placeholder='Search for a course' type='text'/>
+            <input onChange={(e)=>searchForCourse(e)} placeholder='Search for a course' type='text'/>
         </div>
         <img className='wave' src={wave} alt="wave"/>
         <div className="course-card-container">
-            {defaultCourses?.map((course,id)=>
+            {searchedCourses?.map((course,id)=>
                 <CourseCard key={id} course={course} followedCourses={followedCourses} setFollowedCourses={setFollowedCourses}/>
                 )}
         </div>

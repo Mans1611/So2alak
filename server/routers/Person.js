@@ -1,10 +1,11 @@
 import { Router } from "express"
 import client from "../databse.js";
 import bcrypt from 'bcrypt';
-const person = Router();
 import dotenv from 'dotenv';
 import DefaultCourses from "../utilis/DefaultCourses.js";
 dotenv.config();
+
+const person = Router();
 person.post('/signup',async(req,res)=>{
     const {username,
         student_id,
