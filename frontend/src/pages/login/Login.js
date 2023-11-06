@@ -3,7 +3,10 @@ import React, { useContext, useState } from "react";
 import logo from "../../assets/logo.svg"; // this how to import an images
 import "./login.scss";
 import { AppState } from "../../App";
+import { Link } from "react-router-dom";
 
+
+// No button to nav create account
 const Login = () => {
   const { dark, setDark } = useContext(AppState); // this is how to import any state and its handler from app without props drilling
   const [form, setForm] = useState({
@@ -79,7 +82,8 @@ const Login = () => {
 
   const onSubmitForm = (e) => {
     e.preventDefault();
-    alert(JSON.stringify(form, null, 2));
+    handleCheck(e);
+    
   };
 
   return (
@@ -132,6 +136,7 @@ const Login = () => {
           />
           {errors.password && <div className="e-msg">{errors.password}</div>}
         </div>
+        <p className="create-account">Don't have an account? <Link to='/signup'>Create Account</Link></p>
         <button
           className={`sign-in-btn ${btn ? "disable" : ""}`}
           type="submit"
@@ -142,6 +147,7 @@ const Login = () => {
         >
           Login
         </button>
+
       </form>
     </div>
   );
