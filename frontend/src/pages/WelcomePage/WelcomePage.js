@@ -17,13 +17,16 @@ const WelcomePage = () => {
     
     const searchForCourse = async(e)=>{
         /*
-            1 - Check if string is empty.
+            1 - Check if string is empty. (Done)
             2 - multiple requests will be sent if the function is invoked onChange.
             3 - check if the request returned with an empty array. 
         */
+        // if the value in search for courses is empty it will not send a request.
+        if(e.target.value.trim() === '') return ;
+
         const {data} = await axios.get(`http://localhost:8000/post/searchcourse/${e.target.value}`)   
-        console.log(data.courses)
         setSearchedCourses(data.courses);
+
     }
     
     return (

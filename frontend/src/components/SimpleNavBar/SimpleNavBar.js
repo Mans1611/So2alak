@@ -26,7 +26,7 @@ const SimpleNavBar = () => {
            
         </div>
     </div>
-  )
-}
+  );
+};
 
-export default SimpleNavBar
+export default SimpleNavBar;

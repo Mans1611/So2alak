@@ -1,20 +1,23 @@
-import React, { useState } from 'react'
-import './coursecard.scss'
+import React, { useState } from "react";
+import "./coursecard.scss";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
-const CourseCard = ({course,followedCourses,setFollowedCourses}) => {
-  
- 
+const CourseCard = ({ course, followedCourses, setFollowedCourses }) => {
   return (
-    <div className='course-card'>
+    <div className="course-card">
       <div className="course-details">
         <h2 className='course-name'>{course?.course_name}</h2>
         <h5 className='course-code'>{course?.course_id}</h5>
       </div>
-        <button onClick={()=>setFollowedCourses((courses)=>[...courses,course])} className='folw-btn'>Follow</button>
+      <button
+        onClick={() => setFollowedCourses((courses) => [...courses, course])}
+        className="folw-btn"
+      >
+        Follow
+      </button>
     </div>
-  )
-}
+  );
+};
 
 export const DefaultCourse = ({course,setFollowedCourses})=>{
   return(

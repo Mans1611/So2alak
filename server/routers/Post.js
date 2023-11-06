@@ -16,12 +16,11 @@ post.get('/searchcourse/:searchString',async(req,res)=>{
         WHERE course_name ILIKE '%${searchString}%' 
         OR course_id ILIKE '%${searchString}%';`
         const {rows} = await con.query(sqlCommand);
+        con.release();
         return res.status(200).json({courses:rows})
     } catch (error) {
-        console.log(error)
-    }
-    finally{
         con.release();
+        console.log(error)
     }
 })
 

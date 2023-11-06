@@ -1,16 +1,19 @@
 import React, { useContext, useState } from "react";
-//import { Link } from "react-router-dom";
-import logo from '../../assets/logo.svg'; // this how to import an images
-import "./login.css";
+import logo from "../../assets/logo.svg"; // this how to import an images
+import "./login.scss";
 import { AppState } from "../../App";
+import { Link, redirect, useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const Login = (props) => {
-  const {dark} = useContext(AppState) // this is how to import any state and its handler from app without props drilling
-  console.log(dark)
+
+// No button to nav create account
+const Login = () => {
+  document.title = 'Sign In'; // Making the title for the page.
+  const navigate = useNavigate();
+  const { dark, setDark } = useContext(AppState); // this is how to import any state and its handler from app without props drilling
   const [form, setForm] = useState({
     email: "",
     password: "",
-    theme: props.theme, // we will change the position of the theme to be in the parent in the provider
     showPassword: false,
   });
 
@@ -18,15 +21,21 @@ const Login = (props) => {
     email: "",
     password: "",
   });
-  // delete this function ()=>{setDark(!dark)}
-  const handleTheme = () => {
+
+  const [loading,setLoading] = useState(false);
+  const [btn, setBtn] = useState(false);
+
+  const onHover = (e) => {
     let formData = { ...form };
-    if (formData["theme"] === "light") { 
-      formData["theme"] = "dark";
-    } else {
-      formData["theme"] = "light";
+    let errorData = { ...errors };
+    if (
+      formData["email"] === "" ||
+      formData["password"] === "" ||
+      errorData["email"] ||
+      errorData["password"]
+    ) {
+      setBtn(true);
     }
-    setForm(formData);
   };
 
   const handleChange = (e) => {
@@ -37,15 +46,9 @@ const Login = (props) => {
   };
 
   const handleShow = (e) => {
-    if (form["showPassword"] === false) {
-      form["showPassword"] = true;
-      e.target.nextElementSibling.type = "text";
-      e.target.className = "eye show";
-    } else {
-      form["showPassword"] = false;
-      e.target.nextElementSibling.type = "password";
-      e.target.className = "eye";
-    }
+    let formData = { ...form };
+    formData["showPassword"] = !formData["showPassword"];
+    setForm(formData);
   };
 
   const handleFocus = (e) => {
@@ -59,20 +62,20 @@ const Login = (props) => {
 
     if (e.target.name === "email") {
       if (!e.target.value) {
-        errorData["email"] = "ID is required";
+        errorData["email"] = "* ID is required";
       } else if (
         !new RegExp(/^\d\d(\d|p|q|t|w)\d\d\d\d$/i).test(e.target.value)
       ) {
-        errorData["email"] = "Please enter a valid ID";
+        errorData["email"] = "* Please enter a valid ID";
       } else {
         delete errorData["email"];
       }
       setErrors(errorData);
     } else if (e.target.name === "password") {
       if (!e.target.value) {
-        errorData["password"] = "Password is required";
+        errorData["password"] = "* Password is required";
       } else if (e.target.value.length < 8) {
-        errorData["password"] = "Password must have at minimum 8 characters";
+        errorData["password"] = "* Password must have at minimum 8 characters";
       } else {
         delete errorData["password"];
       }
@@ -80,30 +83,51 @@ const Login = (props) => {
     }
   };
 
-  const onSubmitForm = (e) => {
+  const onSubmitForm = async(e) => {
     e.preventDefault();
-    alert(JSON.stringify(form, null, 2));
+    
+    handleCheck(e);
+    
+    // sending a request to the backendafter passing the validations
+    setLoading(true); // I will set the loading state to be ture
+    let res;
+    try {
+      res = await axios.post(`http://localhost:8000/person/signin`,{
+        student_id:form.email,
+        password : form.password
+      })
+      console.log(res.request.status)
+      if(res.request.status === 200) // this means that the user is signed in 
+        navigate('/feedpage')
+      
+    } catch (error) {
+      if(error.response.status === 400)
+        setErrors(e=>{return {...e,password:error.response.data.msg}})
+      console.log(error.response.data)
+    }
+    /* here we will put the error msg coming from the server */
+    setLoading(false);
+
+
+    
   };
 
   return (
-    <div
-      className={`login-container ${
-        form.theme === "dark" ? "dark-container" : ""
-      }`}
-    >
-      {/* for changing the them */}
+    <div className={`login-container ${dark ? "dark-container" : ""}`}>
+      {/* here you can just add dark and then use & in scss file */}
       <div
-        className={`theme ${form.theme === "dark" ? "dark" : ""}`}
-        onClick={handleTheme}
+        className={`theme ${dark ? "dark" : ""}`}
+        onClick={() => setDark(!dark)}
       ></div>
-      <div className="logo">
-        <img src={logo} alt="So?alak"/>
+      <div className="logo-signin">
+        <img src={logo} alt="So?alak" />
       </div>
-      <form>
-        <h1>Sign in</h1>
-        <p>Sign in and start managing your candidates!</p>
+      <form className="form-signin">
+        <h1 className="h1">Sign in</h1>
+        <p className="p">Sign in and start managing your candidates!</p>
         <div className="error identifier">
           <input
+            className="i-signin"
             id="id"
             maxLength="7"
             autoComplete="current-email"
@@ -116,18 +140,19 @@ const Login = (props) => {
             onChange={handleChange}
             onFocus={handleFocus}
           />
-          {errors.email && <div>{errors.email}</div>}
+          {errors.email && <div className="e-msg">{errors.email}</div>}
         </div>
         <div className="error">
           <span
-            className="eye" //{`eye ${form.showPassword === true ? "show" : ""}`}
+            className={`eye ${form.showPassword ? "show" : ""}`}
             onClick={handleShow}
           ></span>
           <input
+            className="i-signin"
             id="pass"
             minLength="8"
             autoComplete="current-password"
-            type="password"
+            type={form.showPassword ? "text" : "password"}
             name="password"
             placeholder="Password"
             required
@@ -136,22 +161,22 @@ const Login = (props) => {
             onChange={handleChange}
             onFocus={handleFocus}
           />
-          {errors.password && <div>{errors.password}</div>}
+          {errors.password && <div className="e-msg">{errors.password}</div>}
         </div>
-        {/*
-        <div className="options">
-          <div>
-            <input type="checkbox" name="remember" id="remember" />
-            <label htmlFor="remember">Remember me</label>
-          </div>
-          <Link className="forgot" to="/">
-            Forgot password ?
-          </Link>
-        </div>
-  */}
-        <button className="sign-in-btn" type="submit" onClick={onSubmitForm}>
-          Login
+        <p className="create-account">Don't have an account? <Link to='/signup'>Create Account</Link></p>
+        <button
+          className={`sign-in-btn ${btn ? "disable" : ""}`}
+          type="submit"
+          disabled={btn}
+          onClick={onSubmitForm}
+          onMouseEnter={onHover}
+          onMouseLeave={() => setBtn(false)}
+        >
+          {
+            loading? 'Loading...' :"Login"
+          }
         </button>
+
       </form>
     </div>
   );

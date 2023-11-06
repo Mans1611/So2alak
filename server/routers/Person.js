@@ -44,6 +44,7 @@ person.post('/signup',async(req,res)=>{
 
 person.post('/signin',async(req,res)=>{
     const {student_id,password} = req.body;
+    console.log("passed")
     try{
         const con = await client.connect();
         const sqlCommand = `SELECT * FROM students WHERE student_id=${student_id};`;
