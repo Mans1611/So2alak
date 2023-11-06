@@ -59,7 +59,8 @@ const Login = () => {
 
   const handleCheck = (e) => {
     let errorData = { ...errors };
-
+    console.log(e.target.name)
+    console.log(e.target.name)
     if (e.target.name === "email") {
       if (!e.target.value) {
         errorData["email"] = "* ID is required";
@@ -71,7 +72,8 @@ const Login = () => {
         delete errorData["email"];
       }
       setErrors(errorData);
-    } else if (e.target.name === "password") {
+    } 
+    else if (e.target.name === "password") {
       if (!e.target.value) {
         errorData["password"] = "* Password is required";
       } else if (e.target.value.length < 8) {
@@ -79,18 +81,24 @@ const Login = () => {
       } else {
         delete errorData["password"];
       }
-      setErrors(errorData);
     }
+    console.log(errorData.email === undefined)
+     setErrors(errorData); 
+     if (errorData.email === undefined && errorData.password === undefined) return true
+     else{
+       return false;
+     }
   };
 
   const onSubmitForm = async(e) => {
     e.preventDefault();
-    
-    handleCheck(e);
+    console.log(handleCheck(e))
+    if( ! handleCheck(e) ) return; 
     
     // sending a request to the backendafter passing the validations
     setLoading(true); // I will set the loading state to be ture
     let res;
+    console.log("passed")
     try {
       res = await axios.post(`http://localhost:8000/person/signin`,{
         student_id:form.email,
@@ -101,9 +109,9 @@ const Login = () => {
         navigate('/feedpage')
       
     } catch (error) {
-      if(error.response.status === 400)
-        setErrors(e=>{return {...e,password:error.response.data.msg}})
-      console.log(error.response.data)
+      if(error.response.status === 400) 
+        setErrors(e=>{return {...e,password:error.response.data.msg}});
+      
     }
     /* here we will put the error msg coming from the server */
     setLoading(false);
