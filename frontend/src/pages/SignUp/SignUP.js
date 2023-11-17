@@ -7,6 +7,9 @@ import logo from "../../assets/Logo(122)5.png";
 import axios from 'axios';
 import { levDeps } from '../../data/LevelsDepartments';
 
+/* comments : 
+    - delete states like passwordAlarm, rePasswordLength state.
+*/  
 const SignUP = () => {
     const levels = ['Freshmen', 'Sophomore', 'Junior', 'Senior1', 'Senior2'];
     const departments = levDeps;
@@ -142,8 +145,9 @@ const SignUP = () => {
         if (!alarms.includes(true) && !primaryStates.includes("") &&
             ((level === 'Junior' || level === 'Senior1' || level === 'Senior2') ?
                 ((secondaryStates.includes('')) ? false : true) : true)) {
-            alert('أنت رجل محترم');
-            //send a request to backend.
+
+            console.log(department,subdepartment)
+                //send a request to backend.
             const result = await axios.post('http://localhost:8000/person/signup',
                 {
                     username,
@@ -153,7 +157,6 @@ const SignUP = () => {
                     student_department: department,
                     student_subdepartment: subdepartment
                 })
-            console.log(result)
         }
     };
     return (
@@ -262,8 +265,9 @@ const SignUP = () => {
                                         <option value="" disabled selected hidden >
                                             Select Your Sub-Department
                                         </option>
+
                                         {departments.filter((dep) => { return dep.department === department })[0].subDep
-                                            .map(sub => (<option value={sub.name}>{sub.name}</option>))}
+                                            .map(sub => (<option value={sub.id}>{sub.name}</option>))}
                                     </select>
                                     {subdepartmentRequiredAlarm && <div className='alarm-container'><p className='alarm'>*Select Your Sub-Department!</p></div>}
                                 </>
