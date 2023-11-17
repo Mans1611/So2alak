@@ -59,16 +59,17 @@ const Login = () => {
 
   const handleCheck = (e) => {
     let errorData = { ...errors };
-    console.log(e.target.name)
-    console.log(e.target.name)
+   
     if (e.target.name === "email") {
       if (!e.target.value) {
         errorData["email"] = "* ID is required";
-      } else if (
+      } 
+      else if (
         !new RegExp(/^\d\d(\d|p|q|t|w)\d\d\d\d$/i).test(e.target.value)
       ) {
         errorData["email"] = "* Please enter a valid ID";
-      } else {
+      } 
+      else {
         delete errorData["email"];
       }
       setErrors(errorData);
@@ -82,7 +83,7 @@ const Login = () => {
         delete errorData["password"];
       }
     }
-    console.log(errorData.email === undefined)
+
      setErrors(errorData); 
      if (errorData.email === undefined && errorData.password === undefined) return true
      else{
@@ -92,14 +93,17 @@ const Login = () => {
 
   const onSubmitForm = async(e) => {
     e.preventDefault();
-    console.log(handleCheck(e))
+
+    /* here I used this function before sending a request to backend,
+       if it return a validation error i will return and not complete sending a request.
+    */
     if( ! handleCheck(e) ) return; 
     
     // sending a request to the backendafter passing the validations
     setLoading(true); // I will set the loading state to be ture
     let res;
-    console.log("passed")
     try {
+      // sending a request to sign in api, {id,password}
       res = await axios.post(`http://localhost:8000/person/signin`,{
         student_id:form.email,
         password : form.password
@@ -109,15 +113,17 @@ const Login = () => {
         navigate('/feedpage')
       
     } catch (error) {
-      if(error.response.status === 400) 
+
+      if(error.isAxiosError) // this means that you have a network error or server is not working
+        setErrors(e=>{return {...e,password:"check the network"}});
+      
+      // means you got an error from our server, so the server is working, buth there is an error from api
+      else if(error.response.status === 400) 
+      /* here we will put the error msg coming from the server */
         setErrors(e=>{return {...e,password:error.response.data.msg}});
       
     }
-    /* here we will put the error msg coming from the server */
     setLoading(false);
-
-
-    
   };
 
   return (

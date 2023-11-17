@@ -13,6 +13,14 @@ $background-color_6: rgba(141, 234, 255, 0.15);
 
 /* =========================== Dark Theme =========================== */
 /* =========================== Phone =========================== */
+
+
+
+/*
+    Please : 
+        - Don't use elements tag as a class name like : .a, .p
+        - use some  like  
+*/
 .login-container {
     width: 100%;
     height: 100vh;
@@ -185,11 +193,13 @@ $background-color_6: rgba(141, 234, 255, 0.15);
  
 
 }
+// like css file 
 .dark-container {
     background: #082233 url(../../assets/waved.svg) no-repeat bottom;
 background-size: 100%;
 
 .form-signin {
+    
     .h1 {
         color: $color_4;
     }
