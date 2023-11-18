@@ -19,7 +19,6 @@ post.get('/searchcourse/:searchString',async(req,res)=>{
         con.release();
         return res.status(200).json({courses:rows})
     } catch (error) {
-        con.release();
         console.log(error)
     }
 })

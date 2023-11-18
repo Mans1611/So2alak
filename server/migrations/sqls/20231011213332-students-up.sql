@@ -1,7 +1,3 @@
-/* Replace with your SQL commands
- */
- 
-
 CREATE TABLE IF NOT EXISTS departments (
 	department_id VARCHAR(30) NOT NULL PRIMARY KEY
 );
@@ -17,10 +13,23 @@ CREATE TABLE IF NOT EXISTS sub_departments (
 CREATE TABLE IF NOT EXISTS levels(
 	level_id VARCHAR(20) PRIMARY KEY NOT NULL
 ); 
+CREATE TABLE IF NOT EXISTS courses(
+    course_id VARCHAR(30) PRIMARY KEY NOT NULL,
+    course_name VARCHAR(90)  NOT NULL,
+    course_department VARCHAR(30)
+    REFERENCES sub_departments(department_id)	
+    ON UPDATE CASCADE
+	ON DELETE SET NULL,
+
+    course_level VARCHAR(30) NOT NULL 
+    REFERENCES levels (level_id) 
+    ON UPDATE CASCADE 
+    ON DELETE SET NULL
+);
 
 CREATE TABLE IF NOT EXISTS students 
 (
-	student_id INTEGER PRIMARY KEY NOT NULL ,
+	student_id VARCHAR(30) PRIMARY KEY NOT NULL ,
 	studnet_name VARCHAR(90) NOT NULL,
 	student_level VARCHAR(60) NOT NULL,
 	student_department VARCHAR(40) ,
@@ -28,7 +37,7 @@ CREATE TABLE IF NOT EXISTS students
 	points INTEGER DEFAULT 0,
 	student_subDepartment VARCHAR(30),
 	
-	FOREIGN KEY ( student_subDepartment)
+	FOREIGN KEY (student_subDepartment)
 	REFERENCES sub_departments(department_id)
 	ON UPDATE CASCADE
 	ON DELETE SET NULL,
@@ -39,7 +48,17 @@ CREATE TABLE IF NOT EXISTS students
 	ON UPDATE CASCADE
 	ON DELETE SET NULL
 );
-
+CREATE TABLE IF NOT EXISTS students_courses (
+    student_id VARCHAR(30) NOT NULL
+    REFERENCES students(student_id) 
+    ON UPDATE CASCADE
+	ON DELETE CASCADE,
+    
+    course_id VARCHAR(30) NOT NULL
+    REFERENCES courses(course_id) 
+    ON UPDATE CASCADE
+	ON DELETE CASCADE 
+);
 
 INSERT INTO departments 
 (department_id)

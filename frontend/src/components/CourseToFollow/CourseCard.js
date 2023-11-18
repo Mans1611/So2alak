@@ -1,16 +1,27 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./coursecard.scss";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import { AppState } from "../../App";
 
-const CourseCard = ({ course, followedCourses, setFollowedCourses }) => {
+const CourseCard = ({ course }) => {
+  const {dark,
+    studentCourses,setStuCourses
+  } = useContext(AppState);
+
+  const addCourse = ()=>{
+    if (studentCourses.some(Course=>Course.course_id === course.course_id))
+      return ;
+     setStuCourses((courses) => [...courses, course])
+     
+  }
   return (
-    <div className="course-card">
+    <div className={`course-card ${dark?'dark':''}`}>
       <div className="course-details">
         <h2 className='course-name'>{course?.course_name}</h2>
         <h5 className='course-code'>{course?.course_id}</h5>
       </div>
       <button
-        onClick={() => setFollowedCourses((courses) => [...courses, course])}
+        onClick={addCourse}
         className="folw-btn"
       >
         Follow
@@ -19,14 +30,35 @@ const CourseCard = ({ course, followedCourses, setFollowedCourses }) => {
   );
 };
 
-export const DefaultCourse = ({course,setFollowedCourses})=>{
+export const LoadingCard = ()=>{
+  const {dark} = useContext(AppState);
+  return(
+    <>
+      <div className={`course-card loading ${dark?'dark':''}`}>
+        <div className="course-details">
+          <h2 className='course-name'></h2>
+          <h5 className='course-code'></h5>
+        </div>
+      </div>
+      <div className={`course-card loading ${dark?'dark':''}`}>
+        <div className="course-details">
+          <h2 className='course-name'></h2>
+          <h5 className='course-code'></h5>
+        </div>
+      </div>
+    </>
+  )
+}
+
+export const DefaultCourse = ({course,setStuCourses})=>{
+  
   return(
     <div className='default course-card'>
       <div className="course-details">
         <h2 className='course-name'>{course?.course_name}</h2>
         <h5 className='course-code'>{course?.course_id}</h5>
       </div>
-        <button onClick={()=>setFollowedCourses(courses=>courses.filter(Course=>Course.courseCode!==course.courseCode))} className='folw-btn followed-btn'>
+        <button onClick={()=>setStuCourses(courses=>courses.filter(Course=>Course.course_id!==course.course_id))} className='folw-btn followed-btn'>
           Followed
           <CheckCircleOutlineIcon style={{marginLeft:'5px'}}/>
         </button>

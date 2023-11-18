@@ -1,7 +1,7 @@
 @import '../../.mainstyle.scss';
 .course-card{
-    width: 40%;
-    background-color: #8deaff5a;
+    width: 95%;
+    background-color: #8deaff9c;
     border-radius: 10px;
     padding: 10px;
     display: flex;    
@@ -11,6 +11,7 @@
     text-align: center;
     filter: drop-shadow(0px 13px 13px #0000005b);
     align-items: center;
+
     &.default{
         align-items: center;
         width: 200px;
@@ -24,8 +25,8 @@
         font-weight: 700;
     }
     .course-code{
-        font-size: 18px;
-        font-weight: 400;
+        font-size: 20px;
+        font-weight: 500;
     }
     .folw-btn{
         padding: 5px 10px;
@@ -46,17 +47,36 @@
             @include centerChild;
         }
     }
+    &.loading{
+        .course-name,.course-code{
+            width: 350px;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: #b1b1b1c4;
+            animation: blinking infinite 1000ms alternate;
+        }
+        .course-code{
+            margin-top: 10px;
+            padding: 10px;
+            width: 150px;
+        }
+    }
     &.dark{
+        &.loading{
+            .course-name,.course-code{
+                background-color: $fully-dark-blue;
+            }
+        }
         background-color: #1C4052;
-        color: $full-white;
         justify-content: space-between;
         align-items: center;
         .course-name{
+            color: #e1e1e1;
             font-size: 30px;
-            font-weight: 700;
+            font-weight: 700;  
         }
         .course-code{
-            font-size: 20px;
+            color: #d1d1d1 ;
         }
         .folw-btn{
             padding: 7px 10px;
@@ -73,5 +93,13 @@
                 background-color: $semi-dark-blue;
             }
         }
+    }
+}
+
+@keyframes blinking {
+    from{
+        opacity: 0;
+    }to{
+        opacity: 1;
     }
 }
