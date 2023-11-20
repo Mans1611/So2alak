@@ -1,0 +1,40 @@
+.loading-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .loading {
+    text-align: center;
+    font-size: 40px;
+    letter-spacing: 10px;
+    color: rgba(141, 234, 255, 0.4);
+    position: relative;
+    user-select: none;
+  }
+  .loading::before {
+    content: "Loading...";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: #0c2c43;
+    overflow: hidden;
+    border-right: 5px solid #0c2c43;
+
+    animation: load 5s linear infinite;
+  }
+}
+
+@keyframes load {
+  0% {
+    width: 0;
+  }
+  50% {
+    width: 100%;
+  }
+  100% {
+    width: 0;
+  }
+}

@@ -11,102 +11,80 @@ $background-color_4: #0c2c43;
 $background-color_5: #007a9f;
 $background-color_6: rgba(141, 234, 255, 0.15);
 
-/* =========================== Dark Theme =========================== */
-/* =========================== Phone =========================== */
-
-
-
-/*
-    Please : 
-        - Don't use elements tag as a class name like : .a, .p
-        - use some  like  
-*/
 .login-container {
-    width: 100%;
-    height: 100vh;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  background: #fffffe url(../../assets/wavel.svg) no-repeat bottom;
+  background-size: 100%;
+  transition: 0.5;
+
+  .theme {
+    position: fixed;
+    bottom: 25px;
+    left: 25px;
+    width: 50px;
+    height: 50px;
+    background-color: $background-color_1;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px #000;
     display: flex;
     align-items: center;
-    background: #fffffe url(../../assets/wavel.svg) no-repeat bottom;
-    background-size: 100%;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.5;
 
-    .i-signin {
-        &::placeholder {
-            color: $color_2;
-            opacity: 1;
-        }
+    &::before {
+      content: "";
+      position: absolute;
+      width: 35px;
+      height: 35px;
+      background-color: $background-color_2;
+      border-radius: 50%;
+      transition: 0.5;
     }
-    .create-account{
-        text-align: center;
-        margin: 5px 0;
-        a{
-            color: #000000;
-            font-weight: 600;
-            font-size: 18px;
-        }
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 35px;
+      height: 35px;
+      background-color: $background-color_2;
+      border-radius: 50%;
+      width: 25px;
+      height: 25px;
+      transition: 0.5;
+      background-image: linear-gradient(to right, black 50%, white 50%);
     }
-    .theme {
-        position: fixed;
-        bottom: 25px;
-        left: 25px;
-        width: 50px;
-        height: 50px;
-        background-color: $background-color_1;
-        border-radius: 50%;
-        box-shadow: 0 2px 5px #000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-    
-        &::before {
-            content: "";
-            position: absolute;
-            width: 35px;
-            height: 35px;
-            background-color: $background-color_2;
-            border-radius: 50%;
-        }
-    
-        &::after {
-            content: "";
-            position: absolute;
-            width: 35px;
-            height: 35px;
-            background-color: $background-color_2;
-            border-radius: 50%;
-            width: 25px;
-            height: 25px;
-            background-image: linear-gradient(to right, black 50%, white 50%);
-        }
+  }
+
+  .signin-form {
+    flex: 50%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+
+    .signin-label {
+      color: $color_1;
+      font-size: 64px;
+      user-select: none;
     }
-    .form-signin {
-        flex: 50%;
-        text-align: center;
-        display: flex;
-        align-items: center;
-        flex-flow: column;
-    
-        .h1 {
-            color: $color_1;
-            font-size: 64px;
-            user-select: none;
-        }
+
+    .caption {
+      color: $color_1;
+      margin-bottom: 20px;
+      user-select: none;
     }
-    
-    
-    
-    .p {
+
+    .signin-input-container {
+      position: relative;
+      .signin-input {
+        background-color: $background-color_3;
         color: $color_1;
-        margin-bottom: 20px;
-        user-select: none;
-    }
-    
-    .error {
-        .i-signin {
-            background-color: $background-color_3;
-            color: $color_1;
-            width: 300px;
-            height: 45px;
+        width: 300px;
+        height: 45px;
         line-height: 45px;
         border-radius: 10px;
         border: 1px solid #0c2c43;
@@ -114,11 +92,30 @@ $background-color_6: rgba(141, 234, 255, 0.15);
         font-size: 14px;
         font-weight: bold;
         margin-bottom: 30px;
-    }
-    
-    position: relative;
-    
-    .e-msg {
+
+        &::placeholder {
+          color: $color_2;
+          opacity: 1;
+        }
+      }
+
+      .eye {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        width: 25px;
+        height: 25px;
+        background: url(../../assets/visible.svg) no-repeat center;
+        background-size: contain;
+        cursor: pointer;
+      }
+
+      .show {
+        background: url(../../assets/invisible.svg) no-repeat center;
+        background-size: contain;
+      }
+
+      .error-msg {
         position: absolute;
         top: 46px;
         width: 300px;
@@ -128,142 +125,138 @@ $background-color_6: rgba(141, 234, 255, 0.15);
         text-align: left;
         color: $color_3;
         user-select: none;
+      }
     }
-}
 
-.eye {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    width: 25px;
-    height: 25px;
-    background: url(../../assets/visible.svg) no-repeat center;
-    background-size: contain;
-    cursor: pointer;
-}
-
-.show {
-    background: url(../../assets/invisible.svg) no-repeat center;
-    background-size: contain;
-}
-
-    .sign-in-btn {
-        background-color: $background-color_4;
-        text-align: center;
-        width: 300px;
-        height: 45px;
-        line-height: 45px;
-        color: $color_4;
-        font-size: 16px;
-        font-weight: bolder;
-        border-radius: 10px;
-        box-shadow: 0 3px 3px #000000ab;
-        cursor: pointer;
-        border: none;
+    .signin-btn {
+      background-color: $background-color_4;
+      text-align: center;
+      width: 300px;
+      height: 45px;
+      line-height: 45px;
+      color: $color_4;
+      font-size: 16px;
+      font-weight: bolder;
+      border-radius: 10px;
+      box-shadow: 0 2px 2px #000000ab;
+      cursor: pointer;
+      border: none;
     }
 
     .disable {
-        cursor: not-allowed;
-        opacity: 0.7;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    .create-account {
+      text-align: center;
+      margin: 5px 0;
+      .signup-link {
+        color: #000000;
+        font-weight: 600;
+        font-size: 18px;
+      }
     }
     .identifier {
-        &::before {
-            content: "@eng.asu.edu.eg";
-            position: absolute;
-            right: 0;
-            background-color: $background-color_4;
-            border-radius: 0 10px 10px 0;
-            font-size: 20px;
-            height: 45px;
-            width: 60%;
-            line-height: 45px;
-            color: $color_5;
-        }
+      &::before {
+        content: "@eng.asu.edu.eg";
+        position: absolute;
+        right: 0;
+        background-color: $background-color_4;
+        border-radius: 0 10px 10px 0;
+        font-size: 20px;
+        height: 45px;
+        width: 60%;
+        line-height: 45px;
+        color: $color_5;
+      }
     }
-    .logo-signin {
-        flex: 1 1 50%;
-    
-        img {
-            width: 100%;
-        }
-    }
-    
-    
-    
- 
+  }
 
+  .logo-signin {
+    flex: 1 1 50%;
+
+    .signin-logo-img {
+      width: 100%;
+    }
+  }
 }
-// like css file 
+
+/* =========================== Dark Theme =========================== */
 .dark-container {
-    background: #082233 url(../../assets/waved.svg) no-repeat bottom;
-background-size: 100%;
+  background: #082233 url(../../assets/waved.svg) no-repeat bottom;
+  background-size: 100%;
 
-.form-signin {
-    
-    .h1 {
-        color: $color_4;
+  .signin-form {
+    .signin-label {
+      color: $color_4;
     }
-}
+    .caption {
+      color: $color_4;
+    }
 
-.p {
-    color: $color_4;
-}
+    .signin-btn {
+      background-color: $background-color_5;
+    }
 
-.eye {
-    filter: invert(1);
-}
-
-button {
-    background-color: $background-color_5;
-}
-
-.error {
-    .i-signin {
+    .signin-input-container {
+      .signin-input {
         background-color: $background-color_6;
         color: $color_4;
-        
+
         &:focus {
-            outline: none;
+          outline: none;
         }
-    }
-}
 
-.identifier {
-    &::before {
+        &::placeholder {
+          color: $color_6;
+        }
+      }
+      .eye {
+        filter: invert(1);
+      }
+    }
+
+    .create-account {
+      color: #fff;
+      .signup-link {
+        color: #fff;
+      }
+    }
+
+    .identifier {
+      &::before {
         background-color: $background-color_5;
+      }
     }
+  }
+
+  .dark {
+    &::after {
+      background-image: linear-gradient(to left, black 50%, white 50%);
+    }
+  }
 }
 
-.i-signin {
-    &::placeholder {
-        color: $color_6;
-    }
-}
-}
-.dark {
-    &::after {
-        background-image: linear-gradient(to left, black 50%, white 50%);
-    }
-}
+/* =========================== Phone =========================== */
 
 @media screen and (max-width: 480px) {
-    .login-container {
-        flex-flow: column;
-        justify-content: space-around;
-        .logo-signin {
-            display: inline-block;
-            text-align: center;
-    
-            img {
-                width: 80%;
-            }
-        }
-        .form-signin {
-            align-self: center;
-            flex-basis: auto;
-            position: absolute;
-            z-index: 9;
-        }
-    }
+  .login-container {
+    flex-flow: column;
+    justify-content: space-around;
+    .logo-signin {
+      display: inline-block;
+      text-align: center;
 
+      .signin-logo-img {
+        width: 80%;
+      }
+    }
+    .signin-form {
+      align-self: center;
+      flex-basis: auto;
+      position: absolute;
+      z-index: 9;
+    }
+  }
 }
