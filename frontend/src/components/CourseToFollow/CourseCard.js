@@ -13,9 +13,15 @@ const CourseCard = ({ course }) => {
       return;
     setStuCourses((courses) => [...courses, course]);
   };
+  let img = null;
+  if (course.course_logo){
+    img = `data:${course.mimtype};base64,${course.data}`
+  }
+    
   return (
     <div className={`course-card ${dark ? "dark" : ""}`}>
       <div className="course-details">
+        
         <h2 className="course-name">{course?.course_name}</h2>
         <h5 className="course-code">{course?.course_id}</h5>
       </div>
@@ -47,9 +53,18 @@ export const LoadingCard = () => {
 };
 
 export const DefaultCourse = ({ course, setStuCourses }) => {
+  let img = null;
+  if (course.course_logo){
+    img = `data:${course.mimtype};base64,${course.data}`
+  }
   return (
     <div className="default course-card">
       <div className="course-details">
+      { course.course_logo && 
+      <div className="course-logo-wrapper">
+        <img className="course_logo" src={img} alt={course.course_name} srcset="" />
+      </div>
+      }
         <h2 className="course-name">{course?.course_name}</h2>
         <h5 className="course-code">{course?.course_id}</h5>
       </div>

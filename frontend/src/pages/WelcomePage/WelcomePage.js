@@ -9,6 +9,7 @@ import CourseCard, {
 import { AppState } from "../../App";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const WelcomePage = () => {
   document.title = "Welcome";
@@ -42,6 +43,7 @@ const WelcomePage = () => {
       setSearchedCourses(data.courses);
       clearTimeout(timeout);
     }, 750);
+    console.log(data)
   };
   const RegisterCourses = async () => {
     if (studentCourses.length === 0) return; // if no courses is selected no request send to backend.
@@ -120,6 +122,7 @@ const WelcomePage = () => {
       <div className="next-wrapper">
         <button onClick={RegisterCourses} className="next-btn">
           Next
+          <ArrowForwardIosIcon />
         </button>
       </div>
     </div>

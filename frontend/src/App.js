@@ -20,14 +20,10 @@ function App() {
       <div className="App">
         <AppState.Provider
           value={{
-            dark,
-            setDark,
-            studentCourses,
-            setStuCourses,
-            username,
-            setUsername,
-            id,
-            setId,
+            dark,setDark,
+            studentCourses,setStuCourses,
+            username,setUsername,
+            id,setId,
           }}
         >
           {" "}

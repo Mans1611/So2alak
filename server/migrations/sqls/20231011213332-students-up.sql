@@ -1,3 +1,9 @@
+CREATE TABLE  IF NOT EXISTS files(
+    id Serial PRIMARY KEY NOT NULL,
+    filename VARCHAR(255) NOT NULL,
+    mimtype VARCHAR(255) NOT NULL,
+    data BYTEA
+);
 CREATE TABLE IF NOT EXISTS departments (
 	department_id VARCHAR(30) NOT NULL PRIMARY KEY
 );
@@ -20,11 +26,14 @@ CREATE TABLE IF NOT EXISTS courses(
     REFERENCES sub_departments(department_id)	
     ON UPDATE CASCADE
 	ON DELETE SET NULL,
-
     course_level VARCHAR(30) NOT NULL 
     REFERENCES levels (level_id) 
     ON UPDATE CASCADE 
-    ON DELETE SET NULL
+    ON DELETE SET NULL,
+	course_logo integer 
+	REFERENCES files (id) 
+	ON UPDATE CASCADE
+	ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS students 
