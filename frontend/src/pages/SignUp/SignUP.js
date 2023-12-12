@@ -44,9 +44,9 @@ const SignUP = () => {
     const [departmentAlarm, setDepartmentAlarm] = useState({ show: false, msg: "" });
     const [subdepartmentAlarm, setSubdepartmentAlarm] = useState({ show: false, msg: "" });
 
+    //arrays used to handle submit
     const primaryStates = [username, id, password, repassword, level];
     const secondaryStates = [department, subdepartment];
-
     const alarms = [userNameAlarm.show,
         idAlarm.show, passwordAlarm.show, repasswordAlarm.show,
         levelAlarm.show, departmentAlarm.show, subdepartmentAlarm.show];
