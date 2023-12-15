@@ -7,6 +7,7 @@ import NotFound from "./pages/NotFound/NotFound";
 
 import { createContext, useState } from "react";
 import SignUP from "./pages/SignUp/SignUP";
+import FeedPage from "./pages/FeedPage/FeedPage";
 
 export const AppState = createContext(null); // I export it to be accessable in the whole components
 function App() {
@@ -29,20 +30,12 @@ function App() {
           {" "}
           {/* in the value i put all the state and handlers which i would like to share in the app */}
           <Routes>
-            {
-              // home page => path="/" or path="/home"
-              /*
-              <Route exact path="/">
-                <Redirect to="/home" />
-              </Route>
-              */
-            }
+            
+            <Route path="/feedpage" element={<FeedPage />} />
             <Route path="/signin" element={<Login />} />
             <Route path="/welcome" element={<WelcomePage />} />
             <Route path="/signup" element={<SignUP />} />
-            {
-              // temp.
-            }
+            
             <Route path="/loading" element={<Loading />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

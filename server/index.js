@@ -5,7 +5,21 @@ import person from './routers/Person.js';
 import course from './routers/Courses.js';
 import bodyParser from 'body-parser';
 import post from './routers/Post.js';
+import {spawn} from 'child_process';
 
+const pythonFiles = spawn('python',['utilis/mans.py',4,3]);
+
+let pythonData = '';
+pythonFiles.stdout.on('data',(data)=>{
+    console.log(data.toString())
+    pythonData = data.toString();
+})
+
+
+pythonFiles.on('close',code=>{
+    if (code === 0)
+        console.log(JSON.parse(pythonData))
+})
 
 
 const app = express();
@@ -26,6 +40,6 @@ dotenv.config();    // configure environement varables
 const port =  process.env.PORT || 6000;
 
 app.listen(port,async ()=>{
-    console.log(`http://localhost:${port}`)
+    console.log(`http://localhost:${port}`);
 })
 

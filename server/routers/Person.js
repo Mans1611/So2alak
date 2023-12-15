@@ -3,6 +3,9 @@ import client from "../databse.js";
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import DefaultCourses from "../utilis/DefaultCourses.js";
+
+
+
 dotenv.config();
 
 const person = Router();
@@ -26,6 +29,7 @@ person.post('/signup',async(req,res)=>{
         sqlCommand = `INSERT INTO students (student_id,studnet_name,student_level,password,student_department,student_subDepartment) VALUES($1,$2,$3,$4,$5,$6)`;
         // I created person in the database.
         await conn.query(sqlCommand,[student_id,username,studnet_level,hashedPass,student_department,student_subdepartment]);
+       
         const courses = await DefaultCourses(studnet_level,student_department,student_subdepartment);
         console.log(courses);
         conn.release(); // release the connection with the database

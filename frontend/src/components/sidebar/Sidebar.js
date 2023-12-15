@@ -1,9 +1,19 @@
 import React from 'react'
-
-const Sidebar = () => {
+import './sidebar.scss';
+const SideBar = () => {
   return (
-    <div>Sidebar</div>
+    <div className='sidebar'>
+      <div className="courselist">
+        <h2>Courses</h2>
+        <ul>
+
+          <li>DataBase</li>
+          <li>Algorithms</li>
+          <li>DataSceince</li>
+        </ul>
+      </div>
+    </div>
   )
 }
 
-export default Sidebar
+export default SideBar;
