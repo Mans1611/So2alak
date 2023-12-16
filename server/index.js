@@ -15,7 +15,6 @@ pythonFiles.stdout.on('data',(data)=>{
     pythonData = data.toString();
 })
 
-
 pythonFiles.on('close',code=>{
     if (code === 0)
         console.log(JSON.parse(pythonData))
@@ -38,6 +37,7 @@ app.use('/course',course);
 dotenv.config();    // configure environement varables
 
 const port =  process.env.PORT || 6000;
+
 
 app.listen(port,async ()=>{
     console.log(`http://localhost:${port}`);

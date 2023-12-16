@@ -8,6 +8,7 @@ dotenv.config();
 const {Host,DataBase,User,Pass} = process.env;
 
 let client = new Pool({
+    // data base information
     driver : 'pg',
     user : process.env.User,
     host:process.env.Host,

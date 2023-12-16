@@ -4,6 +4,7 @@ CREATE TABLE  IF NOT EXISTS files(
     mimtype VARCHAR(255) NOT NULL,
     data BYTEA
 );
+
 CREATE TABLE IF NOT EXISTS departments (
 	department_id VARCHAR(30) NOT NULL PRIMARY KEY
 );
@@ -18,7 +19,8 @@ CREATE TABLE IF NOT EXISTS sub_departments (
 
 CREATE TABLE IF NOT EXISTS levels(
 	level_id VARCHAR(20) PRIMARY KEY NOT NULL
-); 
+);
+
 CREATE TABLE IF NOT EXISTS courses(
     course_id VARCHAR(30) PRIMARY KEY NOT NULL,
     course_name VARCHAR(90)  NOT NULL,

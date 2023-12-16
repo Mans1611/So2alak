@@ -1,8 +1,10 @@
 import { Router } from "express"
 import client from "../databse.js";
 import bcrypt from 'bcrypt';
+
 import dotenv from 'dotenv';
 import DefaultCourses from "../utilis/DefaultCourses.js";
+
 
 
 
@@ -31,7 +33,7 @@ person.post('/signup',async(req,res)=>{
         await conn.query(sqlCommand,[student_id,username,studnet_level,hashedPass,student_department,student_subdepartment]);
        
         const courses = await DefaultCourses(studnet_level,student_department,student_subdepartment);
-        console.log(courses);
+        
         conn.release(); // release the connection with the database
         return res.status(200).json({sugesstedCourses : courses});
     }   

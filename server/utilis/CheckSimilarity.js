@@ -1,28 +1,33 @@
 
 const dummySet = new Set([
-    'a','an','the',
-    'and', 'also',
-    'are','is', 'was','were',
-    'them','this',
-    'you', 'be', 'which',
-    'he','she','it','i', 'we', 'they',
-    'from','with',
-    'on','to','at','in','of','by','for','out',
-    'my','his','its','their',
-    'has','have',
-    'do' , 'dose', 'but','doing','don’t','dosen’t','any',
-    'there','there\'s','about', 'what\'s',
-    'becaues', 'as','as a result','since',
-    'not','only',
-    'if','whereas','whether',
-    'can','would', 'could',
-    'that','just','using','especially','that\'s','you\'ll','we\'ll',
-    'once','very','many','used','both','more','than','well','highly','where','each',
-    'when','who','some','such','over','globally',
-    'me','us','mine', 'among','told','no','yes','i’m'
-
+  'a','an','the',
+  'and', 'also',
+  'are','is', 'was','were',
+  'them','this',
+  'you', 'be', 'which',
+  'he','she','it','i', 'we', 'they',
+  'from','with','or',
+  'on','to','at','in','of','by','for','out',
+  'my','his','its','their',
+  'has','have',
+  'do' , 'dose', 'but','doing','don’t','dosen’t','any',
+  'there','there\'s','about', 'what\'s',
+  'becaues', 'as','as a result','since',
+  'not','only','been',
+  'if','whereas','whether',
+  'can','would', 'could',
+  'that','just','using','especially','that\'s','you\'ll','we\'ll',
+  'once','very','many','used','both','more','than','well','highly','where','each',
+  'when','who','some','such','over','globally',
+  'me','us','mine', 'among','told','no','yes','i’m','back','inside',
+  'after','before','will','all',
+  'don\'t', 'you\'re','every','like',
+  'isn\'t','what','your','you\'ve','towards','holds','it\'s','into','how',
+  'lies','up','down','then','these','beyond','behind','being','across','able','upon','still','overall','usually','so','might','together','other','between','may'
+  
 ]
 )
+
 // const checkSimilarity = (text,newText)=>{
 //     let set1 = new Set(text.toLowerCase().split(' '))
 //     let set2 = new Set(newText.toLowerCase().split(' '))
@@ -97,6 +102,7 @@ const syn = {
     'prettify' : 'improve',
     'improving':'improve',
     'advances':'improve',
+    'improvements':'improve',
     'created':'make',
     'create' : 'make',
     'solutions':'answer',
@@ -114,7 +120,62 @@ const syn = {
     'employ':'use',
     'utilize':'use',
     'hire':'use',
-    'regarding':'related'
+    'regarding':'related',
+    'actively':'active',
+    'requires':'need',
+    'require':'need',
+    'maintaining' : 'maintain',
+    'maintained' : 'maintain',
+    'preserve' : 'maintain',
+    'protect' : 'maintain',
+    'creators':'create',
+    'creates':'create',
+    'creating':'create',
+    'consider' : 'look',
+    'considering' : 'look',
+    'think' : 'look',
+    'investigate' : 'look',
+    'applications' : 'app',
+    'application' : 'app',
+    'arranging': 'order',
+    'arrange': 'order',
+    'appropriate' : 'suitable',
+    'proper' : 'suitable',
+    'convenient' : 'suitable',
+    'seems':'seem',
+    'provide':'give',
+    'papers':'paper',
+    'extremely':'high',
+    'extreme':'high',
+    'big':'high',
+    'great':'high',
+    'appears':'seem',
+    'appear':'seem',
+    'failing':'fail',
+    'failed':'fail',
+    'downloading':'download',
+    'downloaded':'download',
+    'another':'more',
+    'actions':'action',
+    'work':'action',
+    'missing':'miss',
+    'missied':'miss',
+    'lost':'miss',
+    'lose':'miss',
+    'mismatched':'mismatch',
+    'rebuilding':'rebuild',
+    'category': 'classification',
+    'portion': 'part',
+    'segment': 'part',
+    'category': 'classification',
+    'cluster': 'group',
+    'gather': 'collect',
+    'assemble': 'collect',
+    'unite': 'combine',
+    'merge': 'combine',
+
+
+
 
 }
 let sen1 = 'is a section of which concentrate'
@@ -171,3 +232,20 @@ function cosineSimilarity(vectorA, vectorB) {
 const similarity = cosineSimilarity(tfidfA, tfidfB);
 
 console.log(similarity)
+
+
+
+let text = "mans mohamed is and im m and and mans ahmed why mans"
+
+
+text = text.split(' ').flatMap(mans=>mans)
+
+let hash = {}
+// O(n)
+text.forEach(element => {
+    if (hash[element])
+        hash[element] = hash[element] + 1
+    else {
+        hash[element] = 1
+    }
+});
