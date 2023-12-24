@@ -11,14 +11,14 @@ const pythonFiles = spawn('python',['utilis/mans.py',4,3]);
 
 let pythonData = '';
 pythonFiles.stdout.on('data',(data)=>{
-    console.log(data.toString())
+   
     pythonData = data.toString();
 })
 
-pythonFiles.on('close',code=>{
-    if (code === 0)
-        console.log(JSON.parse(pythonData))
-})
+// pythonFiles.on('close',code=>{
+//     if (code === 0)
+//         // console.log(JSON.parse(pythonData))
+// })
 
 
 const app = express();

@@ -13,7 +13,7 @@ let client = new Pool({
     user : process.env.User,
     host:process.env.Host,
     database:process.env.DataBase,
-    port:process.env.Port_DB,
+    port:process.env.Port_DB, // 5432
     password:process.env.Pass
 })
 

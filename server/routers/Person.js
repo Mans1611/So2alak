@@ -5,9 +5,6 @@ import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import DefaultCourses from "../utilis/DefaultCourses.js";
 
-
-
-
 dotenv.config();
 
 const person = Router();
@@ -27,7 +24,7 @@ person.post('/signup',async(req,res)=>{
             return res.status(400).json({msg:"This id is already exists, try login"});
 
         const salt = await bcrypt.genSalt(parseInt(process.env.Salt));
-        const hashedPass =  await bcrypt.hash(password,salt) // encrypting the password.
+        const hashedPass =  await bcrypt.hash(password,salt) // encrypting the password 
         sqlCommand = `INSERT INTO students (student_id,studnet_name,student_level,password,student_department,student_subDepartment) VALUES($1,$2,$3,$4,$5,$6)`;
         // I created person in the database.
         await conn.query(sqlCommand,[student_id,username,studnet_level,hashedPass,student_department,student_subdepartment]);
