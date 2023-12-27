@@ -7,6 +7,7 @@ import NotFound from "./pages/NotFound/NotFound";
 
 import { createContext, useState } from "react";
 import SignUP from "./pages/SignUp/SignUP";
+import Landing from "./pages/LandingPage/Landing";
 
 export const AppState = createContext(null); // I export it to be accessable in the whole components
 function App() {
@@ -20,10 +21,14 @@ function App() {
       <div className="App">
         <AppState.Provider
           value={{
-            dark,setDark,
-            studentCourses,setStuCourses,
-            username,setUsername,
-            id,setId,
+            dark,
+            setDark,
+            studentCourses,
+            setStuCourses,
+            username,
+            setUsername,
+            id,
+            setId,
           }}
         >
           {" "}
@@ -44,6 +49,7 @@ function App() {
               // temp.
             }
             <Route path="/loading" element={<Loading />} />
+            <Route path="/landing" element={<Landing />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AppState.Provider>
