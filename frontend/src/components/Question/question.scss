@@ -1,0 +1,62 @@
+@import './../../mainStyle.scss';
+@import url('https://fonts.googleapis.com/css2?family=Seymour+One&display=swap');
+.question{
+   
+    width:90%;
+    margin: auto;
+    height: fit-content;
+    .question-details{
+        margin-left: 30px;
+        margin-bottom: 10px;
+        a{
+            font-size: 1.2em;
+            font-weight: 600;
+            text-decoration: underline;
+            color: $semi-dark-blue;
+            transition: all 200ms;
+            &:hover{
+                color: #000000;
+            }
+        }
+    }
+    .flex{
+        display: flex;
+        .question-help{
+            flex: 1;
+            margin-right: 5px;
+            cursor: pointer;
+            .circle{
+                font-family: 'Seymour One', sans-serif;
+                width: 60px;
+                height: 60px;
+                text-align: center;
+                background-color: #dddddd;
+                border-radius: 50%;
+                font-size: 45px;
+                font-weight: 700;
+                transition: all 300ms;
+                &:hover,&.active{
+                    background-color: $semi-dark-blue;
+                    color: #ffffff;
+                }
+            }
+            .help-counts{
+                font-size: 30px;
+                font-weight: 600;
+                margin-top: 5px;
+                text-align: center;
+            }
+        }
+        .question-content{
+            color: $fully-dark-blue;
+            font-weight: 600;
+            padding: 20px;
+            font-size: 22px;
+            background-color: $light-white ;
+            border-radius: 10px;
+            flex: 11;
+            height: fit-content;
+        }
+        
+    }
+}

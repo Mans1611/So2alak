@@ -1,0 +1,80 @@
+@import '../../mainStyle.scss';
+.askQuestion-container{
+    padding: 20px;
+    padding-left: 50px;
+    padding-top: 30px;
+    height: fit-content;
+    .askQuestion-wrapeer{
+        display: flex;
+        flex-direction: column;
+        width: 80% !important;
+        margin: auto;
+        textarea{
+            height: 120px;
+            width: 100%;
+            border-radius: 15px;
+            margin: auto;
+            outline: none;
+            padding: 10px;
+            font-size: 24px;
+            background-color: $light-white;
+            resize: none; 
+            overflow: hidden;
+            &:focus{
+                
+                &::placeholder{
+                   visibility:hidden;
+                }
+            }
+            &::placeholder{
+                color: #929292cc;
+                font-weight: 600;
+                font-size: 26px;
+            }
+        }
+        button{
+            margin-top: 10px;
+            padding: 10px;
+            color: $light-white;
+            background-color: $semi-dark-blue;
+            border-radius: 10px;
+            width: 80px;
+            cursor: pointer;
+            transition: all 200ms;
+            font-size: 28px;
+            font-weight: 700;
+            align-self: flex-end;
+            margin-right:15px ;
+            transform: r;
+            &:hover{
+                background-color: $fully-dark-blue;
+            }
+            &:disabled{
+                background-color: #6D6D6D;
+                cursor: initial;
+            }
+        }
+    }
+}
+.dark{
+    .askQuestion-container{
+        .askQuestion-wrapeer{
+            textarea{
+                background-color: $semi-dark-blue;
+                color: $light-white;
+                &::placeholder{
+                    color: $sky-blue;
+                }
+            }
+            button{
+              
+                color: $light-white;
+                background-color: $sky-blue;
+               
+                &:hover{
+                    background-color: $semi-dark-blue;
+                }
+            }
+        }
+    } 
+}

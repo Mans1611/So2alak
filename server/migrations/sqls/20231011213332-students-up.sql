@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS courses(
 CREATE TABLE IF NOT EXISTS students 
 (
 	student_id VARCHAR(30) PRIMARY KEY NOT NULL ,
-	studnet_name VARCHAR(90) NOT NULL,
+	username VARCHAR(150) UNIQUE NOT NULL,
 	student_level VARCHAR(60) NOT NULL,
 	student_department VARCHAR(40) ,
 	password VARCHAR(255) NOT NULL,
@@ -60,8 +60,8 @@ CREATE TABLE IF NOT EXISTS students
 	ON DELETE SET NULL
 );
 CREATE TABLE IF NOT EXISTS students_courses (
-    student_id VARCHAR(30) NOT NULL
-    REFERENCES students(student_id) 
+    student_name VARCHAR(30) NOT NULL
+    REFERENCES students(username) 
     ON UPDATE CASCADE
 	ON DELETE CASCADE,
     
@@ -77,8 +77,8 @@ CREATE TABLE IF NOT EXISTS questions(
     REFERENCES courses(course_id) 
     ON UPDATE CASCADE
 	ON DELETE SET NULL,
-    q_student_id VARCHAR(30) NOT NULL
-    REFERENCES students(student_id) 
+    q_username VARCHAR(30) NOT NULL
+    REFERENCES students(username) 
     ON UPDATE CASCADE
 	ON DELETE SET NULL,
     question TEXT NOT NULL,
@@ -95,8 +95,8 @@ CREATE TABLE IF NOT EXISTS answers(
     ON UPDATE CASCADE
 	ON DELETE SET NULL,
                                                                                                             
-    student_id_ans VARCHAR(30)
-    REFERENCES students(student_id) 
+    ans_username VARCHAR(30)
+    REFERENCES students(username) 
     ON UPDATE CASCADE
 	ON DELETE SET NULL,
     answer TEXT NOT NULL,

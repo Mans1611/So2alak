@@ -1,10 +1,10 @@
 $full-white : #FFFFFF;
 $light-white : #F0F0F0;
 $sky-blue:#18A9CA;
-
 $blue : #0C2C43;
 $semi-dark-blue:#082233;
 $fully-dark-blue:#041622;
+$sidebar-width:250px;
 
 @mixin centerChild{
     // this style for the parent div, and the the child will be centered. 
@@ -29,4 +29,14 @@ $fully-dark-blue:#041622;
 @mixin link{
     text-decoration: none;
     color:#000
+}
+
+@mixin blinking {
+    @keyframes blinking {
+        from{
+            opacity: 0.1;
+        }to{
+            opacity: 1;
+        }
+    }
 }

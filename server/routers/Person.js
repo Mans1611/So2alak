@@ -17,7 +17,7 @@ person.post('/signup',async(req,res)=>{
         student_subdepartment}=req.body;
     try{
         const conn = await client.connect(); // conecting with database
-        let sqlCommand = `SELECT * FROM students WHERE student_id='${student_id}' OR studnet_name='${username}'`;
+        let sqlCommand = `SELECT * FROM students WHERE student_id='${student_id}' OR username='${username}'`;
         let databaseResponse = await conn.query(sqlCommand);
         // check if this student_id has an account already or not.
         if(databaseResponse.rows.length > 0)
@@ -25,7 +25,7 @@ person.post('/signup',async(req,res)=>{
 
         const salt = await bcrypt.genSalt(parseInt(process.env.Salt));
         const hashedPass =  await bcrypt.hash(password,salt) // encrypting the password 
-        sqlCommand = `INSERT INTO students (student_id,studnet_name,student_level,password,student_department,student_subDepartment) VALUES($1,$2,$3,$4,$5,$6)`;
+        sqlCommand = `INSERT INTO students (student_id,username,student_level,password,student_department,student_subDepartment) VALUES($1,$2,$3,$4,$5,$6)`;
         // I created person in the database.
         await conn.query(sqlCommand,[student_id,username,studnet_level,hashedPass,student_department,student_subdepartment]);
        

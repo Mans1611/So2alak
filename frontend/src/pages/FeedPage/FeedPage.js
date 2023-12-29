@@ -1,14 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './feedpage.scss';
 import SideBar from '../../components/sidebar/Sidebar.js';
-import QuestionsContainer from '../../components/Questionscontainer/QuestionsContainer';
+import HeartComponent from '../../components/HeartComponent/HeartComponent';
+import ThirdPart from '../../components/ThirdPart/ThirdPart';
 
 
 const FeedPage = () => {
+  document.title = 'feedpage';
+  const [dark,setDark]=useState(false)
   return (
-    <div className='main-page'>
+    <div className={`main-page ${dark?'dark':''}`}>
         <SideBar/>
-        <QuestionsContainer/>
+        <HeartComponent/>
+        <ThirdPart/>
     </div>
   )
 }
