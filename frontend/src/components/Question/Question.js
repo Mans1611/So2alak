@@ -3,11 +3,16 @@ import './question.scss'
 import { Link } from 'react-router-dom';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import AddIcon from '@mui/icons-material/Add';
-import audio from '../../assets/soundeffects/pop.wav'
+import audio from '../../assets/soundeffects/pop.wav';
+import AddCommentIcon from '@mui/icons-material/AddComment';
+import answericon from '../../assets/vectors/answer.png'
+
 const Question = () => {
     const [helped,setHelp] = useState(false);
-    const circle = useRef(null)
+    const circle = useRef(null);
     const [helpCount,setHelpCount] = useState(3)
+    const [showAnswer,setShowAnswer] = useState(false);
+    const [answer,setAnswer] = useState('');
     const handleHelp = ()=>{
         const pop = new Audio(audio); 
         if(helped){
@@ -31,13 +36,28 @@ const Question = () => {
         </div>
         <div className="flex">
             <div className={`question-help`}>
-                <div ref={circle} onClick={handleHelp} className={`circle ${helped?'active':''}`}>{helped?'-':'+'}</div>
-                <h3 className='help-counts'>{helpCount}</h3>
+                <div className="help-wrapper">
+                    <div ref={circle} onClick={handleHelp} className={`circle ${helped?'active':''}`}>{helped?'-':'+'}</div>
+                    <h3 className='help-counts'>{helpCount}</h3>
+                </div>
             </div>
-            <div className="question-content">
-                    How to solve this idiot problem??
+            <div className='question-wrapper'>
+                <div className="question-content">
+                    <p> How to solve this idiot problem?? </p>
+                    <div className="time">asked @ 12:41</div>
+                </div>
+                {
+            showAnswer &&
+            <div className="answer-wrapper">
+                <input onChange={(e)=>setAnswer(e.target.value)} placeholder='Answer to question' type="text" />
+                <button disabled={answer.trim()==''}>Answer</button>
             </div>
+                   
+        }    
+            </div>
+            <img onClick={()=>setShowAnswer(show=>!show)} src={answericon} className='reply-btn'/>
         </div>
+        
     </div>
   )
 }

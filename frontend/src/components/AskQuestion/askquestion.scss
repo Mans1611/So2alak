@@ -1,4 +1,5 @@
 @import '../../mainStyle.scss';
+@import '../../.mainStyle.scss';
 .askQuestion-container{
     padding: 20px;
     padding-left: 50px;
@@ -20,12 +21,7 @@
             background-color: $light-white;
             resize: none; 
             overflow: hidden;
-            &:focus{
-                
-                &::placeholder{
-                   visibility:hidden;
-                }
-            }
+           @include input;
             &::placeholder{
                 color: #929292cc;
                 font-weight: 600;
@@ -45,7 +41,6 @@
             font-weight: 700;
             align-self: flex-end;
             margin-right:15px ;
-            transform: r;
             &:hover{
                 background-color: $fully-dark-blue;
             }
