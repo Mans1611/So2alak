@@ -1,12 +1,10 @@
 import React, { useRef, useState } from 'react'
 import './question.scss'
 import { Link } from 'react-router-dom';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import AddIcon from '@mui/icons-material/Add';
 import audio from '../../assets/soundeffects/pop.wav';
-import AddCommentIcon from '@mui/icons-material/AddComment';
 import answericon from '../../assets/vectors/answer.png'
-
+import plus from '../../assets/vectors/plus.png';
+import minus from '../../assets/vectors/minus.png';
 const Question = () => {
     const [helped,setHelp] = useState(false);
     const circle = useRef(null);
@@ -37,7 +35,9 @@ const Question = () => {
         <div className="flex">
             <div className={`question-help`}>
                 <div className="help-wrapper">
-                    <div ref={circle} onClick={handleHelp} className={`circle ${helped?'active':''}`}>{helped?'-':'+'}</div>
+                    <div ref={circle} onClick={handleHelp} className={`circle ${helped?'active':''}`}>
+                        {helped? <img className='help-icons'  src={minus} />:<img src={plus} className='help-icons'/>}
+                        </div>
                     <h3 className='help-counts'>{helpCount}</h3>
                 </div>
             </div>

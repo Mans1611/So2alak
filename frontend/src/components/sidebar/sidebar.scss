@@ -14,11 +14,18 @@
     @include blinking;
     width: $sidebar-width;
     .sidebar-logo{
-        background-color: #0c2c43b3;
+        padding: 10px;
+        background-color: #08223339;
         width: 180px;
         height: 180px;
         border-radius: 20px;
         margin: 20px auto;
+        @include centerChild;
+        img{
+            width: 100%;
+            height: 100%;
+            margin: auto;
+        }
     }
     hr {
         border: none; /* Remove default border */
@@ -46,8 +53,9 @@
             .flex{
                 display: flex;
                 align-items: center;
-                svg{
-                    font-size: 28px;
+                .items-icon{
+                    width: 35px;
+                    height: 30px;
                     margin-right: 7px;
                 }
             }

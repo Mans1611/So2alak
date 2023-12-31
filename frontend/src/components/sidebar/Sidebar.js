@@ -4,26 +4,32 @@ import {Link} from 'react-router-dom';
 import GradeIcon from '@mui/icons-material/Grade';
 import HelpCenterIcon from '@mui/icons-material/HelpCenter';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
+import shuffle from '../../assets/vectors/shuffle.png';
+import mylist from '../../assets/vectors/mylist.png';
+import question from '../../assets/vectors/question.png';
+
 const SideBar = () => {
   const [loading,setLoading]=useState(false);
   const [dark,setDark]=useState(false)
 
   return (
     <div className={`sidebar ${dark?'dark':''}`}>
-      <div className="sidebar-logo"></div>
+      <div className="sidebar-logo">
+        <img src={shuffle} alt="" srcset="" />
+      </div>
       <hr/>
         <div className="side-bar-items">
           <h2 className='title'>You</h2>
           <ul className='list'>
             <li className='items'>
               <Link className='flex' to={'/course/database'}>
-                <GradeIcon/>
+                <img className='items-icon' src={mylist}/>
                 My List
                 </Link>
               </li>
             <li className='items'>
               <Link className='flex' to={'/course/database'}>
-                <HelpCenterIcon/>
+                <img className='items-icon' src={question}/>
                 My Questions
                 </Link>
               </li>
