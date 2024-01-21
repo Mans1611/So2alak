@@ -1,0 +1,8 @@
+@import '../../mainStyle.scss'; 
+.main-page{
+    display: flex;
+    min-height: 200vh;
+    &.dark{
+        background-color:$fully-dark-blue ;
+    }
+}

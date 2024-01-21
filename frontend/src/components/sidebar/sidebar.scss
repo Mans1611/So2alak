@@ -21,9 +21,9 @@
         border-radius: 20px;
         margin: 20px auto;
         @include centerChild;
-        img{
-            width: 100%;
-            height: 100%;
+        i::before {
+            font-size: 130px;
+            color: $fully-dark-blue;
             margin: auto;
         }
     }
@@ -53,10 +53,9 @@
             .flex{
                 display: flex;
                 align-items: center;
-                .items-icon{
-                    width: 35px;
-                    height: 30px;
-                    margin-right: 7px;
+                i{
+                  margin-right: 7px;
+                  margin-top: 5px;
                 }
             }
             a{
@@ -68,6 +67,9 @@
                 cursor: pointer;
                 color: #ffffff;
                 border-radius: 7px;
+                .items-icon{
+                    color: #ffffff !important;
+                }
             }
         }
         

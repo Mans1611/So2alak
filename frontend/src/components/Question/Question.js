@@ -2,9 +2,9 @@ import React, { useRef, useState } from 'react'
 import './question.scss'
 import { Link } from 'react-router-dom';
 import audio from '../../assets/soundeffects/pop.wav';
-import answericon from '../../assets/vectors/answer.png'
-import plus from '../../assets/vectors/plus.png';
-import minus from '../../assets/vectors/minus.png';
+import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 const Question = () => {
     const [helped,setHelp] = useState(false);
     const circle = useRef(null);
@@ -27,22 +27,34 @@ const Question = () => {
         }
     
     }
+
+    const questionContent = useRef(null);
+    const stoplimit = useRef(null);
+    const stoplimit2 = useRef(null);
+    setTimeout(()=>{
+        
+        stoplimit.current.style.height = questionContent.current.offsetHeight + 'px'
+        stoplimit2.current.style.height = questionContent.current.offsetHeight + 'px'
+
+    },0)
   return (
     <div className='question'>
         <div className="question-details">
             by <Link to={`/profile/mansour`}> Mansour Mohamed</Link> related to <Link>DataBase</Link>
         </div>
         <div className="flex">
-            <div className={`question-help`}>
+            <div ref = {stoplimit} className={`question-help`}>
                 <div className="help-wrapper">
                     <div ref={circle} onClick={handleHelp} className={`circle ${helped?'active':''}`}>
-                        {helped? <img className='help-icons'  src={minus} />:<img src={plus} className='help-icons'/>}
-                        </div>
+                        {helped? 
+                        <RemoveIcon/>
+                        :<AddIcon/>}
+                    </div>
                     <h3 className='help-counts'>{helpCount}</h3>
                 </div>
             </div>
             <div className='question-wrapper'>
-                <div className="question-content">
+                <div ref={questionContent} className="question-content">
                     <p> How to solve this idiot problem?? </p>
                     <div className="time">asked @ 12:41</div>
                 </div>
@@ -55,7 +67,9 @@ const Question = () => {
                    
         }    
             </div>
-            <img onClick={()=>setShowAnswer(show=>!show)} src={answericon} className='reply-btn'/>
+            <div ref={stoplimit2}>
+                <QuestionAnswerIcon onClick={()=>setShowAnswer(show=>!show)} className='reply-btn'/>
+            </div>
         </div>
         
     </div>

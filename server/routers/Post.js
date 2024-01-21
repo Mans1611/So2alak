@@ -67,7 +67,6 @@ post.post("/createAnswer", async(req, res)=>{
 post.get('/getQuestion/:question_id',async(req,res)=>{
     // this might not needs auth -> like face when you dont have an account, but you still can see the post.
     const {question_id} = req.params; // I set  question_id = 1 from Postman.
-    req.params.question_id = 'Mansour' // I have changed the value of the original value
     
     try{
         const con = await client.connect();
@@ -134,6 +133,8 @@ post.put('/downvoteAnswer/:ans_id',async(req,res)=>{
 })
 
 post.delete('/deleteQuestion/:q_id',async(req,res)=>{
+    // delete the question for the database, still need :
+    //  1 - Auth & Authorization.
     const {q_id} = req.params;
     try{
         const con = await client.connect()

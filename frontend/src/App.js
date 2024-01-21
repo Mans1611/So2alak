@@ -7,6 +7,8 @@ import NotFound from "./pages/NotFound/NotFound";
 
 import { createContext, useState } from "react";
 import SignUP from "./pages/SignUp/SignUP";
+import MainPage from "./pages/MainPage/MainPage";
+import HeartComponent from "./components/HeartComponent/HeartComponent";
 import FeedPage from "./pages/FeedPage/FeedPage";
 
 export const AppState = createContext(null); // I export it to be accessable in the whole components
@@ -31,10 +33,19 @@ function App() {
           {/* in the value i put all the state and handlers which i would like to share in the app */}
           <Routes>
             
-            <Route path="/feedpage" element={<FeedPage />} />
             <Route path="/signin" element={<Login />} />
             <Route path="/welcome" element={<WelcomePage />} />
             <Route path="/signup" element={<SignUP />} />
+            
+            {/*Nesting Routes*/}
+            <Route path="/main" element={<MainPage/>}>
+            
+              {/* <Route path="myquestions" element={<><div>Mansoure</div></>} /> */}
+              <Route path="feedpage" element={<FeedPage/>} />
+              <Route path="list" element={<div style={{paddingLeft:"250px"}}>list </div>}/>
+            
+              
+            </Route>
             
             <Route path="/loading" element={<Loading />} />
             <Route path="*" element={<NotFound />} />

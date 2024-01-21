@@ -1,10 +1,7 @@
 import React, { useState } from 'react'
 import './sidebar.scss';
 import {Link} from 'react-router-dom';
-import GradeIcon from '@mui/icons-material/Grade';
-import HelpCenterIcon from '@mui/icons-material/HelpCenter';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
-import shuffle from '../../assets/vectors/shuffle.png';
 import mylist from '../../assets/vectors/mylist.png';
 import question from '../../assets/vectors/question.png';
 
@@ -15,27 +12,27 @@ const SideBar = () => {
   return (
     <div className={`sidebar ${dark?'dark':''}`}>
       <div className="sidebar-logo">
-        <img src={shuffle} alt="" srcset="" />
+      <i className="fi fi-sr-home"></i>
       </div>
       <hr/>
         <div className="side-bar-items">
           <h2 className='title'>You</h2>
           <ul className='list'>
             <li className='items'>
-              <Link className='flex' to={'/course/database'}>
-                <img className='items-icon' src={mylist}/>
+              <Link className='flex' to={'/main/list'}>
+              <i className="fi fi-sr-home"></i>
                 My List
                 </Link>
               </li>
             <li className='items'>
               <Link className='flex' to={'/course/database'}>
-                <img className='items-icon' src={question}/>
+              <i class="fi fi-sr-messages-question"></i>
                 My Questions
                 </Link>
               </li>
             <li className='items'>
               <Link className='flex' to={'/course/database'}>
-                <QuestionAnswerIcon/>
+                <i className="fi fi-sr-answer"></i>
                 My Answers
                 </Link>
             </li>

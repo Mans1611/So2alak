@@ -1,7 +1,6 @@
 import multer from "multer";
 import client from "../databse.js";
 import { Router } from "express";
-import path from 'path'
 
 const course = Router();
 const storage = multer.memoryStorage();
@@ -9,7 +8,9 @@ const uploader = multer({storage:storage})
 
 
 
+
 course.post('/addcourse',uploader.single('image'),async(req,res)=>{
+    // for adding course to the platform.
     const { originalname, mimetype, buffer} = req.file;
     const {course_name, course_id,course_department,course_level} = req.body;
     let sqlCommand = `INSERT INTO files (filename,mimtype,data) values ($1,$2,$3) RETURNING id;`
@@ -25,8 +26,8 @@ course.post('/addcourse',uploader.single('image'),async(req,res)=>{
             `INSERT INTO courses(course_name,course_id,course_level,course_department) VALUES ('${course_name}','${course_id}','${course_level}','${course_department}');`
             }
             const result = await con.query(sqlCommand);
+            con.release();
             return res.json({msg:"Done"})
-            con.release()
     }catch(err){
         console.log(err)
     }

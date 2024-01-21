@@ -1,8 +1,5 @@
-@import '../../mainStyle.scss'; 
-.main-page{
+.feedpage{
     display: flex;
-    min-height: 200vh;
-    &.dark{
-        background-color:$fully-dark-blue ;
-    }
+    padding-left: 250px;
+    flex: 10;
 }

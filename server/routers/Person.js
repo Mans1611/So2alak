@@ -60,18 +60,17 @@ person.post('/signin',async(req,res)=>{
 })
 
 person.post('/registercourse',async(req,res)=>{
-    const {student_id,studentCourses} = req.body // studentCourses is an array of courses that the studnet choose to follow
+    const {student_name,studentCourses} = req.body // studentCourses is an array of courses that the studnet choose to follow
     
-    if(!student_id)
+    if(!student_name)
         return res.status(400).json({msg : 'No provided id'})
     
     try{
         // as I will insert many values in the table as he might register many courses.
-        
         let sqlCommand = 
-        `INSERT INTO students_courses (student_id,course_id)
+        `INSERT INTO students_courses (student_name,course_id)
          VALUES
-            ${studentCourses.map(course=> `('${student_id}','${course.course_id}')`)};
+            ${studentCourses.map(course=> `('${student_name}','${course.course_id}')`)};
         `
         const con = await client.connect();
         await con.query(sqlCommand);
@@ -81,5 +80,25 @@ person.post('/registercourse',async(req,res)=>{
         console.log(err)
     }
 
+})
+
+
+person.get('/getStudentCourses/:s_name',async(req,res)=>{
+    const {s_name} = req.params;
+    //console.log(s_name)
+    try{
+        const con = await client.connect();
+        // must have another join with files table for logo of each courses
+        let sqlCommand = `
+        SELECT * FROM students_courses AS sc 
+        INNER JOIN courses ON courses.course_id = sc.course_id
+        WHERE sc.student_name='${s_name}';`;
+
+        const {rows} = await con.query(sqlCommand);
+        con.release()
+        return res.status(200).json({'data':rows})
+    }catch(err){
+        console.log(err);
+    }
 })
 export default person;
