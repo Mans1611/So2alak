@@ -1,0 +1,68 @@
+@import '../../mainStyle.scss';
+@import '../../.mainStyle.scss';
+.about-page{
+    min-height: 200vh;
+    background-color:#002540;
+    .our-photos-wrapper{
+        .team-title {
+            padding: 20px;
+            text-align: center;
+            font-size: 90px;
+            color: #2B2B2B;
+        }
+        
+        background-color: #6CEA97;
+        position: relative;
+        height: 65vh;
+        .flex{
+            display: flex;
+            justify-content: center;
+            width: 80%;
+            margin: auto;
+        }
+        .curve{
+            position: absolute;
+            bottom: -30px;
+            width: 100%;
+            z-index: 9;
+        }
+        .person{
+            display: flex;
+            flex: 3;
+            align-items: center;
+            flex-direction: column;
+            justify-content: end;
+            cursor: pointer;
+            .person-img{
+                transition: all 300ms;
+                width: 75%;
+                height: 80%;
+                &:hover{
+                    transform: scale(1.1);
+                    border-radius: 20px;
+                    background-color: #a3f9c0;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Adjust values for the desired shadow */
+                    outline-offset: -6px; 
+                }
+            }
+            .person-name{
+                text-align: center;
+                font-size: 35px;
+                max-width: 100px;
+                position: relative;
+                z-index: 100;
+                top: -20px;
+                color: #ffffff;
+                &.side{
+                    top: -70px;
+                }
+            }
+        }
+    }
+    .details-container{
+       position: relative;
+       z-index: 90;
+       min-height: 40vh;
+       background-color: #002540;
+    }
+}

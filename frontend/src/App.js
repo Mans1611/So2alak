@@ -10,6 +10,7 @@ import SignUP from "./pages/SignUp/SignUP";
 import MainPage from "./pages/MainPage/MainPage";
 import HeartComponent from "./components/HeartComponent/HeartComponent";
 import FeedPage from "./pages/FeedPage/FeedPage";
+import About from "./pages/About/About";
 
 export const AppState = createContext(null); // I export it to be accessable in the whole components
 function App() {
@@ -46,8 +47,8 @@ function App() {
             
               
             </Route>
-            
             <Route path="/loading" element={<Loading />} />
+            <Route path="/about" element={<About />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AppState.Provider>
