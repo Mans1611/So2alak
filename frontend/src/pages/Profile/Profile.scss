@@ -17,16 +17,20 @@
     display: flex;
     flex-direction: column;
     .nav_bar {
+        border: 2px solid #f0f0f0;
         @include centerChild;
         flex: 1;
-        background-color: aqua;
+        box-shadow: 2px 0px 4px #888888;
     }
     .content {
         flex: 11;
         display: flex;
         .side_bar {
-            background-color: cornflowerblue;
+            border: 2px solid #f0f0f0;
+            box-shadow: 0px 2px 4px #888888;
             flex: 2;
+            @include centerChild;
+            background-color: #f0f0f0;
         }
         .info {
             flex: 10;
@@ -34,6 +38,7 @@
             display: flex;
 
             .upper {
+                color: #0c2c43;
                 @include centerChild;
                 flex: 6;
                 font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
@@ -46,6 +51,7 @@
                     height: 100%;
 
                     .score_in {
+                        box-shadow: 2px 2px 4px #888888;
                         height: 40%;
                         background-color: #f0f0f0;
                         width: 80%;
@@ -67,6 +73,7 @@
                     height: 100%;
                     
                     .badges_in {
+                        box-shadow: 2px 2px 4px #888888;
                         height: 60%;
                         width: 80%;
                         background-color: #f0f0f0;
