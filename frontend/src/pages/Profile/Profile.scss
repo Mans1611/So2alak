@@ -22,9 +22,11 @@
         flex: 1;
         box-shadow: 2px 0px 4px #888888;
     }
+    
     .content {
         flex: 11;
         display: flex;
+        
         .side_bar {
             border: 2px solid #f0f0f0;
             box-shadow: 0px 2px 4px #888888;
@@ -32,6 +34,7 @@
             @include centerChild;
             background-color: #f0f0f0;
         }
+        
         .info {
             flex: 10;
             flex-direction: column;
