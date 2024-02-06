@@ -4,6 +4,7 @@ import WelcomePage from "./pages/WelcomePage/WelcomePage";
 import Login from "./pages/login/Login";
 import { createContext, useState } from "react";
 import SignUP from "./pages/SignUp/SignUP";
+import Profile from './pages/Profile/Profile';
 
 export const AppState = createContext(null); // I export it to be accessable in the whole components
 function App() {
@@ -27,6 +28,7 @@ function App() {
             <Route path="/signin" element={<Login />} />
             <Route path="/welcome" element={<WelcomePage />} />
             <Route path="/signup" element={<SignUP/>} />
+            <Route path='/profile' element={<Profile />} />
           </Routes>
         </AppState.Provider>
       </div>
