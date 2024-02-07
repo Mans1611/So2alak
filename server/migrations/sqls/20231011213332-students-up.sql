@@ -1,3 +1,5 @@
+
+
 CREATE TABLE  IF NOT EXISTS files(
     id Serial PRIMARY KEY NOT NULL,
     filename VARCHAR(255) NOT NULL,
@@ -38,8 +40,8 @@ CREATE TABLE IF NOT EXISTS courses(
 	ON DELETE SET NULL
 );
 
-CREATE TABLE IF NOT EXISTS students 
-(
+CREATE TABLE IF NOT EXISTS students(
+
 	student_id VARCHAR(30) PRIMARY KEY NOT NULL ,
 	username VARCHAR(150) UNIQUE NOT NULL,
 	student_level VARCHAR(60) NOT NULL,
@@ -59,6 +61,9 @@ CREATE TABLE IF NOT EXISTS students
 	ON UPDATE CASCADE
 	ON DELETE SET NULL
 );
+
+
+
 CREATE TABLE IF NOT EXISTS students_courses (
     student_name VARCHAR(30) NOT NULL
     REFERENCES students(username) 
@@ -87,6 +92,17 @@ CREATE TABLE IF NOT EXISTS questions(
     q_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS fav_questions (
+	s_id VARCHAR(30) 
+	REFERENCES students(student_id)
+	ON UPDATE CASCADE
+	ON DELETE CASCADE,
+	username VARCHAR(150) 
+	REFERENCES students(username),
+	q_id INTEGER REFERENCES questions(question_id) 
+	ON UPDATE CASCADE
+	ON DELETE CASCADE
+);
 
 CREATE TABLE IF NOT EXISTS answers(
     answer_id SERIAL PRIMARY KEY,
@@ -108,12 +124,11 @@ CREATE TABLE IF NOT EXISTS answers(
 
 
 
-
 INSERT INTO departments 
 (department_id)
 VALUES ('Electrical');
 
- INSERT INTO departments 
+INSERT INTO departments 
 (department_id)
 VALUES ('Mechinical');
 

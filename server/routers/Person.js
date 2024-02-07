@@ -85,7 +85,7 @@ person.post('/registercourse',async(req,res)=>{
 
 person.get('/getStudentCourses/:s_name',async(req,res)=>{
     const {s_name} = req.params;
-    //console.log(s_name)
+    
     try{
         const con = await client.connect();
         // must have another join with files table for logo of each courses

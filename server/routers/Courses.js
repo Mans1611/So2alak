@@ -7,8 +7,6 @@ const storage = multer.memoryStorage();
 const uploader = multer({storage:storage})
 
 
-
-
 course.post('/addcourse',uploader.single('image'),async(req,res)=>{
     // for adding course to the platform.
     const { originalname, mimetype, buffer} = req.file;

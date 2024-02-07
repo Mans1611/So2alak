@@ -13,7 +13,6 @@ post.get('/searchcourse/:searchString',async(req,res)=>{
         WHERE course_name ILIKE '%${searchString}%' 
         OR course_id ILIKE '%${searchString}%'
         AND files.id = courses.course_logo;`
-
         const {rows} = await con.query(sqlCommand);
         let courses = rows.map(course=>{
             if (course.course_logo){
@@ -147,5 +146,17 @@ post.delete('/deleteQuestion/:q_id',async(req,res)=>{
     }
 })
 
+post.post('/addToFavQues',async(req,res)=>{
+    const {s_id,q_id,username} = req.body;
+    try{
+        const con = await client.connect();
+        const sqlCommand = `INSERT INTO fav_questions(s_id,username,q_id)
+        VALUES ('${s_id}','${username}',${q_id});`
+        await con.query(sqlCommand);
+        return res.status(201).json({msg:'Questions is added to your list'})
 
+    }catch(err){
+        console.log(err)
+    }
+})
 export default post;
