@@ -101,4 +101,30 @@ person.get('/getStudentCourses/:s_name',async(req,res)=>{
         console.log(err);
     }
 })
+
+person.get('/personalInfo/:student_name',async(req,res)=>{
+    const {student_name} = req.params;
+    try{
+        const con = await client.connect();
+        let sqlCommand = 
+        `SELECT COUNT (q_username) as no_questions, q_username FROM questions 
+        WHERE q_username = '${student_name}'
+        GROUP BY q_username;`
+        let result = await con.query(sqlCommand)
+        let data = {data : result.rows[0]} 
+        
+        sqlCommand = 
+        `SELECT COUNT (ans_username) as no_answers, ans_username FROM answers 
+        WHERE ans_username = '${student_name}'
+        GROUP BY ans_username;`
+
+        result = await con.query(sqlCommand)
+        
+        data = {...data,...result.rows[0]}
+        con.release()
+        return res.status(200).json({...data})
+    }catch(err){
+
+    }
+})
 export default person;

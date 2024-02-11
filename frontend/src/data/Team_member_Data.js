@@ -13,10 +13,23 @@ export const team_members = [
         bio : '',
         img: mans,
         active_img : mans_active,
-        links : [{
+        links : [
+            {
             name:'leetcode',
+            logo:'',
             link : '' 
-        }]
+        },
+            {
+            name:'LinkedIn',
+            logo:'',
+            link : '' 
+        },
+            {
+            name:'GitHub',
+            logo:'',
+            link : '' 
+        },
+    ]
     },
     {
         name : "Mostafa Abdelal",
@@ -43,10 +56,13 @@ export const team_members = [
         img:abdallh,
         middle:true,
         active_img : abdullah_active,
-        links : [{
+        links : [
+            {
             name:'leetcode',
+            logo:'',
             link : '' 
-        }]
+        }
+    ]
     },
     {
         name : "Omar Rehan",

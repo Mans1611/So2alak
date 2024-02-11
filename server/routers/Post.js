@@ -1,5 +1,6 @@
 import { Router } from "express";
 import client from "../databse.js";
+import { CheckValueExisit } from "../utilis/CheckValueExisit.js";
 
 const post = Router();
 /* 
@@ -32,15 +33,25 @@ post.get('/searchcourse/:searchString',async(req,res)=>{
 
 post.post('/createQuestion',async(req,res)=>{
     // this api need to check the the auth of the user.
-    const {course_id,student_id,question} = req.body;
+    const {course_id,studneet_id,username,question} = req.body;
+    let con = null;
     try{
-        const con = await client.connect(); 
-        let sqlCommand = `INSERT INTO questions (course_id,q_student_id,question) VALUES ('${course_id}','${student_id}','${question}');`;
-        const result = await con.query(sqlCommand);
+        con = await client.connect(); 
+
+        // to check if the student exist or not
+        if (! await CheckValueExisit('students','username',username,client))
+        return res.status(400).json({msg:"this user is not exist"})
+        
+        // to check if the course exist or not
+        if (! await CheckValueExisit('courses','course_id',course_id,client))
+            return res.status(400).json({msg:"this course is not exist"})
+
+        let sqlCommand = `INSERT INTO questions (course_id,q_username,question) VALUES ('${course_id}','${username}','${question}');`;
+        await con.query(sqlCommand);
         con.release();
         res.status(201).json({'msg':'Your question is posted'});
     }catch(error){
-        console.log(error);
+        console.log(error)
         res.status(400).json({'msg':'an error occured, Try again'});
     }
 })
@@ -157,6 +168,23 @@ post.post('/addToFavQues',async(req,res)=>{
 
     }catch(err){
         console.log(err)
+    }
+})
+
+post.get('/:course_code',async(req,res)=>{
+    const {course_code} = req.params;
+    try{
+        if (!CheckValueExisit('courses','course_id',course_code,client))
+            return res.status(400).json({msg:"This Course dosn't exist"})
+        const con = await client.connect();
+        let sqlCommand = `SELECT * FROM questions 
+            WHERE course_id = '${course_code}';
+        `
+        const result = await con.query(sqlCommand);
+
+        return res.status(200).json({data:result.rows})
+    }catch(err){
+
     }
 })
 export default post;
