@@ -1,6 +1,7 @@
 import { Router } from "express";
 import client from "../databse.js";
 import { CheckValueExisit } from "../utilis/CheckValueExisit.js";
+import { AggregateQuestionsAnswers } from "../utilis/AggregateQuestionsAnswers.js";
 
 const post = Router();
 /* 
@@ -30,7 +31,19 @@ post.get('/searchcourse/:searchString',async(req,res)=>{
         console.log(error)
     }
 })
-
+post.get('/allquestions',async(req,res)=>{
+    try {
+        const con = await client.connect();
+        let sqlCommand = `SELECT * FROM questions AS q
+                        LEFT JOIN answers AS ans ON ans.q_id = q.question_id 
+                        ORDER BY q.q_time DESC;`
+       const result = await con.query(sqlCommand);
+       let data = AggregateQuestionsAnswers(result.rows);
+       return res.status(200).json({data});
+    } catch (error) {
+        
+    }
+})
 post.post('/createQuestion',async(req,res)=>{
     // this api need to check the the auth of the user.
     const {course_id,studneet_id,username,question} = req.body;
@@ -171,15 +184,18 @@ post.post('/addToFavQues',async(req,res)=>{
     }
 })
 
+
 post.get('/:course_code',async(req,res)=>{
+    // this get all of the questions related to the course code provided.
     const {course_code} = req.params;
     try{
         if (!CheckValueExisit('courses','course_id',course_code,client))
             return res.status(400).json({msg:"This Course dosn't exist"})
         const con = await client.connect();
         let sqlCommand = `SELECT * FROM questions 
-            WHERE course_id = '${course_code}';
-        `
+                          WHERE course_id = '${course_code}'
+                          ORDER BY q_time DESC;`
+
         const result = await con.query(sqlCommand);
 
         return res.status(200).json({data:result.rows})

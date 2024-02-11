@@ -5,7 +5,8 @@ import audio from '../../assets/soundeffects/pop.wav';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-const Question = () => {
+
+const Question = ({question}) => {
     const [helped,setHelp] = useState(false);
     const circle = useRef(null);
     const [helpCount,setHelpCount] = useState(3)
@@ -13,16 +14,17 @@ const Question = () => {
     const [answer,setAnswer] = useState('');
     const handleHelp = ()=>{
         const pop = new Audio(audio); 
-        if(helped){
+        if(helped && circle.current){
             circle.current.style.transform = 'rotate(180deg)';
             setHelp(false)
             setHelpCount(count=>count=count-1)
         }
         else {
             pop.play();
-            circle.current.style.transform = 'rotate(0deg)';
-            setHelp(true)
-            setHelpCount(count=>count=count+1)
+            if (circle.current)
+                circle.current.style.transform = 'rotate(0deg)';
+                setHelp(true)
+                setHelpCount(count=>count=count+1)
 
         }
     
@@ -32,15 +34,15 @@ const Question = () => {
     const stoplimit = useRef(null);
     const stoplimit2 = useRef(null);
     setTimeout(()=>{
-        
-        stoplimit.current.style.height = questionContent.current.offsetHeight + 'px'
-        stoplimit2.current.style.height = questionContent.current.offsetHeight + 'px'
+        if (stoplimit.current && stoplimit2.current)
+            stoplimit.current.style.height = questionContent.current.offsetHeight + 'px'
+            stoplimit2.current.style.height = questionContent.current.offsetHeight + 'px'
 
     },0)
   return (
     <div className='question'>
         <div className="question-details">
-            by <Link to={`/profile/mansour`}> Mansour Mohamed</Link> related to <Link>DataBase</Link>
+            by <Link to={`/profile/${question.q_username.replace(" ","")}`}> {question.q_username}</Link> related to <Link>DataBase</Link>
         </div>
         <div className="flex">
             <div ref = {stoplimit} className={`question-help`}>
@@ -50,13 +52,13 @@ const Question = () => {
                         <RemoveIcon/>
                         :<AddIcon/>}
                     </div>
-                    <h3 className='help-counts'>{helpCount}</h3>
+                    <h3 className='help-counts'>{question.q_upvotes}</h3>
                 </div>
             </div>
             <div className='question-wrapper'>
                 <div ref={questionContent} className="question-content">
-                    <p> How to solve this idiot problem?? </p>
-                    <div className="time">asked @ 12:41</div>
+                    <p> {question.question} </p>
+                    <div className="time">asked @ {"question.q"}</div>
                 </div>
                 {
             showAnswer &&
