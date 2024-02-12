@@ -60,12 +60,11 @@ post.post('/createQuestion',async(req,res)=>{
             return res.status(400).json({msg:"this course is not exist"})
 
         let sqlCommand = `INSERT INTO questions (course_id,q_username,question) 
-        VALUES ('${course_id}','${username}','${question}')
-        RETURNING id;`;
-        const result = await con.query(sqlCommand);
-        console.log(result)
+                            VALUES ('${course_id}','${username}','${question}')
+                            RETURNING question_id;`;
+        const {rows} = await con.query(sqlCommand);
         res.status(201).json({'msg':'Your question is posted'});
-        await MakeActivity(student_id,'ask',10,con,null);
+        await MakeActivity(student_id,'ask',rows[0].question_id,con,null);
         con.release();
         
     }catch(error){
