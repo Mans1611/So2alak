@@ -1,11 +1,13 @@
-FROM node:16 as build 
+FROM node:16
 
-RUN mkdir -p /app
+RUN mkdir /app
 
 WORKDIR /app
 
-COPY . .
+COPY package.json .
 
 RUN npm install 
+
+COPY . .
 
 CMD ["npm","start"]

@@ -2,6 +2,7 @@ import { Router } from "express";
 import client from "../databse.js";
 import { CheckValueExisit } from "../utilis/CheckValueExisit.js";
 import { AggregateQuestionsAnswers } from "../utilis/AggregateQuestionsAnswers.js";
+import { MakeActivity } from "../utilis/MakeActivitylog.js";
 
 const post = Router();
 /* 
@@ -46,11 +47,10 @@ post.get('/allquestions',async(req,res)=>{
 })
 post.post('/createQuestion',async(req,res)=>{
     // this api need to check the the auth of the user.
-    const {course_id,studneet_id,username,question} = req.body;
+    const {course_id,student_id,username,question} = req.body;
     let con = null;
     try{
         con = await client.connect(); 
-
         // to check if the student exist or not
         if (! await CheckValueExisit('students','username',username,client))
         return res.status(400).json({msg:"this user is not exist"})
@@ -59,10 +59,15 @@ post.post('/createQuestion',async(req,res)=>{
         if (! await CheckValueExisit('courses','course_id',course_id,client))
             return res.status(400).json({msg:"this course is not exist"})
 
-        let sqlCommand = `INSERT INTO questions (course_id,q_username,question) VALUES ('${course_id}','${username}','${question}');`;
-        await con.query(sqlCommand);
-        con.release();
+        let sqlCommand = `INSERT INTO questions (course_id,q_username,question) 
+        VALUES ('${course_id}','${username}','${question}')
+        RETURNING id;`;
+        const result = await con.query(sqlCommand);
+        console.log(result)
         res.status(201).json({'msg':'Your question is posted'});
+        await MakeActivity(student_id,'ask',10,con,null);
+        con.release();
+        
     }catch(error){
         console.log(error)
         res.status(400).json({'msg':'an error occured, Try again'});
