@@ -172,7 +172,7 @@ const SignUP = () => {
                     <img className='logo-left' src={logo} alt='' />
                 </div>
                 <div className='signup-right'>
-                    <form onSubmit={handleSubmit}>
+                    <form autoComplete='off' onSubmit={handleSubmit}>
                         <img className='logo-right' src={logo} alt='' />
                         <h1>Create Account</h1>
                         <h5>sign up and join our collaborative community!</h5>
