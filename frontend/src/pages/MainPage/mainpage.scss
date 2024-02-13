@@ -1,5 +1,6 @@
 @import '../../mainStyle.scss'; 
-.main-page{
+.body-content{
+    padding-top: $navbar-height;
     display: flex;
     min-height: 200vh;
     &.dark{

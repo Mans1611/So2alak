@@ -34,9 +34,10 @@ const Question = ({question}) => {
     const stoplimit = useRef(null);
     const stoplimit2 = useRef(null);
     setTimeout(()=>{
-        if (stoplimit.current && stoplimit2.current)
+        if (stoplimit.current && stoplimit2.current){
             stoplimit.current.style.height = questionContent.current.offsetHeight + 'px'
             stoplimit2.current.style.height = questionContent.current.offsetHeight + 'px'
+        }
 
     },0)
   return (

@@ -1,0 +1,55 @@
+@import '../../mainStyle.scss';
+@import '../../.mainStyle.scss';
+
+.navbar{
+    height: $navbar-height;
+    background-color: #F0F0F0;
+    color: #fff;
+    position: fixed;
+    box-shadow: 5px 5px 5px 0 #00000051;
+    z-index: 10;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    padding: 0 10px;
+    align-items: center;
+    overflow: hidden;
+    .logo-wrapper{
+        flex: 3;
+        img{
+            width: 100px;
+        }
+    }
+    .search-wrapper{
+        flex: 4;
+        input{
+            width: 90%;
+            height:40px;
+            border-radius: 10px;
+            padding: 2px;
+            font-size: 18px;
+            background-color: #e0e0e08e;
+            padding-left: 10px;
+            @include input;
+            color: $fully-dark-blue;
+        }
+    }
+    .links-wrapper{
+        flex: 5;
+        @include centerChild;
+        a{
+            @include link;
+            font-size: 24px;
+            font-weight: 600;
+            color: $fully-dark-blue;
+            padding:  15px;
+            transition: all 300ms;
+            border-radius: 10px;
+            
+            &:hover{
+                background-color: $fully-dark-blue;
+                color: #F0F0F0;
+            }
+        }
+    }
+}

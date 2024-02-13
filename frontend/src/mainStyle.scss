@@ -6,6 +6,7 @@ $blue : #0C2C43;
 $semi-dark-blue: #082233;
 $fully-dark-blue: #041622;
 
+$navbar-height: 60px;
 @mixin centerChild {
     // this style for the parent div, and the the child will be centered. 
     display: flex;
