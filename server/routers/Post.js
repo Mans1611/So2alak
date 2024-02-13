@@ -64,6 +64,7 @@ post.post('/createQuestion',async(req,res)=>{
                             RETURNING question_id;`;
         const {rows} = await con.query(sqlCommand);
         res.status(201).json({'msg':'Your question is posted'});
+        
         await MakeActivity(student_id,'ask',rows[0].question_id,con,null);
         con.release();
         
@@ -77,14 +78,16 @@ post.post('/createQuestion',async(req,res)=>{
 // done by Eng. Mostafa
 post.post("/createAnswer", async(req, res)=>{
      // this api need to check the the auth of the user.
+     const {answer, ans_username,student_id, question_id} = req.body;
     try {
-        const {answer, student_id, question_id} = req.body;
         const con = await client.connect();
-        const sqlCommand = `INSERT INTO answers (answer,student_id,question_id) 
-        VALUES ('${answer}', '${student_id}', ${question_id});`
-        await con.query(sqlCommand);
-        con.release();
+        const sqlCommand = `INSERT INTO answers (answer,ans_username,q_id) 
+        VALUES ('${answer}', '${ans_username}', ${question_id})
+        RETURNING answer_id;`
+        const {rows} = await con.query(sqlCommand);
         res.status(201).json({'msg': 'you answered sucessfully'});
+        MakeActivity(student_id,'answer',question_id,con,rows[0].answer_id)
+        con.release();
     } catch(error) {
         console.log(error);
         res.status(400).json({'msg': 'an error occured, Try again'});
@@ -115,8 +118,7 @@ post.get('/getQuestion/:question_id',async(req,res)=>{
 )
 post.put('/upvoteQuestion/:q_id',async(req,res)=>{
     // in this function needs auth.
-    // need to take the student_id , in order not to make multile upvotes
-
+    // need to take the student_id , in order not to make multile upvotes.
     const {q_id} = req.params;
     const {student_id} = req.body;
     try{
