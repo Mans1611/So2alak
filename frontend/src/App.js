@@ -7,10 +7,14 @@ import NotFound from "./pages/NotFound/NotFound";
 
 import { createContext, useState } from "react";
 import SignUP from "./pages/SignUp/SignUP";
+<<<<<<< HEAD
 import MainPage from "./pages/MainPage/MainPage";
 import HeartComponent from "./components/HeartComponent/HeartComponent";
 import FeedPage from "./pages/FeedPage/FeedPage";
 import About from "./pages/About/About";
+=======
+import Profile from './pages/Profile/Profile';
+>>>>>>> 1db9d19ca1f050b899b3c00bbc8ac796fdedf0f4
 
 export const AppState = createContext(null); // I export it to be accessable in the whole components
 function App() {
@@ -36,6 +40,7 @@ function App() {
             
             <Route path="/signin" element={<Login />} />
             <Route path="/welcome" element={<WelcomePage />} />
+<<<<<<< HEAD
             <Route path="/signup" element={<SignUP />} />
             
             {/*Nesting Routes*/}
@@ -50,6 +55,10 @@ function App() {
             <Route path="/loading" element={<Loading />} />
             <Route path="/about" element={<About />} />
             <Route path="*" element={<NotFound />} />
+=======
+            <Route path="/signup" element={<SignUP/>} />
+            <Route path='/profile' element={<Profile />} />
+>>>>>>> 1db9d19ca1f050b899b3c00bbc8ac796fdedf0f4
           </Routes>
         </AppState.Provider>
       </div>

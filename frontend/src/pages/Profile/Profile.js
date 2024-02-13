@@ -1,0 +1,56 @@
+import React, { useState } from 'react'
+import './Profile.scss'
+
+const Profile = () => {
+    const [months, setMonths] = useState(Array(12).fill(Array(30).fill(0)));
+    const months_names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+    const [points, setPoints] = useState(0);
+    const [questions, setQuestions] = useState(0);
+    const [answers, setAnswers] = useState(0);
+
+    return (
+        <div className='profile_container'>
+            <div className='nav_bar'>
+                nav bar
+            </div>
+            <div className='content'>
+                <div className='side_bar'>
+                    side bar
+                </div>
+                <div className='info'>
+                    <div className='upper'>
+                        <div className='score'>
+                            <div className='score_in'>
+                                <div className='achieved'><p>{points}</p> <p>Points</p></div>
+                                <div className='achieved'><p>{questions}</p> <p>Questions</p></div>
+                                <div className='achieved'><p>{answers}</p> <p>Answers</p></div>
+                            </div>
+                        </div>
+                        <div className='badges'>
+                            <div className='badges_in'>
+                                Badges
+                            </div>
+                        </div>
+                    </div>
+                    <div className='lower'>
+                        <div className='lower_in'>
+                            <h1>Activity Calendar</h1>
+                            <div className='calendar'>
+                                {months.map((month, index) =>
+                                    <div className='month'>
+                                        <div className='cells'>
+                                            {month.map((cell) => <div className={`cell ${cell? "active":"passive"}`}></div>)}
+                                        </div>
+                                        <div className='month_name'>{months_names[index]}</div>
+                                    </div>)}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default Profile
