@@ -127,4 +127,21 @@ person.get('/personalInfo/:student_name',async(req,res)=>{
 
     }
 })
+person.get('/get_activity_log/:student_id',async(req,res)=>{
+    const {student_id} = req.params;
+    try{
+        const con = await client.connect();
+        let sqlCommand = `SELECT student_id , TO_CHAR(DATE(activity_time),'DD-MM-YYYY') AS date 
+                          FROM activity_log
+                          WHERE student_id = '${student_id}';`;
+        const {rows} = await con.query(sqlCommand);
+        res.status(200).json({
+            student_id:rows[0]?.student_id,
+            dates:rows.map(item=>item.date)
+        });
+        con.release();
+    }catch(err){
+        console.log(err)
+    }
+})
 export default person;
