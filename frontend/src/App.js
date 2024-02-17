@@ -11,6 +11,7 @@ import MainPage from "./pages/MainPage/MainPage";
 import HeartComponent from "./components/HeartComponent/HeartComponent";
 import FeedPage from "./pages/FeedPage/FeedPage";
 import About from "./pages/About/About";
+import Profile from './pages/Profile/Profile';
 
 export const AppState = createContext(null); // I export it to be accessable in the whole components
 function App() {
@@ -30,7 +31,7 @@ function App() {
             id,setId,
           }}
         >
-          {" "}
+         
           {/* in the value i put all the state and handlers which i would like to share in the app */}
           <Routes>
             
@@ -40,6 +41,7 @@ function App() {
             
             {/*Nesting Routes*/}
             <Route path="/main" element={<MainPage/>}>
+              <Route path="profile" element={<Profile />} />
             
               {/* <Route path="myquestions" element={<><div>Mansoure</div></>} /> */}
               <Route path="feedpage" element={<FeedPage/>} />

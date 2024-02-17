@@ -9,67 +9,55 @@ import { levDeps } from '../../data/LevelsDepartments';
 import { AppState } from '../../App';
 
 /* comments : 
-    - delete states like passwordAlarm, rePasswordLength state.
+    - delete states like passwordAlarm, rePasswordLength state.  ==> solved
     - I moved (username,id) state in app context, as i need it in welcome page and all other pages,
-      so it better if it in AppState (context).
-    - When I select Somophore no department appears 
+    so it better if it in AppState (context).
+    - When I select Somophore no department appears   ==> solved
 */  
 
+
+/*
+
+*/ 
+ 
 const SignUP = () => {
     document.title = 'SignUp' // for naming the page the tab.
-    
+    const navigate = useNavigate(); // to navigate to anotehr page
+    const bttnRef = useRef(null); //button ref
+
+    //states
     const {setStuCourses,
         username,setUsername,
         id,setId
     } = useContext(AppState);
-    
-    const navigate = useNavigate(); // to navigate to anotehr page
     const levels = ['Freshmen', 'Somophore', 'Junior', 'Senior1', 'Senior2'];
     const departments = levDeps;
-
-    const bttnRef = useRef(null);
-
-    
     const [password, setPassword] = useState('');
     const [repassword, setRepassword] = useState('');
     const [level, setLevel] = useState('');
     const [department, setDepartment] = useState('');
     const [subdepartment, setSubdepartment] = useState('');
-    // too many variables
-    const [userNameAlarm, setUserNameAlarm] = useState({ show: false, msg: "" });
-
-
-    const [idRequiredAlarm, setIdRequiredAlarm] = useState(false);
-    const [idLengthAlarm, setIdLengthAlarm] = useState(false);
-    const [idInvalidAlarm, setIdInvalidAlarm] = useState(false);
-
     const [visiblePassword, setVisiblePassword] = useState(false);
     const [visibleRepassword, setVisibleRepassword] = useState(false);
+    
+    //alarms
+    const [userNameAlarm, setUserNameAlarm] = useState({ show: false, msg: "" });
+    const [idAlarm, setIdAlarm] = useState({ show: false, msg: "" });
+    const [passwordAlarm, setPasswordAlarm] = useState({ show: false, msg: "" });
+    const [repasswordAlarm, setRepasswordAlarm] = useState({ show: false, msg: "" });
+    const [levelAlarm, setLevelAlarm] = useState({ show: false, msg: "" });
+    const [departmentAlarm, setDepartmentAlarm] = useState({ show: false, msg: "" });
+    const [subdepartmentAlarm, setSubdepartmentAlarm] = useState({ show: false, msg: "" });
 
-    const [passwordRequiredAlarm, setPasswordRequiredAlarm] = useState(false);
-    const [passwordLengthAlarm, setPasswordLengthAlarm] = useState(false);
-    const [repasswordAlarm, setRepasswordAlarm] = useState(false);
-
-    const [levelRequiredAlarm, setLevelRequiredAlarm] = useState(false);
-    const [departmentRequiredAlarm, setDepartmentRequiredAlarm] = useState(false);
-    const [subdepartmentRequiredAlarm, setSubdepartmentRequiredAlarm] = useState(false);
-
+    //arrays used to handle submit
     const primaryStates = [username, id, password, repassword, level];
     const secondaryStates = [department, subdepartment];
+    const alarms = [userNameAlarm.show,
+        idAlarm.show, passwordAlarm.show, repasswordAlarm.show,
+        levelAlarm.show, departmentAlarm.show, subdepartmentAlarm.show];
 
-    const alarms = [userNameAlarm,
-        idRequiredAlarm, idLengthAlarm, idInvalidAlarm, passwordRequiredAlarm, passwordLengthAlarm, repasswordAlarm,
-        levelRequiredAlarm, departmentRequiredAlarm, subdepartmentRequiredAlarm];
-
-    //const usernameAlarms = [usernameRequiredAlarm];
-
-    const idAlarms = [idRequiredAlarm, idLengthAlarm, idInvalidAlarm];
-
-    const passwordAlarms = [passwordLengthAlarm, passwordRequiredAlarm];
-
+    // handlers
     const handleUsernameAlarm = () => {
-        // here i put the msg error depend on the error type such as (empty, invalid or number, etc...)
-        // i will set the msg depend on error
         if (username.length === 0)
             setUserNameAlarm({ show: true, msg: "Enter your username" });
         // setUserNameAlarm()
@@ -82,63 +70,63 @@ const SignUP = () => {
         else if (!isNaN(username))
             setUserNameAlarm({ show: true, msg: "Must have at least 1 letter" });
         else if (username[0].match(/[^a-z]/i)) {
-            setUserNameAlarm({ show: true, msg: "fist character must be a letter" });
+            setUserNameAlarm({ show: true, msg: "Fist character must be a letter" });
         }
     };
 
     const handleIdAlarm = () => {
         if (id === '') {
-            setIdRequiredAlarm(true);
+            setIdAlarm({ show: true, msg: "Enter your id" });
         } else if (id.length !== 7) {
-            setIdLengthAlarm(true);
+            setIdAlarm({ show: true, msg: "Must be 7 characters" });
         } else if (!id.match(/\d\d(\d|p|q|t|w)\d\d\d\d/i)) {
-            setIdInvalidAlarm(true);
+            setIdAlarm({ show: true, msg: "Enter a valid id" });
         }
     };
 
     const handlePasswordAlarm = () => {
         if (password.length === 0) {
-            setPasswordRequiredAlarm(true);
+            setPasswordAlarm({ show: true, msg: "Enter your password" });
         } else if (password.length < 8) {
-            setPasswordLengthAlarm(true);
+            setPasswordAlarm({ show: true, msg: "Minimum 8 characters" });
         } else if (repassword !== '' && (password !== repassword)) {
-            setRepasswordAlarm(true);
+            setRepasswordAlarm({ show: true, msg: "Confirm your password" });
         } else if (password === repassword) {
-            setRepasswordAlarm(false);
+            setRepasswordAlarm({ show: false, msg: "" });
         }
     };
 
     const handlePasswordChange = (value) => {
-        if (value === repassword) {
-            setRepasswordAlarm(false);
+        if (value === repassword || repassword === '') {
+            setRepasswordAlarm({ show: false, msg: "" });
         } else if (value !== repassword && repassword !== '') {
-            setRepasswordAlarm(true);
+            setRepasswordAlarm({ show: true, msg: "Confirm your password" });
         }
     };
 
     const handleRepasswordAlarm = (e) => {
-        if (passwordLengthAlarm || passwordRequiredAlarm) {
+        if (passwordAlarm.show) {
             return;
         } else if (repassword !== password) {
-            setRepasswordAlarm(true);
+            setRepasswordAlarm({ show: true, msg: "Confirm your password" });
         }
     };
 
     const handleLevelAlarm = () => {
         if (level === '') {
-            setLevelRequiredAlarm(true);
+            setLevelAlarm({ show: true, msg: "Select your level" });
         }
     };
 
     const handleDepartmentAlarm = () => {
         if (department === '') {
-            setDepartmentRequiredAlarm(true);
+            setDepartmentAlarm({ show: true, msg: "Select your department" });
         }
     };
 
     const handleSubdepartmentAlarm = () => {
         if (subdepartment === '') {
-            setSubdepartmentRequiredAlarm(true);
+            setSubdepartmentAlarm({ show: true, msg: "Select your sub-department" });
         }
     };
 
@@ -189,7 +177,7 @@ const SignUP = () => {
                     <img className='logo-left' src={logo} alt='' />
                 </div>
                 <div className='signup-right'>
-                    <form onSubmit={handleSubmit}>
+                    <form autoComplete='off' onSubmit={handleSubmit}>
                         <img className='logo-right' src={logo} alt='' />
                         <h1>Create Account</h1>
                         <h5>sign up and join our collaborative community!</h5>
@@ -204,71 +192,73 @@ const SignUP = () => {
 
 
                         <div className='id-container'>
-                            <input className={idAlarms.includes(true) ? "in id invalid" : "in id"}
+                            <input className={idAlarm.show ? "in id invalid" : "in id"}
                                 value={id} name='id' type="text" placeholder='ID' maxLength="7"
                                 onChange={(e) => setId(e.target.value)} onBlur={handleIdAlarm}
-                                onFocus={() => { setIdLengthAlarm(false); setIdInvalidAlarm(false); setIdRequiredAlarm(false); }}>
+                                onFocus={() => setIdAlarm({ show: false, msg: "" })}>
                             </input>
-                            <p className={idAlarms.includes(true) ? "invalid" : "at"}>@eng.asu.edu.eg</p>
+                            <p className={idAlarm.show ? "invalid" : "at"}>@eng.asu.edu.eg</p>
                         </div>
-                        {idLengthAlarm && <div className='alarm-container'><p className='alarm'>*Must be 7 characters!</p></div>}
-                        {idInvalidAlarm && <div className='alarm-container'><p className='alarm'>*Enter a valid id!</p></div>}
-                        {idRequiredAlarm && <div className='alarm-container'><p className='alarm'>*Enter your id!</p></div>}
+                        {idAlarm.show && <div className='alarm-container'><p className='alarm'>*{idAlarm.msg}!</p></div>}
 
                         <div className='password-container'>
-                            <input className={passwordAlarms.includes(true) ? "in pass invalid" : "in pass"}
+                            <input className={passwordAlarm.show ? "in pass invalid" : "in pass"}
                                 value={password} name='password' type={visiblePassword ? "text" : "password"} placeholder='Password'
                                 onChange={(e) => { setPassword(e.target.value); handlePasswordChange(e.target.value); }}
-                                onFocus={() => { setPasswordRequiredAlarm(false); setPasswordLengthAlarm(false); }}
+                                onFocus={() =>  setPasswordAlarm({ show: false, msg: "" }) }
                                 onBlur={handlePasswordAlarm}>
                             </input>
-                            {visiblePassword ? <VisibilityOffIcon className='eye' onClick={() => setVisiblePassword(!visiblePassword)} />
+                            {visiblePassword ? <VisibilityOffIcon className='eye' 
+                            onClick={() => setVisiblePassword(!visiblePassword)} />
                                 : <VisibilityIcon className='eye' onClick={() => setVisiblePassword(!visiblePassword)} />}
                         </div>
-                        {passwordRequiredAlarm ? <div className='alarm-container'><p className='alarm'>*Enter your password!</p></div> : null}
-                        {passwordLengthAlarm ? <div className='alarm-container'><p className='alarm'>*Minimum 8 characters!</p></div> : null}
+                        {passwordAlarm.show ? 
+                            <div className='alarm-container'><p className='alarm'>*{passwordAlarm.msg}!</p></div> : null}
 
                         <div className='password-container'>
-                            <input className={repasswordAlarm ? "in pass invalid" : "in pass"}
+                            <input className={repasswordAlarm.show ? "in pass invalid" : "in pass"}
                                 value={repassword} type={visibleRepassword ? "text" : "password"} placeholder='Re-Password'
                                 onChange={(e) => setRepassword(e.target.value)}
-                                onFocus={() => setRepasswordAlarm(false)}
+                                onFocus={() => setRepasswordAlarm({ show: false, msg: "" })}
                                 onBlur={handleRepasswordAlarm}>
                             </input>
-                            {visibleRepassword ? <VisibilityOffIcon className='eye' onClick={() => setVisibleRepassword(!visibleRepassword)} />
+                            {visibleRepassword ? <VisibilityOffIcon className='eye' 
+                            onClick={() => setVisibleRepassword(!visibleRepassword)} />
                                 : <VisibilityIcon className='eye' onClick={() => setVisibleRepassword(!visibleRepassword)} />}
                         </div>
-                        {repasswordAlarm && <div className='alarm-container'><p className='alarm'>*Confirm your password!</p></div>}
+                        {repasswordAlarm.show && 
+                            <div className='alarm-container'><p className='alarm'>*{repasswordAlarm.msg}!</p></div>}
 
 
-                        <select className={level === '' ? (levelRequiredAlarm ? "in invalid holder" : "in holder") :
-                            (levelRequiredAlarm ? "in invalid" : "in")}
+                        <select className={level === '' ? (levelAlarm.show ? "in invalid holder" : "in holder") :
+                            (levelAlarm.show ? "in invalid" : "in")}
                             value={level} onChange={(e) => setLevel(e.target.value)} onBlur={handleLevelAlarm}
-                            onFocus={() => { setLevelRequiredAlarm(false); }}>
+                            onFocus={() => setLevelAlarm({ show: false, msg: "" }) }>
                             <option value="" disabled selected hidden >
                                 Select Your Level
                             </option>
                             {levels.map(lev => (<option value={lev}>{lev}</option>))}
                         </select>
-                        {levelRequiredAlarm && <div className='alarm-container'><p className='alarm'>*Select your level!</p></div>}
+                        {levelAlarm.show && <div className='alarm-container'><p className='alarm'>*{levelAlarm.msg}!</p></div>}
 
 
                         {/*  departments (Electrical - Civil - Mechanical) */}
                         {
-                            (level === 'Junior' || level === 'Senior1' || level === 'Senior2') &&
+                            (level === 'Junior' || level === 'Senior1' || level === 'Senior2' || level === 'Somophore') &&
                             (
                                 <>
-                                    <select className={department === '' ? (departmentRequiredAlarm ? "in invalid holder" : "in holder") :
-                                        (departmentRequiredAlarm ? "in invalid" : "in")}
+                                    <select className={department === '' ? (departmentAlarm.show ? "in invalid holder" : "in holder") :
+                                        (departmentAlarm.show ? "in invalid" : "in")}
                                         value={department} onChange={(e) => { setDepartment(e.target.value); setSubdepartment(''); }}
                                         onBlur={handleDepartmentAlarm}
-                                        onFocus={() => { setDepartmentRequiredAlarm(false); }}>
+                                        onFocus={() => setDepartmentAlarm({ show: false, msg: "" }) }>
                                         <option value="" disabled selected hidden >
                                             Select Your Department
                                         </option>
                                         {departments.map(dep => (<option value={dep.department}>{dep.department}</option>))}
                                     </select>
-                                    {departmentRequiredAlarm && <div className='alarm-container'><p className='alarm'>*Select your department!</p></div>}
+                                    {departmentAlarm.show && 
+                                        <div className='alarm-container'><p className='alarm'>*{departmentAlarm.msg}!</p></div>}
                                 </>
                             )
                         }
@@ -281,10 +271,12 @@ const SignUP = () => {
 
                             (
                                 <>
-                                    <select className={subdepartment === '' ? (subdepartmentRequiredAlarm ? "in invalid holder" : "in holder") :
-                                        (subdepartmentRequiredAlarm ? "in invalid" : "in")}
-                                        value={subdepartment} onChange={(e) => setSubdepartment(e.target.value)} onBlur={handleSubdepartmentAlarm}
-                                        onFocus={() => { setSubdepartmentRequiredAlarm(false); }}>
+                                    <select className={subdepartment === '' ? 
+                                    (subdepartmentAlarm.show ? "in invalid holder" : "in holder") :
+                                        (subdepartmentAlarm.show ? "in invalid" : "in")}
+                                        value={subdepartment} onChange={(e) => setSubdepartment(e.target.value)} 
+                                        onBlur={handleSubdepartmentAlarm}
+                                        onFocus={() =>  setSubdepartmentAlarm({ show: false, msg: "" }) }>
                                         <option value="" disabled selected hidden >
                                             Select Your Sub-Department
                                         </option>
@@ -292,7 +284,8 @@ const SignUP = () => {
                                         {departments.filter((dep) => { return dep.department === department })[0].subDep
                                             .map(sub => (<option value={sub.id}>{sub.name}</option>))}
                                     </select>
-                                    {subdepartmentRequiredAlarm && <div className='alarm-container'><p className='alarm'>*Select Your Sub-Department!</p></div>}
+                                    {subdepartmentAlarm.show &&
+                                        <div className='alarm-container'><p className='alarm'>*{subdepartmentAlarm.msg}!</p></div>}
                                 </>
                             )
                         }
