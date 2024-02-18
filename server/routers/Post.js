@@ -35,9 +35,14 @@ post.get('/searchcourse/:searchString',async(req,res)=>{
 post.get('/allquestions',async(req,res)=>{
     try {
         const con = await client.connect();
-        let sqlCommand = `SELECT * FROM questions AS q
-                        LEFT JOIN answers AS ans ON ans.q_id = q.question_id 
-                        ORDER BY q.q_time DESC;`
+        let sqlCommand = `
+        SELECT * FROM questions AS q
+        LEFT JOIN (
+            SELECT * FROM answers 
+            ORDER BY ans_verified DESC, ans_upvotes DESC , ans_time DESC
+        ) AS ans ON ans.q_id = q.question_id 
+        ORDER BY q.q_time DESC , ans_verified DESC , ans_upvotes DESC;`;
+
        const result = await con.query(sqlCommand);
        let data = AggregateQuestionsAnswers(result.rows);
        return res.status(200).json({data});
@@ -100,15 +105,10 @@ post.get('/getQuestion/:question_id',async(req,res)=>{
     
     try{
         const con = await client.connect();
-        const sqlCommand = `
-        SELECT *,st.studnet_name as student_name_answer  FROM(
-            SELECT *
-            FROM questions q
-            WHERE q.question_id = ${question_id}
-        ) q 
-        LEFT JOIN answers ans ON q.question_id = ans.q_id
-        Left JOIN students s ON s.student_id = q.q_student_id 
-        Left JOIN students st ON st.student_id = ans.student_id_ans ;`;
+        const sqlCommand = `SELECT * from answers as ans, questions  as q
+                        WHERE q.question_id = ${question_id} AND q.question_id = ans.q_id
+                        ORDER BY ans.ans_verified DESC , ans.ans_upvotes DESC,
+                        ans.ans_time DESC;`;
         const result = await con.query(sqlCommand);
         res.json({'data':result.rows});
     }catch(error){
