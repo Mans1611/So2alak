@@ -6,5 +6,18 @@
         "database" : {"ENV":"DataBase"},
         "password" : {"ENV":"Pass"},
         "user" : {"ENV":"User"}
+    },
+    "prod":{
+       
+        "user" : {"ENV":"Prod_User"},
+        "password" : {"ENV":"Prod_Pass"},
+        "server":{"ENV":"Prod_server"},
+        "database" : {"ENV":"Prod_database"},
+        "options":{
+            "encrypt": true,
+            "trustServerCertificate": false,
+            "connectionTimeout": 30000,
+            "driver": "ODBC Driver 18 for SQL Server"
+        }
     }
 }
