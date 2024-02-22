@@ -3,13 +3,20 @@ import client from "../databse.js";
 import { CheckValueExisit } from "../utilis/CheckValueExisit.js";
 import { AggregateQuestionsAnswers } from "../utilis/AggregateQuestionsAnswers.js";
 import { MakeActivity } from "../utilis/MakeActivitylog.js";
+import multer from "multer";
+import { GetFiles } from "../utilis/GetFiles.js";
 
+const storage = multer.memoryStorage();
+const uploader = multer({storage:storage})
 const post = Router();
 /* 
 1 - middleware for authntication 
 */
 
-post.get('/allquestions',async(req,res)=>{
+post.get('/allquestions/:page',async(req,res)=>{
+    const {page} = req.params;
+    console.log(page)
+    let length = 5;
     try {
         const con = await client.connect();
         let sqlCommand = `
@@ -17,32 +24,47 @@ post.get('/allquestions',async(req,res)=>{
         LEFT JOIN (
             SELECT * FROM answers 
             ORDER BY ans_verified DESC, ans_upvotes DESC , ans_time DESC
-        ) AS ans ON ans.q_id = q.question_id 
-        ORDER BY q.q_time DESC , ans_verified DESC , ans_upvotes DESC;`;
-
-       const result = await con.query(sqlCommand);
-       let data = AggregateQuestionsAnswers(result.rows);
-       return res.status(200).json({data});
+        ) AS ans ON ans.q_id = q.question_id
+        ORDER BY q.q_time DESC , ans_verified DESC , ans_upvotes DESC 
+        ;`; //LIMIT ${length} OFFSET ${page * 5}
+        const result = await con.query(sqlCommand);
+    
+    let data =  await GetFiles(result.rows,con)
+    data = AggregateQuestionsAnswers(data);
+       return res
+       .status(200)
+       .json({data});
+       con.release();
     } catch (error) {
         
     }
 })
-post.post('/createQuestion',async(req,res)=>{
+
+
+post.post('/createQuestion',uploader.single('image'),async(req,res)=>{
     // this api need to check the the auth of the user.
     const {course_id,student_id,username,question} = req.body;
     let con = null;
     try{
         con = await client.connect(); 
+        let sqlCommand = null;
+        let result = null;
         // to check if the student exist or not
         if (! await CheckValueExisit('students','username',username,client))
-        return res.status(400).json({msg:"this user is not exist"})
+            return res.status(400).json({msg:"this user is not exist"})
         
         // to check if the course exist or not
         if (! await CheckValueExisit('courses','course_id',course_id,client))
             return res.status(400).json({msg:"this course is not exist"})
-
-        let sqlCommand = `INSERT INTO questions (course_id,q_username,question) 
-                            VALUES ('${course_id}','${username}','${question}')
+        if (req.file){
+            sqlCommand = `INSERT INTO files (filename,mimtype,data) 
+            VALUES ($1,$2,$3) RETURNING id;`
+            const { originalname, mimetype, buffer} = req.file;
+            result = await con.query(sqlCommand,[originalname,mimetype,buffer])
+        }
+        sqlCommand = `INSERT INTO questions (course_id,q_username,question,q_files) 
+                            VALUES ('${course_id}','${username}','${question}',
+                            ${(result?.rows[0].id)? result?.rows[0].id:null })
                             RETURNING question_id;`;
         const {rows} = await con.query(sqlCommand);
         res.status(201).json({'msg':'Your question is posted'});

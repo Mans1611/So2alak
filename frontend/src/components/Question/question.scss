@@ -40,6 +40,12 @@
                 @include centerChild;
                 margin: auto;
                 padding: 5px;
+                &.loading-ques{
+                    width: 60px;
+                    height: 60px;
+                    cursor: default;
+                    animation: blinking 1600ms alternate forwards infinite;
+                }
                 svg{
                     width: 50px;
                     height: 50px;
@@ -48,6 +54,9 @@
                 &:hover,&.active{
                     background-color: $semi-dark-blue;
                     color: #ffffff;
+                    &.loading-ques{
+                        background-color: #dddddd;
+                    }
                 }
             }
             .help-counts{
@@ -55,22 +64,31 @@
                 font-weight: 600;
                 margin-top: 5px;
                 text-align: center;
-               
             }
         }
         .question-wrapper{
             flex: 10;
                 .question-content{
-                    color: $semi-dark-blue;
-                    font-weight: 500;
-                    padding: 20px;
-                    
-                    font-size: 20px;
+                    padding: 0px 0 20px;
                     background-color: $light-white ;
                     border-radius: 10px;
                     font-family: sans-serif;
-                    min-height: 100px;
                     position: relative;
+                        &.loading{
+                            animation: blinking 1600ms alternate forwards infinite;
+                        }
+                    img{
+                        width: 100%;
+                        border-top-right-radius: 10px;
+                        border-top-left-radius: 10px;
+                    }
+                    p{
+                        color: $semi-dark-blue;
+                        font-weight: 500;
+                        font-size: 20px;
+                        padding: 5px;
+                       
+                    }
             }
             
             .time{
@@ -137,3 +155,4 @@
         }
     }
 }
+@include blinking;

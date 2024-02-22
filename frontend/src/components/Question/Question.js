@@ -5,6 +5,7 @@ import audio from '../../assets/soundeffects/pop.wav';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import Answer from '../Answer/Answer';
 
 const Question = ({question}) => {
     const [helped,setHelp] = useState(false);
@@ -29,7 +30,6 @@ const Question = ({question}) => {
         }
     
     }
-
     const questionContent = useRef(null);
     const stoplimit = useRef(null);
     const stoplimit2 = useRef(null);
@@ -38,8 +38,12 @@ const Question = ({question}) => {
             stoplimit.current.style.height = questionContent.current.offsetHeight + 'px'
             stoplimit2.current.style.height = questionContent.current.offsetHeight + 'px'
         }
-
     },0)
+    let img = null;
+    if (question.data){
+        img = `data:${question.mimtype};base64,${question.data}`
+    }
+
   return (
     <div className='question'>
         <div className="question-details">
@@ -58,6 +62,7 @@ const Question = ({question}) => {
             </div>
             <div className='question-wrapper'>
                 <div ref={questionContent} className="question-content">
+                    {question.data && <img src={img} className='ques_img' />}
                     <p> {question.question} </p>
                     <div className="time">asked @ {"question.q"}</div>
                 </div>
@@ -74,7 +79,9 @@ const Question = ({question}) => {
                 <QuestionAnswerIcon onClick={()=>setShowAnswer(show=>!show)} className='reply-btn'/>
             </div>
         </div>
-        
+        {question.answers.length>0 &&
+            <Answer answer = {question.answers[0]}/>
+        }
     </div>
   )
 }

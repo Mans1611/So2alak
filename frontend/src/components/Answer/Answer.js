@@ -4,7 +4,8 @@ import './answer.scss';
 import { Link } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-const Answer = () => {
+const Answer = ({answer}) => {
+    console.log(answer)
   return (
     <div className='answer question'>
          <div className="question-details">
@@ -23,7 +24,7 @@ const Answer = () => {
             </div>
             <div className='question-wrapper'>
             <div className="question-content">
-                <p> How to solve this idiot problem?? </p>
+                <p> {answer.answer ? answer.answer:'ans' } </p>
                 <div className="time">asked @ 12:41</div>
             </div>
                     

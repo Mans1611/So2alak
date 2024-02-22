@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import './mainpage.scss';
 import SideBar from '../../components/sidebar/Sidebar.js';
 import HeartComponent from '../../components/HeartComponent/HeartComponent';
@@ -7,6 +7,7 @@ import { Outlet } from 'react-router-dom';
 import Navbar from '../../components/Navbar/Navbar';
 
 const MainPage = () => {
+  const ques_container = useRef(null);
   
   const [dark,setDark]=useState(false)
   return (
