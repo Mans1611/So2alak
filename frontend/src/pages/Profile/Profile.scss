@@ -1,12 +1,14 @@
 @import '../../mainStyle.scss';
 
+// دي انا عاملها في الملف الرئيسي فملهاش لزمه 
+// زود الفونت سايز بتاع حاجات زي الاسئلة اللي اتجاوبت و زود الفونت وايت بتاعها بحيث انها يكون شكلها جذاب و كانها معلومه رئيسيه
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
     border: none;
 }
-
+// دي بتسمع في الفايلات كلها مش بس البروفايل 
 ::selection {
     color: white;
     background-color: #0c2c43;
@@ -26,7 +28,7 @@
     .content {
         flex: 11;
         display: flex;
-        
+        // شيل دي عشان عندي السايد بار
         .side_bar {
             border: 2px solid #f0f0f0;
             box-shadow: 0px 2px 4px #888888;
@@ -36,7 +38,7 @@
         }
         
         .info {
-            flex: 10;
+            flex: 10; // ودي كمان 
             flex-direction: column;
             display: flex;
 
@@ -99,7 +101,8 @@
                     gap: 30px;
 
                     h1 {
-                        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+                        // شيل اي فونت فاميلي عشان فيه فونت رئيسي جبته من على جوجل 
+                        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; 
                         color: #0c2c43;
                         font-size: 2.3em;
                     }

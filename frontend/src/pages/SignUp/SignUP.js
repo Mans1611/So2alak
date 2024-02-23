@@ -15,6 +15,11 @@ import { AppState } from '../../App';
     - When I select Somophore no department appears   ==> solved
 */  
 
+
+/*
+
+*/ 
+ 
 const SignUP = () => {
     document.title = 'SignUp' // for naming the page the tab.
     const navigate = useNavigate(); // to navigate to anotehr page

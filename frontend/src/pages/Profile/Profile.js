@@ -1,10 +1,15 @@
 import React, { useState } from 'react'
 import './Profile.scss'
 
+// انا حطتلك الملف دا في ملف ال app.js
+// رن الفرونت اند و روح على اللينك دا 
+//  /main/profile/
 const Profile = () => {
-    const [months, setMonths] = useState(Array(12).fill(Array(30).fill(0)));
+    // طب ماهو فيه شهور 31 يوم و فيه شهرنا دا فيه 29 كل اربع سنسن
+    const [months, setMonths] = useState(Array(12).fill(Array(30).fill(0))); 
     const months_names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
+    
     const [points, setPoints] = useState(0);
     const [questions, setQuestions] = useState(0);
     const [answers, setAnswers] = useState(0);
@@ -15,11 +20,18 @@ const Profile = () => {
                 nav bar
             </div>
             <div className='content'>
+                {/* شيل السايد بار عشان هتتحط ف  */}
+
                 <div className='side_bar'>
                     side bar
                 </div>
+                {/*  دا بس اللي انا عايزه في ملف البروفايل غير كدا هو عندي. يعني اللي فوق دا يتشال */}
                 <div className='info'>
                     <div className='upper'>
+                        {/* دا كومبوننت لوحده اسمه سكور عشان بعد كدا هنعمل بيه فيتش 
+                        ويكون جواه الستيات بتاعته زي البوينت و الاسئله و كدا.
+                        */}
+                        
                         <div className='score'>
                             <div className='score_in'>
                                 <div className='achieved'><p>{points}</p> <p>Points</p></div>
@@ -27,6 +39,9 @@ const Profile = () => {
                                 <div className='achieved'><p>{answers}</p> <p>Answers</p></div>
                             </div>
                         </div>
+                        {/*  ودا اخر الكومبوننت السكور */}
+
+                        {/* ودا برضوا كومبوننت البادجيز  */}
                         <div className='badges'>
                             <div className='badges_in'>
                                 Badges
@@ -34,6 +49,7 @@ const Profile = () => {
                         </div>
                     </div>
                     <div className='lower'>
+                        {/* ودا كومبوننت الكالندر  */}
                         <div className='lower_in'>
                             <h1>Activity Calendar</h1>
                             <div className='calendar'>
