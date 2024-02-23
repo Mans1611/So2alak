@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './Profile.scss'
 import avatar from "../../assets/user-tie-solid.svg";
 
@@ -6,17 +6,28 @@ const Profile = () => {
     const [username, setUserame] = useState("Mans116");
     const [description, setDescription] = useState("Senior CSE Student @ ASU");
 
-    const [months, setMonths] = useState(Array(12).fill(Array(30).fill(0)));
+    const months = Array(12).fill(Array(30).fill(0));
+    const months_refs  = Array(12).fill(useRef(null));
     const months_names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
     const [points, setPoints] = useState(0);
     const [questions, setQuestions] = useState(0);
     const [answers, setAnswers] = useState(0);
 
+    const currentDate = new Date().toDateString().split(" ").slice(0, 4)[1].toLowerCase();
+
+    useEffect(() => {
+        for (let i = 0; i < months_names.length; i++) {
+            if (currentDate === months_names[i].toLowerCase()) {
+                months_refs[i].current.scrollIntoView();
+            }
+        }
+    }, [])
+
     return (
         <div className='profile_container'>
             <div className='nav_bar'>
-                nav bar
+                nav bar {currentDate}
             </div>
             <div className='content'>
                 <div className='side_bar'>
@@ -49,7 +60,7 @@ const Profile = () => {
                             <h1>Activity Calendar</h1>
                             <div className='calendar'>
                                 {months.map((month, index) =>
-                                    <div className='month'>
+                                    <div ref={months_refs[index]} className='month'>
                                         <div className='cells'>
                                             {month.map((cell) => <div className={`cell ${cell? "active":"passive"}`}></div>)}
                                         </div>
