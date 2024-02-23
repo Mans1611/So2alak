@@ -1,0 +1,138 @@
+@import '../../.mainstyle.scss';
+.sidebar{
+    flex: 2;
+    background: $light-white;
+    height: 100%;
+    min-height:100vh;
+    overflow-y: scroll;
+    overflow-x:hidden ;
+    background-color: #F0F0F0;
+    position: fixed;
+    padding-bottom: 30px;
+    padding-right: 5px;
+    box-shadow: 5px 5px 5px 0 #00000051;
+    @include blinking;
+    width: $sidebar-width;
+    .sidebar-logo{
+        padding: 10px;
+        background-color: #08223339;
+        width: 180px;
+        height: 180px;
+        border-radius: 20px;
+        margin: 20px auto;
+        @include centerChild;
+        i::before {
+            font-size: 130px;
+            color: $fully-dark-blue;
+            margin: auto;
+        }
+    }
+    hr {
+        border: none; /* Remove default border */
+        border-top: 2px solid $semi-dark-blue; /* Customize line color, thickness, etc. */
+        margin: 20px 0; /* Adjust margin as needed */
+    }
+    .side-bar-items{
+        color: $semi-dark-blue;
+        margin: 20px 0;
+        .title{
+            font-size: 28px;
+            font-weight: 600;
+            margin-left: 5px;
+            color: $semi-dark-blue ;
+        }
+        .list{
+            margin-left: 10px;
+            list-style: none;
+        }
+        .items{
+            color: $fully-dark-blue;
+            padding: 7px 5px 4px 10px ;
+            font-size: 22px;
+            transition: all 150ms;
+            .flex{
+                display: flex;
+                align-items: center;
+                i{
+                  margin-right: 7px;
+                  margin-top: 5px;
+                }
+            }
+            a{
+                text-decoration: none;
+                color: inherit;
+            }
+            &:hover{
+                background-color:$blue ;
+                cursor: pointer;
+                color: #ffffff;
+                border-radius: 7px;
+                .items-icon{
+                    color: #ffffff !important;
+                }
+            }
+        }
+        
+        .loading-card{
+            height: 40px;
+            width: 100%;
+            margin: 7px auto;
+            background-color: $semi-dark-blue;
+            animation: blinking 1800ms infinite forwards linear alternate;
+            border-radius: 5px;
+        }
+    }
+    &.dark{
+        background-color: $semi-dark-blue;
+        .title{
+            color: $sky-blue;
+        }
+        .sidebar-logo{
+            background-color: $fully-dark-blue;
+        }
+        hr {
+            border-top: 3px solid $full-white; 
+        }
+        .side-bar-items{
+            color: #d1d1d1;
+            .items{
+                color: $fully-dark-blue;
+                    color: inherit;
+                    &:hover{
+                        background-color:$fully-dark-blue ;
+                        color: $sky-blue;
+                    }
+                }
+            }
+            .loading-card{
+                background-color: $fully-dark-blue;
+            }
+            &::-webkit-scrollbar-track {
+                background: $fully-dark-blue; /* Color of the scrollbar track */
+              }
+              
+              /* Style the scrollbar handle */
+              &::-webkit-scrollbar-thumb {
+                background: $semi-dark-blue; /* Color of the scrollbar handle */
+                border-radius: 5px; /* Border radius of the scrollbar handle */
+              }
+    }
+    &::-webkit-scrollbar {
+        width: 10px; /* Width of the scrollbar */
+      }
+      /* Style the scrollbar track */
+      &::-webkit-scrollbar-track {
+        background: #f1f1f1; /* Color of the scrollbar track */
+      }
+      
+      /* Style the scrollbar handle */
+      &::-webkit-scrollbar-thumb {
+        background: #888; /* Color of the scrollbar handle */
+        border-radius: 5px; /* Border radius of the scrollbar handle */
+      }
+      
+      /* Style the scrollbar handle on hover */
+      &::-webkit-scrollbar-thumb:hover {
+        background: #555; /* Color of the scrollbar handle on hover */
+      }
+}

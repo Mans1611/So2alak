@@ -7,7 +7,15 @@ import NotFound from "./pages/NotFound/NotFound";
 
 import { createContext, useState } from "react";
 import SignUP from "./pages/SignUp/SignUP";
+
 import Landing from "./pages/LandingPage/Landing";
+
+import MainPage from "./pages/MainPage/MainPage";
+import HeartComponent from "./components/HeartComponent/HeartComponent";
+import FeedPage from "./pages/FeedPage/FeedPage";
+import About from "./pages/About/About";
+import Profile from './pages/Profile/Profile';
+
 
 export const AppState = createContext(null); // I export it to be accessable in the whole components
 function App() {
@@ -31,25 +39,30 @@ function App() {
             setId,
           }}
         >
-          {" "}
+         
           {/* in the value i put all the state and handlers which i would like to share in the app */}
           <Routes>
-            {
-              // home page => path="/" or path="/home"
-              /*
-              <Route exact path="/">
-                <Redirect to="/home" />
-              </Route>
-              */
-            }
+            
             <Route path="/signin" element={<Login />} />
             <Route path="/welcome" element={<WelcomePage />} />
             <Route path="/signup" element={<SignUP />} />
-            {
-              // temp.
-            }
-            <Route path="/loading" element={<Loading />} />
+            
+            {/*Nesting Routes*/}
+            <Route path="/main" element={<MainPage/>}>
+              <Route path="profile" element={<Profile />} />
+            
+              {/* <Route path="myquestions" element={<><div>Mansoure</div></>} /> */}
+              <Route path="feedpage" element={<FeedPage/>} />
+              <Route path="list" element={<div style={{paddingLeft:"250px"}}>list </div>}/>
+            
+              
+            </Route>
+
+
             <Route path="/landing" element={<Landing />} />
+
+            <Route path="/about" element={<About />} />
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AppState.Provider>

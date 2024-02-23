@@ -1,0 +1,103 @@
+@import '../../mainStyle.scss';
+@import '../../.mainStyle.scss';
+.askQuestion-container{
+    padding: 20px;
+    padding-left: 50px;
+    padding-top: 30px;
+    height: fit-content;
+    .askQuestion-wrapeer{
+        display: flex;
+        flex-direction: column;
+        width: 80% !important;
+        margin: auto;
+        .img-preview{
+            max-width: 100%;
+            border-top-right-radius: 15px;
+            border-top-left-radius: 15px;
+            
+        }
+        .files-wrapper{
+            input{  
+                display: none;     
+                margin-left: 10px;
+            }
+            label{
+                cursor: pointer;
+               
+            }
+            .img-label{
+                margin: 5px 10;
+            }
+            svg{
+                font-size: 30px;
+                color: #a0a0a0;
+                transition: all 200ms;
+                &:hover{
+                    color: $fully-dark-blue
+                }
+            }
+        }
+        textarea{
+            height: 120px;
+            width: 100%;
+            border-radius: 15px;
+            margin: auto;
+            outline: none;
+            padding: 15px;
+            font-size: 22px;
+            background-color: $light-white;
+            resize: none; 
+            overflow: hidden;
+           @include input;
+            &::placeholder{
+                color: #929292cc;
+                font-weight: 600;
+                font-size: 26px;
+            }
+        }
+        button{
+            margin-top: 10px;
+            padding: 10px 20px;
+            color: $light-white;
+            background-color: $semi-dark-blue;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 200ms;
+            font-size: 24px;
+            font-weight: 500;
+            align-self: flex-end;
+            margin-right:15px ;
+            &:hover{
+                background-color: $fully-dark-blue;
+            }
+            &:disabled{
+                background-color: #6D6D6D;
+                cursor: initial;
+            }
+        }
+    }
+}
+.dark{
+    .askQuestion-container{
+        .askQuestion-wrapeer{
+            
+            textarea{
+                background-color: $semi-dark-blue;
+                color: $light-white;
+                &::placeholder{
+                    color: $sky-blue;
+                }
+            }
+            
+            button{
+              
+                color: $light-white;
+                background-color: $sky-blue;
+               
+                &:hover{
+                    background-color: $semi-dark-blue;
+                }
+            }
+        }
+    } 
+}

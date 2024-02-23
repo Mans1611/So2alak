@@ -1,5 +1,6 @@
 @import '../../mainStyle.scss';
 
+// دي انا عاملها في الملف الرئيسي فملهاش لزمه 
 * {
     box-sizing: border-box;
     margin: 0;
@@ -7,7 +8,7 @@
     border: none;
 }
 
-
+// دي بتسمع في الفايلات كلها مش بس البروفايل 
 ::selection {
     color: white;
     background-color: #0c2c43;

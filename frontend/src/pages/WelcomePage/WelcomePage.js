@@ -36,7 +36,7 @@ const WelcomePage = () => {
     if (e.target.value.trim() === "") return setLoading(false);
     setSearch(e.target.value);
     const { data } = await axios.get(
-      `http://localhost:8000/post/searchcourse/${e.target.value}`
+      `http://localhost:8000/course/searchcourse/${e.target.value}`
     );
     const timeout = setTimeout(() => {
       setLoading(false);
