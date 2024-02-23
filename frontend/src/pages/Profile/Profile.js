@@ -19,7 +19,7 @@ const Profile = () => {
     useEffect(() => {
         for (let i = 0; i < months_names.length; i++) {
             if (currentDate === months_names[i].toLowerCase()) {
-                months_refs[i].current.scrollIntoView();
+                months_refs[i].current.scrollIntoView({ behavior: "smooth" });
             }
         }
     }, [])
