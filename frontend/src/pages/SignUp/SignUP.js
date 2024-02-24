@@ -4,7 +4,7 @@ import "./SignUp.scss"
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import logo from "../../assets/Logo(122)5.png";
-import axios from 'axios';
+// import axios from 'axios';
 import { levDeps } from '../../data/LevelsDepartments';
 import { AppState } from '../../App';
 
@@ -142,33 +142,33 @@ const SignUP = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!alarms.includes(true) && !primaryStates.includes("") &&
-            ((level === 'Junior' || level === 'Senior1' || level === 'Senior2') ?
-                ((secondaryStates.includes('')) ? false : true) : true)) {
+        // if (!alarms.includes(true) && !primaryStates.includes("") &&
+        //     ((level === 'Junior' || level === 'Senior1' || level === 'Senior2') ?
+        //         ((secondaryStates.includes('')) ? false : true) : true)) {
 
-            try{
-                //send a request to backend.
-                const result = await axios.post('http://localhost:8000/person/signup',
-                {
-                    username,
-                    student_id: id,
-                    password,
-                    studnet_level: level,
-                    student_department: department,
-                    student_subdepartment: subdepartment
-                })
-                setStuCourses(result.data.sugesstedCourses); // here I set the default courses for the student, which comes from server
-                navigate('/welcome'); // then navigate to welcome page. 
-            }catch(error){
-                // handle error coming from api
-                if(error.isAxiosError){
-                    console.log(error.isAxiosError)
-                }else if(error.response){
-                    console.log(error.response)
-                }
-            }
+        //     try{
+        //         //send a request to backend.
+        //         const result = await axios.post('http://localhost:8000/person/signup',
+        //         {
+        //             username,
+        //             student_id: id,
+        //             password,
+        //             studnet_level: level,
+        //             student_department: department,
+        //             student_subdepartment: subdepartment
+        //         })
+        //         setStuCourses(result.data.sugesstedCourses); // here I set the default courses for the student, which comes from server
+        //         navigate('/welcome'); // then navigate to welcome page. 
+        //     }catch(error){
+        //         // handle error coming from api
+        //         if(error.isAxiosError){
+        //             console.log(error.isAxiosError)
+        //         }else if(error.response){
+        //             console.log(error.response)
+        //         }
+        //     }
 
-        }
+        // }
     };
     return (
         <>

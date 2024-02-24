@@ -1,8 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import './Profile.scss'
 import avatar from "../../assets/user-tie-solid.svg";
+import {AppState} from "../../App";
 
 const Profile = () => {
+    const {dark} = useContext(AppState);
+
     const [username, setUserame] = useState("Mans116");
     const [description, setDescription] = useState("Senior CSE Student @ ASU");
 
@@ -16,18 +19,19 @@ const Profile = () => {
 
     const currentDate = new Date().toDateString().split(" ").slice(0, 4)[1].toLowerCase();
 
-    useEffect(() => {
-        for (let i = 0; i < months_names.length; i++) {
-            if (currentDate === months_names[i].toLowerCase()) {
-                months_refs[i].current.scrollIntoView({ behavior: "smooth" });
-            }
-        }
-    }, [])
+    // useEffect(() => {
+    //     for (let i = 0; i < months_names.length; i++) {
+    //         if (currentDate === months_names[i].toLowerCase()) {
+    //             months_refs[i].current.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    //             months_refs[i].current.parentNode.scrollTop = months_refs[i].current.offsetTop;
+    //         }
+    //     }
+    // }, [])
 
     return (
-        <div className='profile_container'>
+        <div className={`profile_container ${dark? "dark" : ""}`}>
             <div className='nav_bar'>
-                nav bar {currentDate}
+                nav bar {currentDate}{dark}
             </div>
             <div className='content'>
                 <div className='side_bar'>

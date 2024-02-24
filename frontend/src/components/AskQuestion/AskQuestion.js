@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import './askquestion.scss';
-import axios from 'axios';
+// import axios from 'axios';
 
 const AskQuestion = () => {
     const [question,setQuestion]=useState('');
@@ -19,13 +19,13 @@ const AskQuestion = () => {
    }
    const handlePost = async()=>{
     console.log("clicked")
-    console.log(question)
-        const res = await axios.post('http://localhost:8000/post/createQuestion',{
-            question,
-            student_id : 1901567,
-            username : 'Mansour',
-            course_id : 'CSE451'
-        })
+    // console.log(question)
+    //     const res = await axios.post('http://localhost:8000/post/createQuestion',{
+    //         question,
+    //         student_id : 1901567,
+    //         username : 'Mansour',
+    //         course_id : 'CSE451'
+    //     })
         
    }
    return (

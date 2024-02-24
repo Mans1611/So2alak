@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import mylist from '../../assets/vectors/mylist.png';
 import question from '../../assets/vectors/question.png';
-import axios from 'axios';
+// import axios from 'axios';
 
 const SideBar = () => {
   const [loading,setLoading]=useState(true);
@@ -12,14 +12,14 @@ const SideBar = () => {
   const [courses,setCourses] = useState([]);
 
 
-  useEffect(()=>{
-    const fetchCourses = async ()=>{
-      const result = await axios.get('http://localhost:8000/person/getStudentCourses/Ahmed')
-      setCourses(result.data.data)
-      setLoading(false);
-    }
-    fetchCourses();
-  },[]);
+  // useEffect(()=>{
+  //   const fetchCourses = async ()=>{
+  //     const result = await axios.get('http://localhost:8000/person/getStudentCourses/Ahmed')
+  //     setCourses(result.data.data)
+  //     setLoading(false);
+  //   }
+  //   fetchCourses();
+  // },[]);
   return (
     <div className={`sidebar ${dark?'dark':''}`}>
       <div className="sidebar-logo">

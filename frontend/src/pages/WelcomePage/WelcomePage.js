@@ -7,7 +7,7 @@ import CourseCard, {
   LoadingCard,
 } from "../../components/CourseToFollow/CourseCard";
 import { AppState } from "../../App";
-import axios from "axios";
+// import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
@@ -32,35 +32,35 @@ const WelcomePage = () => {
             3 - check if the request returned with an empty array. 
         */
     setLoading(true);
-    // if the value in search for courses is empty it will not send a request.
-    if (e.target.value.trim() === "") return setLoading(false);
-    setSearch(e.target.value);
-    const { data } = await axios.get(
-      `http://localhost:8000/post/searchcourse/${e.target.value}`
-    );
-    const timeout = setTimeout(() => {
-      setLoading(false);
-      setSearchedCourses(data.courses);
-      clearTimeout(timeout);
-    }, 750);
-    console.log(data)
+    // // if the value in search for courses is empty it will not send a request.
+    // if (e.target.value.trim() === "") return setLoading(false);
+    // setSearch(e.target.value);
+    // const { data } = await axios.get(
+    //   `http://localhost:8000/post/searchcourse/${e.target.value}`
+    // );
+    // const timeout = setTimeout(() => {
+    //   setLoading(false);
+    //   setSearchedCourses(data.courses);
+    //   clearTimeout(timeout);
+    // }, 750);
+    // console.log(data)
   };
   const RegisterCourses = async () => {
     if (studentCourses.length === 0) return; // if no courses is selected no request send to backend.
-    try {
-      console.log(studentCourses);
-      // 'result' is assigned a value but never used
-      const result = await axios.post(
-        "http://localhost:8000/person/registercourse",
-        {
-          studentCourses,
-          student_id,
-        }
-      );
-      navigate("/feedpage");
-    } catch (error) {
-      if (error.response.status === 400) console.log("Error");
-    }
+    // try {
+    //   console.log(studentCourses);
+    //   // 'result' is assigned a value but never used
+    //   const result = await axios.post(
+    //     "http://localhost:8000/person/registercourse",
+    //     {
+    //       studentCourses,
+    //       student_id,
+    //     }
+    //   );
+    //   navigate("/feedpage");
+    // } catch (error) {
+    //   if (error.response.status === 400) console.log("Error");
+    // }
   };
 
   return (
