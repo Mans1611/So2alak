@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 const Answer = ({answer}) => {
-    console.log(answer)
   return (
     <div className='answer question'>
          <div className="question-details">

@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { AppState } from '../../App';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
+import Search from '../Search/Search';
 
 const Navbar = () => {
   // states
@@ -22,9 +23,7 @@ const Navbar = () => {
         <div className="logo-wrapper">
             <img src={logo} alt="So2alak" srcset="" />
           </div>
-        <div className="search-wrapper">
-            <input placeholder='Search for question, course,colleague..' id='search' type="text" name="search-box"/>
-        </div>
+        <Search/>
         <div className="links-wrapper">
             <Link className='links' to={'/main/feedpage'}> Home</Link>
             <Link className='links' to={'/leaderboard'}> LeaderBoard</Link>

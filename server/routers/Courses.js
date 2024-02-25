@@ -65,7 +65,9 @@ course.get('/getimage',async(req,res)=>{
     const sqlCommand = `select data from files;`
     const con = await client.connect();
     const {rows} =await  con.query(sqlCommand);
+    con.release();
     return res.send(Buffer.from(rows[0].data).toString('base64'));
+
 })
 
 export default course;

@@ -22,7 +22,7 @@ post.get('/allquestions/:page',async(req,res)=>{
         let sqlCommand = `
         SELECT * FROM questions AS q
         LEFT JOIN (
-            SELECT * FROM answers 
+            SELECT * FROM answers  
             ORDER BY ans_verified DESC, ans_upvotes DESC , ans_time DESC
         ) AS ans ON ans.q_id = q.question_id
         ORDER BY q.q_time DESC , ans_verified DESC , ans_upvotes DESC 
@@ -211,6 +211,7 @@ post.get('/:course_code',async(req,res)=>{
 
 post.get('/search/:search',async(req,res)=>{
     const {search} = req.params;
+    console.log("passed in server")
     try{
         const con = await client.connect();
         const {rows:students} = await con.query(`SELECT * FROM students WHERE username ILIKE '%${search}%';`);
@@ -223,6 +224,7 @@ post.get('/search/:search',async(req,res)=>{
             courses,
             questions
         })
+        con.release();
     }
     catch(err){
         console.log(err)
