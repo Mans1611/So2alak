@@ -113,24 +113,6 @@ post.put('/upvoteQuestion/:q_id',async(req,res)=>{
     }
 });
 
-post.put('/verifyQuestion/:q_id', async(req, res)=>{
-    const {q_id} = req.params;
-    try {
-        const con = await client.connect();
-        const sqlCommand = `
-            UPDATE questions 
-            SET q_verified = true
-            WHERE question_id = ${q_id};
-        `;
-        await con.query(sqlCommand);
-        con.release();
-        res.status(200).send('Question is verified');
-    } catch(err) {
-        console.log(err);
-        res.send(err);
-    }
-});
-
 post.get('/getQuestion/:question_id',async(req,res)=>{
     // this might not needs auth -> like face when you dont have an account, but you still can see the post.
     const {question_id} = req.params; // I set  question_id = 1 from Postman.
@@ -273,14 +255,18 @@ post.put('/downvoteAnswer/:ans_id',async(req, res)=>{
 
 post.put('/verifyAnswer/:ans_id', async(req, res)=>{
     const {ans_id} = req.params;
+    const {q_id} = req.body;
     try {
         const con = await client.connect();
-        const sqlCommand = `
-            UPDATE answers 
-            SET ans_verified = true
+        await con.query(`
+            UPDATE answers
+            SET ans_verified = true 
             WHERE answer_id = ${ans_id};
-        `;
-        await con.query(sqlCommand);
+            
+            UPDATE questions
+            SET q_verified = true
+            WHERE question_id = ${q_id};
+        `);
         con.release();
         res.status(206).send('Answer is verified');
     } catch(err) {
