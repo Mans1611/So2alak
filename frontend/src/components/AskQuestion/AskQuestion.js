@@ -6,6 +6,7 @@ const AskQuestion = () => {
     const [question,setQuestion]=useState('');
     const questionInput = useRef(null);
     const [imgPreview,setImgPrev] = useState(null);
+    const [file,setFile] = useState(null);
    const detectLang = (question)=>{
     // this to detect the first letetr of the question if its:
     // if it in english the input will be -> left to right (ltr).
@@ -18,10 +19,8 @@ const AskQuestion = () => {
         }
    }
    const handleImageUpload = (event)=>{
-    const file = event.target.files[0];
-    console.log('Selected file:', file);
+    setFile( event.target.files[0]);
     if (file){
-        console.log(file.type)
         if (imgPreview){
             questionInput.current.style.borderTopLeftRadius = '0px'
             questionInput.current.style.borderTopRightRadius = '0px'
@@ -29,22 +28,26 @@ const AskQuestion = () => {
         const reader = new FileReader();
         
         reader.onload = (e)=>{
-            console.log("e.target.result")
             setImgPrev(e.target.result);
         }
         reader.readAsDataURL(file)
     }
    }
    const handlePost = async()=>{
-    
-        const res = await axios.post('http://localhost:8000/post/createQuestion',{
-            question,
-            student_id : 1901567,
-            username : 'Mansour',
-            course_id : 'CSE451'
-        })
-        
-   }
+       let form = {
+            'username' : 'Ahmed',
+            'student_id' : '1901567',
+            'question' : question,
+            'image' : file,
+            'course_id' : 'CSE471'
+       }
+       
+        const res = await axios.post('http://localhost:8000/post/createQuestion',form,{
+            "headers":{
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+   )}
    return (
     <div className='askQuestion-container'>
         <div className="askQuestion-wrapeer">

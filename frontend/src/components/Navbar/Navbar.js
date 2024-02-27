@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { AppState } from '../../App';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
+import Search from '../Search/Search';
 
 const Navbar = () => {
   // states
@@ -14,17 +15,15 @@ const Navbar = () => {
   // handlers.
   const changeTheme = ()=>setDark(dark=>!dark);
   const showAvatar = ()=>setShowToggleList(show=>!show);
-
+  console.log(dark)
   const username = 'mansour '
   const logout = ()=>{};
   return (
-    <div className='navbar'>
+    <div className={`navbar ${dark && 'dark'}`}>
         <div className="logo-wrapper">
             <img src={logo} alt="So2alak" srcset="" />
           </div>
-        <div className="search-wrapper">
-            <input placeholder='Search for question, course,colleague..' id='search' type="text" name="search-box"/>
-        </div>
+        <Search/>
         <div className="links-wrapper">
             <Link className='links' to={'/main/feedpage'}> Home</Link>
             <Link className='links' to={'/leaderboard'}> LeaderBoard</Link>

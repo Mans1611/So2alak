@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './sidebar.scss';
 import {Link} from 'react-router-dom';
-import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
-import mylist from '../../assets/vectors/mylist.png';
-import question from '../../assets/vectors/question.png';
 import axios from 'axios';
+import { AppState } from '../../App';
 
 const SideBar = () => {
   const [loading,setLoading]=useState(true);
-  const [dark,setDark]=useState(false)
+  const {dark} = useContext(AppState);
   const [courses,setCourses] = useState([]);
 
 
@@ -21,7 +19,7 @@ const SideBar = () => {
     fetchCourses();
   },[]);
   return (
-    <div className={`sidebar ${dark?'dark':''}`}>
+    <div className={`sidebar ${dark && 'dark'} `}>
       <div className="sidebar-logo">
       <i className="fi fi-sr-home"></i>
       </div>
