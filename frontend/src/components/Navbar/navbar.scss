@@ -16,7 +16,6 @@ $searchWidth : 90%;
     .logo-wrapper{
         flex: 3;
         cursor: pointer;
-        
             margin: auto;
             img{
                 margin-left: 20px;
@@ -71,14 +70,7 @@ $searchWidth : 90%;
         position: relative;
         display: flex;
         align-items: center;
-        .theme-mode{
-            margin-left: 20px;
-            cursor: pointer;
-            svg{
-                color: $semi-dark-blue;
-                font-size: 30px;
-            }
-        }
+        
         .img-wrapper{
             position: relative;
             img{
@@ -108,6 +100,63 @@ $searchWidth : 90%;
                     cursor: pointer;
                     a{
                         @include link;
+                        color: inherit;
+                    }
+                    &:hover{
+                        background-color: $semi-dark-blue;
+                        color: #ffffff;
+                    }
+                }
+            }
+        }
+        .theme-mode{
+            margin-left: 20px;
+            cursor: pointer;
+            svg{
+                color: $semi-dark-blue;
+                font-size: 30px;
+            }
+        }
+    }
+    &.dark{
+        transition: all 200ms;
+        background-color: $fully-dark-blue;
+        .search-wrapper{
+            input{
+                background-color: $semi-dark-blue;
+                color: $full-white;
+                &::placeholder{
+                    color: #18A9CAbb;
+                }
+            }
+            .search-result{
+                background-color: $fully-dark-blue;
+            }
+        }
+        .theme-mode{
+            svg{
+                color: $full-white;
+            }
+        }
+        .links-wrapper{
+            a{
+              
+                color: $full-white;
+                padding:  15px;
+               
+                &:hover{
+                    background-color: $semi-dark-blue;
+                    color: $sky-blue;
+                }
+            }
+        }
+        .img-wrapper{
+            .toggle-list{
+                transition: all 200ms;
+               color: $full-white;
+               background-color: $fully-dark-blue;
+                li{
+                    a{
                         color: inherit;
                     }
                     &:hover{

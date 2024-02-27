@@ -31,10 +31,10 @@ post.get('/allquestions/:page',async(req,res)=>{
     
     let data =  await GetFiles(result.rows,con)
     data = AggregateQuestionsAnswers(data);
+    con.release();
        return res
        .status(200)
        .json({data});
-       con.release();
     } catch (error) {
         
     }

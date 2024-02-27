@@ -15,11 +15,11 @@ const Navbar = () => {
   // handlers.
   const changeTheme = ()=>setDark(dark=>!dark);
   const showAvatar = ()=>setShowToggleList(show=>!show);
-
+  console.log(dark)
   const username = 'mansour '
   const logout = ()=>{};
   return (
-    <div className='navbar'>
+    <div className={`navbar ${dark && 'dark'}`}>
         <div className="logo-wrapper">
             <img src={logo} alt="So2alak" srcset="" />
           </div>

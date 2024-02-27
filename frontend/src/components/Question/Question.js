@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import './question.scss'
 import { Link } from 'react-router-dom';
 import audio from '../../assets/soundeffects/pop.wav';
@@ -6,6 +6,7 @@ import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import Answer from '../Answer/Answer';
+import { AppState } from '../../App';
 
 const Question = ({question}) => {
     const [helped,setHelp] = useState(false);
@@ -13,6 +14,8 @@ const Question = ({question}) => {
     const [helpCount,setHelpCount] = useState(3)
     const [showAnswer,setShowAnswer] = useState(false);
     const [answer,setAnswer] = useState('');
+    const {dark} = useContext(AppState);
+
     const handleHelp = ()=>{
         const pop = new Audio(audio); 
         if(helped && circle.current){
@@ -45,7 +48,9 @@ const Question = ({question}) => {
     }
 
   return (
-    <div className='question'>
+    <div className={`question ${dark && 'dark'}`}>
+        <Link>
+        </Link>
         <div className="question-details">
             by <Link to={`/profile/${question.q_username.replace(" ","")}`}> {question.q_username}</Link> related to <Link>DataBase</Link>
         </div>
