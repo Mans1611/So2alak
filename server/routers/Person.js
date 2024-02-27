@@ -1,7 +1,7 @@
 import { Router } from "express"
 import client from "../databse.js";
 import bcrypt from 'bcrypt';
-
+import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import DefaultCourses from "../utilis/DefaultCourses.js";
 
@@ -25,14 +25,16 @@ person.post('/signup',async(req,res)=>{
 
         const salt = await bcrypt.genSalt(parseInt(process.env.Salt));
         const hashedPass =  await bcrypt.hash(password,salt) // encrypting the password 
+        
         sqlCommand = `INSERT INTO students (student_id,username,student_level,password,student_department,student_subDepartment) VALUES($1,$2,$3,$4,$5,$6)`;
         // I created person in the database.
         await conn.query(sqlCommand,[student_id,username,studnet_level,hashedPass,student_department,student_subdepartment]);
-       
+        // creating a token for the user. 
+        const token = jwt.sign({username,student_id},process.env.JWTPASS);
         const courses = await DefaultCourses(studnet_level,student_department,student_subdepartment);
         
         conn.release(); // release the connection with the database
-        return res.status(200).json({sugesstedCourses : courses});
+        return res.status(200).json({sugesstedCourses : courses,token});
     }   
     catch(err){
         console.log(err);
@@ -103,6 +105,7 @@ person.get('/getStudentCourses/:s_name',async(req,res)=>{
 })
 
 person.get('/personalInfo/:student_name',async(req,res)=>{
+    // don't forget to add badges count and auth for that.
     const {student_name} = req.params;
     try{
         const con = await client.connect();

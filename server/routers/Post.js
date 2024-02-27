@@ -5,6 +5,7 @@ import { AggregateQuestionsAnswers } from "../utilis/AggregateQuestionsAnswers.j
 import { MakeActivity } from "../utilis/MakeActivitylog.js";
 import multer from "multer";
 import { GetFiles } from "../utilis/GetFiles.js";
+import { CheckAuth } from "../middleware/CheckAuth.js";
 
 const storage = multer.memoryStorage();
 const uploader = multer({storage:storage})
@@ -41,7 +42,7 @@ post.get('/allquestions/:page',async(req,res)=>{
 })
 
 
-post.post('/createQuestion',uploader.single('image'),async(req,res)=>{
+post.post('/createQuestion',CheckAuth,uploader.single('image'),async(req,res)=>{
     // this api need to check the the auth of the user.
     const {course_id,student_id,username,question} = req.body;
     let con = null;
