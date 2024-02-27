@@ -15,10 +15,10 @@ import Profile from './pages/Profile/Profile';
 
 export const AppState = createContext(null); // I export it to be accessable in the whole components
 function App() {
-  const [dark, setDark] = useState(false);
+  const [dark, setDark] = useState(true);
   const [studentCourses, setStuCourses] = useState([]);
   const [username, setUsername] = useState("");
-  const [id, setId] = useState("");
+  const [id, setId] = useState("aaaa");
 
   return (
     <Router>
@@ -38,10 +38,10 @@ function App() {
             <Route path="/signin" element={<Login />} />
             <Route path="/welcome" element={<WelcomePage />} />
             <Route path="/signup" element={<SignUP />} />
+            <Route path="/profile" element={<Profile />} />
             
             {/*Nesting Routes*/}
             <Route path="/main" element={<MainPage/>}>
-              <Route path="profile" element={<Profile />} />
             
               {/* <Route path="myquestions" element={<><div>Mansoure</div></>} /> */}
               <Route path="feedpage" element={<FeedPage/>} />
