@@ -1,0 +1,45 @@
+$color_1: black;
+$background-color_1: #c4c4c4;
+$background-color_2: #6a0dad;
+
+/* Slideshow */
+/* Buttons */
+.slideshow {
+	position: relative;
+	margin: 0 auto;
+	overflow: hidden;
+	max-width: 500px;
+	height: 100%;
+	display: flex;
+	flex-flow: column;
+	font-size: 1.5rem;
+	.slideshowSlider {
+		white-space: nowrap;
+		transition: ease 1000ms;
+		height: 100%;
+		width: 100%;
+		.slide {
+			display: inline-block;
+			height: 100%;
+			width: 100%;
+			color: $color_1;
+			text-wrap: wrap;
+		}
+	}
+	.slideshowDots {
+		text-align: center;
+		padding-bottom: 50px;
+		.slideshowDot {
+			display: inline-block;
+			height: 20px;
+			width: 20px;
+			border-radius: 50%;
+			cursor: pointer;
+			margin: 0 20px;
+			background-color: $background-color_1;
+		}
+		.slideshowDot.active {
+			background-color: $background-color_2;
+		}
+	}
+}

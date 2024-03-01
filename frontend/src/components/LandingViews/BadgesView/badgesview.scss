@@ -1,0 +1,63 @@
+$color_1: black;
+$background-color_1: transparent;
+$background-color_2: rgba(36, 36, 36, 0.6);
+
+/* =========================== Phone =========================== */
+.badgesview-container {
+	height: 100vh;
+	width: 100%;
+	background-color: $background-color_1;
+	display: flex;
+	flex-flow: column;
+	color: $color_1;
+	.label {
+		width: 100%;
+		padding: 20px;
+		text-align: center;
+		font-size: 3rem;
+	}
+	.badges-container {
+		width: 90%;
+		height: 80%;
+		background-color: $background-color_2;
+		position: relative;
+		margin: auto;
+		border-radius: 50px;
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-evenly;
+		.gold-badge {
+			width: 30%;
+			display: inline-block;
+		}
+		.silver-badge {
+			width: 30%;
+			display: inline-block;
+			align-self: flex-end;
+		}
+		.bronze-badge {
+			width: 30%;
+			display: inline-block;
+			align-self: flex-end;
+		}
+	}
+}
+@media screen and (max-width: 480px) {
+	.badgesview-container {
+		.badges-container {
+			flex-flow: column;
+			.gold-badge {
+				align-self: center;
+				width: 40%;
+			}
+			.silver-badge {
+				align-self: center;
+				width: 40%;
+			}
+			.bronze-badge {
+				align-self: center;
+				width: 40%;
+			}
+		}
+	}
+}

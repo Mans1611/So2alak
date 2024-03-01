@@ -1,0 +1,28 @@
+$color_1: black;
+$color_2: rgb(25, 219, 233);
+
+.statisticsview-container {
+	height: 100vh;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: $color_1;
+	position: relative;
+	overflow: hidden;
+	font-size: 1.25rem;
+	.statistics {
+		display: flex;
+		align-items: center;
+		position: relative;
+		width: 90%;
+		height: 90%;
+		border-radius: 50px;
+		background-image: linear-gradient(to bottom, #EF5350, #419296);
+	}
+}
+.statistics-no {
+	color: $color_2;
+	font-size: 2rem;
+	font-weight: 900;
+}

@@ -1,0 +1,141 @@
+$color_1: black;
+$color_2: white;
+$font-family_1: "Times New Roman", Times, serif;
+$background-color_1: #2992aa;
+$background-color_2: #028064;
+
+/* =========================== Phone =========================== */
+.mainview-container {
+	height: 100vh;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	font-size: 16px;
+	.mianimg-container {
+		width: 50%;
+		height: 100%;
+		flex: 0 0 50%;
+		position: relative;
+		display: grid;
+		grid-template-columns: repeat(9, 1f);
+		grid-template-rows: repeat(7, auto);
+		.phone {
+			grid-column: 4/7;
+			grid-row-start: 5;
+			display: flex;
+			position: relative;
+			justify-content: center;
+			align-items: center;
+			.phone-img {
+				width: 50%;
+				position: absolute;
+			}
+			.phone-bg {
+				width: 100%;
+				position: absolute;
+				clip-path: polygon(36% 26%, 65% 26%, 67% 29%, 67% 68%, 64% 73%, 36% 73%, 33% 68%, 33% 31%);
+			}
+		}
+		.laptop {
+			grid-column: 1/7;
+			grid-row-start: 4;
+			display: flex;
+			position: relative;
+			justify-content: center;
+			align-items: center;
+			.laptop-img {
+				width: 100%;
+				position: absolute;
+			}
+			.laptop-bg {
+				width: 100%;
+				position: absolute;
+				clip-path: polygon(23.5% 17%, 77% 17%, 77% 79%, 23.5% 79%);
+			}
+		}
+	}
+	.mainview-description {
+		display: flex;
+		flex-flow: column;
+		align-items: center;
+		justify-content: space-evenly;
+		height: 100vh;
+		width: 50%;
+		flex: 0 0 50%;
+		.mainlogo {
+			width: 70%;
+		}
+		.description {
+			color: $color_1;
+			font-size: 130%;
+			padding: 5%;
+			text-align: center;
+			font-family: $font-family_1;
+			line-height: 25px;
+			animation: discription linear both;
+			animation-timeline: scroll();
+			animation-range: contain;
+		}
+		.signin-signup {
+			display: flex;
+			width: 100%;
+			justify-content: space-evenly;
+			.signin {
+				width: 40%;
+				padding: 5px;
+				text-align: center;
+				color: $color_2;
+				text-decoration: none;
+				border-radius: 5px;
+				box-shadow: 0 1px 3px #000;
+				background-color: $background-color_1;
+				cursor: pointer;
+				&:hover {
+					box-shadow: 0 2px 5px #000;
+				}
+				&:active {
+					box-shadow: 0 0 1px #000;
+				}
+			}
+			.signup {
+				width: 40%;
+				padding: 5px;
+				text-align: center;
+				color: $color_2;
+				text-decoration: none;
+				border-radius: 5px;
+				box-shadow: 0 1px 3px #000;
+				background-color: $background-color_1;
+				cursor: pointer;
+				background-color: $background-color_2;
+				&:hover {
+					box-shadow: 0 2px 5px #000;
+				}
+				&:active {
+					box-shadow: 0 0 1px #000;
+				}
+			}
+		}
+	}
+}
+@media screen and (max-width: 480px) {
+	.mainview-container {
+		flex-flow: column;
+		.mianimg-container {
+			width: 100%;
+			.phone {
+				grid-row-start: 6;
+			}
+		}
+		.mainview-description {
+			width: 100%;
+			.description {
+				font-size: 110%;
+				line-height: 20px;
+			}
+			.mainlogo {
+				display: none;
+			}
+		}
+	}
+}

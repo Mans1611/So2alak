@@ -1,32 +1,39 @@
 @import '../../.mainstyle.scss';
-.welcome-page{
+
+.welcome-page {
     min-height: 100vh;
     background-color: #FFFFFE;
     position: relative;
     transition: all 300ms;
     padding-bottom: 100px;
-    .welcome-nav-bar{
+
+    .welcome-nav-bar {
         padding: 10px 30px;
         display: flex;
-        justify-content: space-between ;
+        justify-content: space-between;
         align-items: center;
-        .Logo{
+
+        .Logo {
             width: 200px;
             height: 100px;
         }
-        .right-items{
+
+        .right-items {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            .avatar-wrapper{
+
+            .avatar-wrapper {
                 background-color: $fully-dark-blue;
                 border-radius: 15px;
                 padding: 2px;
                 height: fit-content;
             }
-            .theme-wrapper{
+
+            .theme-wrapper {
                 margin-left: 10px;
-                svg{
+
+                svg {
                     width: 45px;
                     height: 45px;
                     cursor: pointer;
@@ -34,86 +41,101 @@
             }
         }
     }
-    .welcome-sentance{
+
+    .welcome-sentance {
         margin-left: 160px;
         margin-bottom: 30px;
         font-size: 50px;
         font-weight: 400;
         color: $blue;
-        span{
+
+        span {
             font-weight: 600;
             font-size: 58px;
             text-decoration: underline;
         }
     }
-    .search-wrapper{
-       @include centerChild;
-       padding: 10px;
-       input{
-        background-color: #0c2c4310;
-        border: none;
-        border-bottom: 3px solid #0C2C43;
-        width: 300px;
-        height: 40px;
-        padding: 5px;
-        font-size: 18px;
-        border-radius: 5px;
-        &:focus{
-            outline: none;
+
+    .search-wrapper {
+        @include centerChild;
+        padding: 10px;
+
+        input {
+            background-color: #0c2c4310;
+            border: none;
+            border-bottom: 3px solid #0C2C43;
+            width: 300px;
+            height: 40px;
+            padding: 5px;
+            font-size: 18px;
+            border-radius: 5px;
+
+            &:focus {
+                outline: none;
+            }
         }
-       }
     }
-    .not-found{
+
+    .not-found {
         text-align: center;
         font-size: 25px;
         font-weight: 600;
         color: $semi-dark-blue;
         padding: 10px;
     }
-    .course-card-container{
+
+    .course-card-container {
         max-height: 250px;
         overflow-y: scroll;
         background-color: #68a0c81d;
-        width:50%;
+        width: 50%;
         margin: auto;
         border-radius: 10px;
         padding: 10px;
-        &.no-scroll{
-            overflow-y:auto;
+
+        &.no-scroll {
+            overflow-y: auto;
 
         }
-        &.default-courses{
+
+        &.default-courses {
             margin: 10px 0;
         }
     }
-    .default-courses-title{
+
+    .default-courses-title {
         font-size: 40px;
         font-weight: 600;
         text-align: center;
         margin-top: 10px;
     }
-    .default-courses-container{
+
+    .default-courses-container {
         color: $semi-dark-blue;
-        .grid-courses{
+
+        .grid-courses {
             padding: 10px;
             background-color: #68a0c842;
             display: grid;
-            grid-template-columns: repeat(3,33.3%);
+            grid-template-columns: repeat(3, 33.3%);
             width: 50%;
             border-radius: 10px;
             margin: auto;
-            &.no-grid{
+
+            &.no-grid {
                 display: block;
 
             }
         }
     }
-    .next-wrapper{
+
+    .next-wrapper {
         width: 50%;
         margin: 10px auto;
         display: flex;
-        justify-content: end;
-        .next-btn{
+        justify-content: flex-end;
+
+        .next-btn {
             padding: 10px 20px;
             font-size: 30px;
             font-weight: 600;
@@ -123,53 +145,64 @@
             border-bottom-right-radius: 0;
             cursor: pointer;
             transition: all 200ms;
-            &:hover{
+
+            &:hover {
                 background-color: $fully-dark-blue;
             }
 
         }
     }
-    .wave{
+
+    .wave {
         width: 100%;
         position: absolute;
         bottom: 0;
     }
 
-    &.dark{
+    &.dark {
         background-color: $semi-dark-blue;
-        .theme-wrapper{
+
+        .theme-wrapper {
             margin-left: 10px;
-            svg{
-               color: #FFFFFE;
+
+            svg {
+                color: #FFFFFE;
             }
         }
-        .welcome-sentance{
+
+        .welcome-sentance {
             color: #FFFFFE;
         }
-        .search-wrapper{
+
+        .search-wrapper {
             @include centerChild;
             padding: 10px;
-            input{
-             background-color: #08304A;
-             border-bottom: 3px solid #009AC8;
-             color: #FFFFFE;
-            
+
+            input {
+                background-color: #08304A;
+                border-bottom: 3px solid #009AC8;
+                color: #FFFFFE;
+
             }
-         }
-         .not-found{
+        }
+
+        .not-found {
             text-align: center;
             font-size: 25px;
             font-weight: 600;
             color: #c1c1c1;
         }
-         .course-card-container{
-             background-color: #061824;
-         }
-         .default-courses-container{
+
+        .course-card-container {
+            background-color: #061824;
+        }
+
+        .default-courses-container {
             color: $full-white;
-            .grid-courses{
+
+            .grid-courses {
                 background-color: #061824;
-               
+
             }
         }
     }
