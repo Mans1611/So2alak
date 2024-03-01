@@ -7,11 +7,15 @@ import NotFound from "./pages/NotFound/NotFound";
 
 import { createContext, useState } from "react";
 import SignUP from "./pages/SignUp/SignUP";
+
+import Landing from "./pages/LandingPage/Landing";
+
 import MainPage from "./pages/MainPage/MainPage";
 import HeartComponent from "./components/HeartComponent/HeartComponent";
 import FeedPage from "./pages/FeedPage/FeedPage";
 import About from "./pages/About/About";
 import Profile from './pages/Profile/Profile';
+
 
 export const AppState = createContext(null); // I export it to be accessable in the whole components
 function App() {
@@ -25,10 +29,14 @@ function App() {
       <div className="App">
         <AppState.Provider
           value={{
-            dark,setDark,
-            studentCourses,setStuCourses,
-            username,setUsername,
-            id,setId,
+            dark,
+            setDark,
+            studentCourses,
+            setStuCourses,
+            username,
+            setUsername,
+            id,
+            setId,
           }}
         >
          
@@ -49,8 +57,12 @@ function App() {
             
               
             </Route>
-            <Route path="/loading" element={<Loading />} />
+
+
+            <Route path="/landing" element={<Landing />} />
+
             <Route path="/about" element={<About />} />
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AppState.Provider>

@@ -1,0 +1,23 @@
+$color_1: black;
+
+.questionview-container {
+	height: 100vh;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	color: $color_1;
+	position: relative;
+	overflow: hidden;
+	font-size: 1.25rem;
+	&::after {
+		content: "";
+		width: 300px;
+		height: 300px;
+		position: absolute;
+		transform-origin: center;
+		bottom: -150px;
+		right: -150px;
+		border-radius: 50%;
+		background-image: radial-gradient(rgb(217, 217, 217) 0px 50px, rgba(217, 217, 217, 0.65) 50px 100px, rgba(217, 217, 217, 0.45) 100px);
+	}
+}
