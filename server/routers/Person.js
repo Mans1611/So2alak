@@ -30,7 +30,12 @@ person.post('/signup',async(req,res)=>{
         // I created person in the database.
         await conn.query(sqlCommand,[student_id,username,studnet_level,hashedPass,student_department,student_subdepartment]);
         // creating a token for the user. 
-        const token = jwt.sign({username,student_id},process.env.JWTPASS);
+        const token = jwt.sign({
+            username,
+            student_id,
+            isAdmin:false,
+            isTeacher:false,
+        },process.env.JWTPASS);
         const courses = await DefaultCourses(studnet_level,student_department,student_subdepartment);
         
         conn.release(); // release the connection with the database

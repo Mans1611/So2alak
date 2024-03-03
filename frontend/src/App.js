@@ -12,13 +12,17 @@ import HeartComponent from "./components/HeartComponent/HeartComponent";
 import FeedPage from "./pages/FeedPage/FeedPage";
 import About from "./pages/About/About";
 import Profile from './pages/Profile/Profile';
+import AuthHandler  from "./HOC/AuthHandler";
 
 export const AppState = createContext(null); // I export it to be accessable in the whole components
+
+
 function App() {
   const [dark, setDark] = useState(false);
   const [studentCourses, setStuCourses] = useState([]);
   const [username, setUsername] = useState("");
   const [id, setId] = useState("");
+
 
   return (
     <Router>
@@ -42,8 +46,6 @@ function App() {
             {/*Nesting Routes*/}
             <Route path="/main" element={<MainPage/>}>
               <Route path="profile" element={<Profile />} />
-            
-              {/* <Route path="myquestions" element={<><div>Mansoure</div></>} /> */}
               <Route path="feedpage" element={<FeedPage/>} />
               <Route path="list" element={<div style={{paddingLeft:"250px"}}>list </div>}/>
             

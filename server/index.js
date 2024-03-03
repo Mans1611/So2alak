@@ -7,7 +7,7 @@ import bodyParser from 'body-parser';
 import post from './routers/Post.js';
 import {spawn} from 'child_process';
 import client from './databse.js';
-
+import postgres from 'postgres';
 const pythonFiles = spawn('python',['utilis/mans.py',4,3]);
 
 let pythonData = '';
@@ -43,8 +43,8 @@ const port =  process.env.PORT || 6000;
 app.listen(port,async ()=>{
     console.log(`http://localhost:${port}`);
     try{
-        const result = await client.connect()
-        console.log('connected to database')
+        //const result = await client.connect()
+       
     }catch(err){
         console.log(err)
     }
