@@ -8,49 +8,89 @@ import DefaultCourses from "../utilis/DefaultCourses.js";
 dotenv.config();
 
 const person = Router();
-person.post('/signup',async(req,res)=>{
-    const {username,
+
+person.post('/signup', async(req,res)=>{
+    const {
+        username,
         student_id,
         password,
         studnet_level,
         student_department,
-        student_subdepartment}=req.body;
-    try{
+        student_subdepartment
+    } = req.body;
+
+    try {
         const conn = await client.connect(); // conecting with database
-        let sqlCommand = `SELECT * FROM students WHERE student_id='${student_id}' OR username='${username}'`;
+        let sqlCommand = `
+            SELECT * 
+            FROM students 
+            WHERE student_id = '${student_id}' 
+            OR username = '${username}';
+        `;
         let databaseResponse = await conn.query(sqlCommand);
+
         // check if this student_id has an account already or not.
         if(databaseResponse.rows.length > 0)
-            return res.status(400).json({msg:"This id is already exists, try login"});
+            return res.status(400).json({
+                msg: "This id is already exists, try login"
+            });
 
         const salt = await bcrypt.genSalt(parseInt(process.env.Salt));
         const hashedPass =  await bcrypt.hash(password,salt) // encrypting the password 
-       if(student_department){
-           sqlCommand = `INSERT INTO students (student_id,username,student_level,password,student_department,student_subDepartment) 
-           VALUES('${student_id}','${username}','${studnet_level}','${hashedPass}','${student_department}',${student_subdepartment?`${student_subdepartment}`:null})`;
-        }
-       else{
-            sqlCommand = `INSERT INTO students (student_id,username,student_level,password) 
-                        VALUES('${student_id}','${username}','${studnet_level}','${hashedPass}')`;
-        }
-                        // I created person in the database.
+
+        if(student_department) {
+            sqlCommand = `
+                INSERT INTO students(
+                    student_id,
+                    username,
+                    student_level,
+                    password,
+                    student_department,
+                    student_subDepartment
+                ) VALUES(
+                    '${student_id}',
+                    '${username}',
+                    '${studnet_level}',
+                    '${hashedPass}',
+                    '${student_department}',
+                    ${student_subdepartment?`${student_subdepartment}`:null}
+                )
+            `;
+        } else {
+            sqlCommand = `
+                INSERT INTO students(
+                    student_id,
+                    username,
+                    student_level,
+                    password
+                ) 
+                VALUES(
+                    '${student_id}',
+                    '${username}',
+                    '${studnet_level}',
+                    '${hashedPass}'
+                )
+            `;
+        } 
+        // I created person in the database.
         await conn.query(sqlCommand);
+        
         // creating a token for the user. 
         const token = jwt.sign({
             username,
-            student_id,
-            isAdmin:false,
-            isTeacher:false,
-        },process.env.JWTPASS);
+            id: student_id,
+            isAdmin: false,
+            isTeacher: false
+        }, process.env.JWTPASS);
         const courses = await DefaultCourses(studnet_level,student_department,student_subdepartment);
         
         conn.release(); // release the connection with the database
-        return res.status(200).json({sugesstedCourses : courses,token});
-    }   
-    catch(err){
+        return res.status(200).json({sugesstedCourses: courses, token});
+    } catch(err) {
         console.log(err);
+        res.send(err);
     }
-})
+});
 
 // for siging in 
 person.post('/signin',async(req,res)=>{

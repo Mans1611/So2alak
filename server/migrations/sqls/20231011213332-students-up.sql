@@ -9,6 +9,7 @@ CREATE TABLE  IF NOT EXISTS files(
 CREATE TABLE IF NOT EXISTS departments (
 	department_id VARCHAR(30) NOT NULL PRIMARY KEY
 );
+
 CREATE TABLE IF NOT EXISTS sub_departments (
 	department_id VARCHAR(30) PRIMARY KEY,
 	department_name VARCHAR(150) NOT NULL,
@@ -75,7 +76,7 @@ CREATE TABLE IF NOT EXISTS students_courses (
 	ON DELETE CASCADE 
 );
 
-CREATE TYPE  teachers_title AS ENUM('Doctor','TA'); 
+--CREATE TYPE  teachers_title AS ENUM('Doctor','TA'); 
 CREATE TABLE IF NOT EXISTS teachers(
 	name VARCHAR(120) NOT NULL ,
 	id VARCHAR(30) NOT NULL PRIMARY KEY,

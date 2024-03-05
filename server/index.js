@@ -7,7 +7,6 @@ import bodyParser from 'body-parser';
 import post from './routers/Post.js';
 import {spawn} from 'child_process';
 import client from './databse.js';
-import postgres from 'postgres';
 const pythonFiles = spawn('python',['utilis/mans.py',4,3]);
 import fs from 'fs'
 import teacher from './routers/Teachers.js';
