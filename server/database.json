@@ -9,15 +9,8 @@
     },
     "prod":{
        
-        "user" : {"ENV":"Prod_User"},
+        "user" : {"ENV":"PGUSER"},
         "password" : {"ENV":"Prod_Pass"},
-        "server":{"ENV":"Prod_server"},
-        "database" : {"ENV":"Prod_database"},
-        "options":{
-            "encrypt": true,
-            "trustServerCertificate": false,
-            "connectionTimeout": 30000,
-            "driver": "ODBC Driver 18 for SQL Server"
-        }
+        "database" : {"ENV":"PGDATABASE"}
     }
 }

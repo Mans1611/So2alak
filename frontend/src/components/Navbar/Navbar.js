@@ -15,7 +15,6 @@ const Navbar = () => {
   // handlers.
   const changeTheme = ()=>setDark(dark=>!dark);
   const showAvatar = ()=>setShowToggleList(show=>!show);
-  console.log(dark)
   const username = 'mansour '
   const logout = ()=>{};
   return (

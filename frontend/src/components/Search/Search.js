@@ -6,13 +6,10 @@ const Search = () => {
     const [search,setSearchString] = useState('');
     const [searchResult,setSearchResult] = useState([]);
     useEffect(()=>{
-        console.log("useeffect")
         const fetchSearch = async ()=>{
             try{
 
-                console.log("passed")
                 const result = await axios.get(`http://localhost:8000/post/search/${search}`);
-                console.log(result)
                 setSearchResult(result.data);
             }catch(err){
                 console.log(err)
@@ -25,9 +22,6 @@ const Search = () => {
     
     const searchInput = useRef(null);
     
-    // const handleKeyDown = ()=>{
-    //     console.log("down")
-    // }
     const nav = useNavigate();
     let selectedItem = null;
     const handleKeyUp = (e)=>{
