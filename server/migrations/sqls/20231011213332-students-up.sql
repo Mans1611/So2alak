@@ -80,6 +80,7 @@ CREATE TABLE IF NOT EXISTS teachers(
 	name VARCHAR(120) NOT NULL ,
 	id VARCHAR(30) NOT NULL PRIMARY KEY,
 	title teachers_title,
+	password varchar(255) NOT NULL, 
 	department VARCHAR(30) NOT NULL 
 	REFERENCES sub_departments(department_id)
 	ON UPDATE CASCADE
