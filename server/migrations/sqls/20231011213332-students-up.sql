@@ -1,5 +1,4 @@
 
-
 CREATE TABLE  IF NOT EXISTS files(
     id Serial PRIMARY KEY NOT NULL,
     filename VARCHAR(255) NOT NULL,
@@ -76,6 +75,16 @@ CREATE TABLE IF NOT EXISTS students_courses (
 	ON DELETE CASCADE 
 );
 
+CREATE TYPE  teachers_title AS ENUM('Doctor','TA'); 
+CREATE TABLE IF NOT EXISTS teachers(
+	name VARCHAR(120) NOT NULL ,
+	id VARCHAR(30) NOT NULL PRIMARY KEY,
+	title teachers_title,
+	department VARCHAR(30) NOT NULL 
+	REFERENCES sub_departments(department_id)
+	ON UPDATE CASCADE
+	ON DELETE SET NULL
+);
 CREATE TABLE IF NOT EXISTS questions(
     question_id SERIAL PRIMARY KEY,
     course_id VARCHAR(30) NOT NULL
@@ -122,50 +131,70 @@ CREATE TABLE IF NOT EXISTS answers(
     ans_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE activity_log (
+    student_id VARCHAR(30) NOT NULL
+    REFERENCES students(student_id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+
+    question_id INTEGER  
+    REFERENCES questions(question_id)
+    ON UPDATE CASCADE
+    ON DELETE SET NULL,
 
 
-INSERT INTO departments 
-(department_id)
-VALUES ('Electrical');
+    ans_id INTEGER 
+    REFERENCES answers(answer_id)
+    ON UPDATE CASCADE
+    ON DELETE SET NULL,
 
-INSERT INTO departments 
-(department_id)
-VALUES ('Mechinical');
+    activity_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    activity_type VARCHAR(30) CHECK (activity_type IN ('ask','answer')) 
+    
+);
 
-INSERT INTO sub_departments 
-(department_id,department_name,belongs_to)
-VALUES ('MPP','Production & Power','Mechinical');
+-- INSERT INTO departments 
+-- (department_id)
+-- VALUES ('Electrical');
 
+-- INSERT INTO departments 
+-- (department_id)
+-- VALUES ('Mechinical');
 
-INSERT INTO sub_departments 
-(department_id,department_name,belongs_to)
-VALUES ('CSE','Computer & System','Electrical');
-
-INSERT INTO sub_departments 
-(department_id,department_name,belongs_to)
-VALUES ('EPM','Power & Machines','Electrical');
-
-INSERT INTO sub_departments 
-(department_id,department_name,belongs_to)
-VALUES ('ECE','Electronics & Communication','Electrical');
-
-INSERT INTO sub_departments 
-(department_id,department_name,belongs_to)
-VALUES ('MPE','Mechinical & Power','Mechinical');
+-- INSERT INTO sub_departments 
+-- (department_id,department_name,belongs_to)
+-- VALUES ('MPP','Production & Power','Mechinical');
 
 
-INSERT INTO levels (level_id) VALUES ('Freshmen');
-INSERT INTO levels (level_id) VALUES ('Somophore');
-INSERT INTO levels (level_id) VALUES ('Joinior');
-INSERT INTO levels (level_id) VALUES ('Senior1');
-INSERT INTO levels (level_id) VALUES ('Senior2');
+-- INSERT INTO sub_departments 
+-- (department_id,department_name,belongs_to)
+-- VALUES ('CSE','Computer & System','Electrical');
+
+-- INSERT INTO sub_departments 
+-- (department_id,department_name,belongs_to)
+-- VALUES ('EPM','Power & Machines','Electrical');
+
+-- INSERT INTO sub_departments 
+-- (department_id,department_name,belongs_to)
+-- VALUES ('ECE','Electronics & Communication','Electrical');
+
+-- INSERT INTO sub_departments 
+-- (department_id,department_name,belongs_to)
+-- VALUES ('MPE','Mechinical & Power','Mechinical');
+
+
+-- INSERT INTO levels (level_id) VALUES ('Freshmen');
+-- INSERT INTO levels (level_id) VALUES ('Somophore');
+-- INSERT INTO levels (level_id) VALUES ('Joinior');
+-- INSERT INTO levels (level_id) VALUES ('Senior1');
+-- INSERT INTO levels (level_id) VALUES ('Senior2');
 
 
 
 
 
-INSERT INTO courses (course_id,course_name,course_department,course_level)
-VALUES ('CSE451','Data Science','CSE','Senior2');
+-- INSERT INTO courses (course_id,course_name,course_department,course_level)
+-- VALUES ('CSE451','Data Science','CSE','Senior2');
 
-INSERT INTO courses (course_id,course_name,course_department,course_level)
-VALUES ('CSE351','Data Structure','CSE','Senior1');
+-- INSERT INTO courses (course_id,course_name,course_department,course_level)
+-- VALUES ('CSE351','Data Structure','CSE','Senior1');

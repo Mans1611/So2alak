@@ -9,17 +9,14 @@ import {spawn} from 'child_process';
 import client from './databse.js';
 import postgres from 'postgres';
 const pythonFiles = spawn('python',['utilis/mans.py',4,3]);
-
+import fs from 'fs'
+import teacher from './routers/Teachers.js';
 let pythonData = '';
 pythonFiles.stdout.on('data',(data)=>{
    
     pythonData = data.toString();
 })
 
-// pythonFiles.on('close',code=>{
-//     if (code === 0)
-//         // console.log(JSON.parse(pythonData))
-// })
 
 
 const app = express();
@@ -34,6 +31,7 @@ app.use(bodyParser.json());
 app.use('/person',person);
 app.use('/post',post);
 app.use('/course',course);
+app.use('/teacher',teacher);
 
 dotenv.config();    // configure environement varables
 
@@ -43,10 +41,11 @@ const port =  process.env.PORT || 6000;
 app.listen(port,async ()=>{
     console.log(`http://localhost:${port}`);
     try{
-        //const result = await client.connect()
        
+
     }catch(err){
         console.log(err)
     }
+
 })
 

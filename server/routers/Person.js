@@ -25,10 +25,16 @@ person.post('/signup',async(req,res)=>{
 
         const salt = await bcrypt.genSalt(parseInt(process.env.Salt));
         const hashedPass =  await bcrypt.hash(password,salt) // encrypting the password 
-        
-        sqlCommand = `INSERT INTO students (student_id,username,student_level,password,student_department,student_subDepartment) VALUES($1,$2,$3,$4,$5,$6)`;
-        // I created person in the database.
-        await conn.query(sqlCommand,[student_id,username,studnet_level,hashedPass,student_department,student_subdepartment]);
+       if(student_department){
+           sqlCommand = `INSERT INTO students (student_id,username,student_level,password,student_department,student_subDepartment) 
+           VALUES('${student_id}','${username}','${studnet_level}','${hashedPass}','${student_department}',${student_subdepartment?`${student_subdepartment}`:null})`;
+        }
+       else{
+            sqlCommand = `INSERT INTO students (student_id,username,student_level,password) 
+                        VALUES('${student_id}','${username}','${studnet_level}','${hashedPass}')`;
+        }
+                        // I created person in the database.
+        await conn.query(sqlCommand);
         // creating a token for the user. 
         const token = jwt.sign({
             username,

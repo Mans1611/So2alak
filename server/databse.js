@@ -2,7 +2,7 @@ import pkg from 'pg';
 const { Pool } = pkg;
 import dotenv from 'dotenv'
 import { exec } from 'child_process';
-
+import fs from 'fs'
 
 dotenv.config();
 
@@ -22,10 +22,9 @@ if (process.env.env == 'prod'){
   });
   try{
     const con = await client.connect();
-    await con.query(`
-    CREATE TABLE IF NOT EXISTS departments (
-      department_id VARCHAR(30) NOT NULL PRIMARY KEY
-    );`)
+    const sqlCommands = fs.readFileSync('./migrations/sqls/20231011213332-students-up.sql').toString();
+    await con.query(sqlCommands);
+    con.release()
     console.log("connected to cloud")
   }catch(err){
     console.log(err)
