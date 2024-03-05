@@ -21,14 +21,11 @@ pythonFiles.stdout.on('data',(data)=>{
 //         // console.log(JSON.parse(pythonData))
 // })
 
-
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
-
-
 
 // Router middlewares
 app.use('/person',person);
@@ -39,7 +36,6 @@ dotenv.config();    // configure environement varables
 
 const port =  process.env.PORT || 6000;
 
-
 app.listen(port,async ()=>{
     console.log(`http://localhost:${port}`);
     try{
@@ -49,4 +45,3 @@ app.listen(port,async ()=>{
         console.log(err)
     }
 })
-

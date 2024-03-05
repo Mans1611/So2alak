@@ -1,11 +1,12 @@
 import { Router } from "express";
+import multer from "multer";
 import client from "../databse.js";
 import { CheckValueExisit } from "../utilis/CheckValueExisit.js";
 import { AggregateQuestionsAnswers } from "../utilis/AggregateQuestionsAnswers.js";
 import { MakeActivity } from "../utilis/MakeActivitylog.js";
-import multer from "multer";
 import { GetFiles } from "../utilis/GetFiles.js";
-import { CheckAuth } from "../middleware/CheckAuth.js";
+import { authenticate } from "../middleware/Authentication.js";
+import { authorize, isTeacher } from "../middleware/Authorization.js";
 
 const storage = multer.memoryStorage();
 const uploader = multer({storage:storage})
@@ -14,7 +15,7 @@ const post = Router();
 1 - middleware for authntication 
 */
 
-post.get('/allquestions/:page',async(req,res)=>{
+post.get('/allquestions/:page', authenticate, async(req,res)=>{
     const {page} = req.params;
     console.log(page)
     let length = 5;
@@ -42,7 +43,7 @@ post.get('/allquestions/:page',async(req,res)=>{
 })
 
 
-post.post('/createQuestion',CheckAuth,uploader.single('image'),async(req,res)=>{
+post.post('/createQuestion', authenticate, uploader.single('image'), async(req,res)=>{
     // this api need to check the the auth of the user.
     const {course_id,student_id,username,question} = req.body;
     let con = null;
@@ -79,7 +80,7 @@ post.post('/createQuestion',CheckAuth,uploader.single('image'),async(req,res)=>{
     }
 });
 
-post.delete('/deleteQuestion/:q_id',async(req,res)=>{
+post.delete('/deleteQuestion/:q_id', authorize, async(req,res)=>{
     // delete the question for the database, still need :
     //  1 - Auth & Authorization.
     const {q_id} = req.params;
@@ -95,7 +96,7 @@ post.delete('/deleteQuestion/:q_id',async(req,res)=>{
     }
 });
 
-post.put('/modifyQuestion/:q_id', async(req, res)=>{
+post.put('/modifyQuestion/:q_id', authorize, async(req, res)=>{
     const {q_id} = req.params;
     const {q_username, question} = req.body;
     try {
@@ -115,7 +116,7 @@ post.put('/modifyQuestion/:q_id', async(req, res)=>{
     }
 });
 
-post.put('/upvoteQuestion/:q_id',async(req,res)=>{
+post.put('/upvoteQuestion/:q_id', authenticate, async(req,res)=>{
     // in this function needs auth.
     // need to take the student_id , in order not to make multiple upvotes.
     const {q_id} = req.params;
@@ -134,7 +135,7 @@ post.put('/upvoteQuestion/:q_id',async(req,res)=>{
     }
 });
 
-post.get('/getQuestion/:question_id',async(req,res)=>{
+post.get('/getQuestion/:question_id', authenticate, async(req,res)=>{
     // this might not needs auth -> like face when you dont have an account, but you still can see the post.
     const {question_id} = req.params; // I set  question_id = 1 from Postman.
     
@@ -151,7 +152,7 @@ post.get('/getQuestion/:question_id',async(req,res)=>{
     }
 })
 
-post.get('/getUnverifiedQuestions', async(req, res)=>{
+post.get('/getUnverifiedQuestions', authenticate, async(req, res)=>{
     try {
         const con = await client.connect();
         const sqlCommand = `
@@ -170,8 +171,61 @@ post.get('/getUnverifiedQuestions', async(req, res)=>{
     }
 });
 
+post.get('/search/:search', authenticate, async(req,res)=>{
+    const {search} = req.params;
+    console.log("passed in server")
+    try{
+        const con = await client.connect();
+        const {rows:students} = await con.query(`SELECT * FROM students WHERE username ILIKE '%${search}%';`);
+        const {rows:courses} = await con.query(`SELECT * FROM courses WHERE course_name ILIKE '%${search}%';`);
+        const {rows:questions} = await con.query(`SELECT * FROM questions WHERE question ILIKE '%${search}%';`);
+        res
+        .status(200)
+        .json({
+            students,
+            courses,
+            questions
+        })
+        con.release();
+    } catch(err){
+        console.log(err)
+    }
+});
+
+// Fav Ques
+post.post('/addToFavQues', authenticate, async(req,res)=>{
+    const {s_id,q_id,username} = req.body;
+    try{
+        const con = await client.connect();
+        const sqlCommand = `INSERT INTO fav_questions(s_id,username,q_id)
+        VALUES ('${s_id}','${username}',${q_id});`
+        await con.query(sqlCommand);
+        return res.status(201).json({msg:'Questions is added to your list'})
+
+    }catch(err){
+        console.log(err)
+    }
+})
+
+post.delete('/deleteFromFavQues', authorize, async(req, res)=>{
+    const {q_id} = req.body;
+    try {
+        const con = await client.connect();
+        const sqlCommand = `
+            DELETE FROM fav_questions
+            WHERE q_id = ${q_id};
+        `;
+        await con.query(sqlCommand);
+        con.release();
+        res.status(200).send('Question is deleted from favorite');
+    } catch(err) {
+        console.log(err);
+        res.send(err);
+    }
+});
+
 // Answers
-post.post("/createAnswer", async(req, res)=>{
+post.post("/createAnswer", authenticate, async(req, res)=>{
     // this api need to check the the auth of the user.
     const {answer, ans_username, student_id, question_id} = req.body;
     try {
@@ -191,7 +245,7 @@ post.post("/createAnswer", async(req, res)=>{
     }
 });
 
-post.delete('/deleteAnswer/:ans_id', async(req, res)=>{
+post.delete('/deleteAnswer/:ans_id', authorize, async(req, res)=>{
     const {ans_id} = req.params;
     try {
         const con = await client.connect();
@@ -208,7 +262,7 @@ post.delete('/deleteAnswer/:ans_id', async(req, res)=>{
     }
 });
 
-post.put('/modifyAnswer/:ans_id', async(req, res)=>{
+post.put('/modifyAnswer/:ans_id', authorize, async(req, res)=>{
     const {ans_id} = req.params;
     const {answer, ans_username} = req.body;
     try {
@@ -228,7 +282,7 @@ post.put('/modifyAnswer/:ans_id', async(req, res)=>{
     }
 });
 
-post.put('/upvoteAnswer/:ans_id', async(req, res)=>{
+post.put('/upvoteAnswer/:ans_id', authenticate, async(req, res)=>{
     // this method needs auth.
     const {ans_id} = req.params;
     try {
@@ -247,7 +301,7 @@ post.put('/upvoteAnswer/:ans_id', async(req, res)=>{
     }
 });
 
-post.put('/downvoteAnswer/:ans_id',async(req, res)=>{
+post.put('/downvoteAnswer/:ans_id', authenticate, async(req, res)=>{
     // in this function needs auth.
     // need to take the student_id , in order not to make multile upvotes
     const {ans_id} = req.params;
@@ -274,7 +328,7 @@ post.put('/downvoteAnswer/:ans_id',async(req, res)=>{
     }
 });
 
-post.put('/verifyAnswer/:ans_id', async(req, res)=>{
+post.put('/verifyAnswer/:ans_id', isTeacher, async(req, res)=>{
     const {ans_id} = req.params;
     const {q_id} = req.body;
     try {
@@ -296,7 +350,18 @@ post.put('/verifyAnswer/:ans_id', async(req, res)=>{
     }
 });
 
-post.put('/unverifyAnswer/:ans_id', async(req, res)=>{
+/*
+SELECT 
+    CASE 
+        WHEN SUM(CASE WHEN answers.ans_verified = false THEN 1 ELSE 0 END) == 0
+        THEN questions.q_verified = false
+        ELSE questions.q_verified = false
+    END
+FROM answers, questions;
+
+*/
+
+post.put('/unverifyAnswer/:ans_id', isTeacher, async(req, res)=>{
     const {ans_id} = req.params;
     try {
         const con = await client.connect();
@@ -314,7 +379,7 @@ post.put('/unverifyAnswer/:ans_id', async(req, res)=>{
     }
 });
 
-post.get('/getVerifiedAnswers', async(req, res)=>{
+post.get('/getVerifiedAnswers', authenticate, async(req, res)=>{
     const {ans_verified} = req.body;
     try {
         const con = await client.connect();
@@ -334,39 +399,7 @@ post.get('/getVerifiedAnswers', async(req, res)=>{
     }
 });
 
-// Fav Ques
-post.post('/addToFavQues',async(req,res)=>{
-    const {s_id,q_id,username} = req.body;
-    try{
-        const con = await client.connect();
-        const sqlCommand = `INSERT INTO fav_questions(s_id,username,q_id)
-        VALUES ('${s_id}','${username}',${q_id});`
-        await con.query(sqlCommand);
-        return res.status(201).json({msg:'Questions is added to your list'})
-
-    }catch(err){
-        console.log(err)
-    }
-})
-
-post.delete('/deleteFromFavQues', async(req, res)=>{
-    const {q_id} = req.body;
-    try {
-        const con = await client.connect();
-        const sqlCommand = `
-            DELETE FROM fav_questions
-            WHERE q_id = ${q_id};
-        `;
-        await con.query(sqlCommand);
-        con.release();
-        res.status(200).send('Question is deleted from favorite');
-    } catch(err) {
-        console.log(err);
-        res.send(err);
-    }
-});
-
-post.get('/:course_code',async(req,res)=>{
+post.get('/:course_code', authenticate, async(req,res)=>{
     // this get all of the questions related to the course code provided.
     const {course_code} = req.params;
     try{
@@ -380,31 +413,10 @@ post.get('/:course_code',async(req,res)=>{
         const result = await con.query(sqlCommand);
 
         return res.status(200).json({data:result.rows})
-    }catch(err){
-
+    } catch(err) {
+        console.log(err);
+        res.send(err);
     }
 })
-
-post.get('/search/:search',async(req,res)=>{
-    const {search} = req.params;
-    console.log("passed in server")
-    try{
-        const con = await client.connect();
-        const {rows:students} = await con.query(`SELECT * FROM students WHERE username ILIKE '%${search}%';`);
-        const {rows:courses} = await con.query(`SELECT * FROM courses WHERE course_name ILIKE '%${search}%';`);
-        const {rows:questions} = await con.query(`SELECT * FROM questions WHERE question ILIKE '%${search}%';`);
-        res
-        .status(200)
-        .json({
-            students,
-            courses,
-            questions
-        })
-        con.release();
-    }
-    catch(err){
-        console.log(err)
-    }
-});
 
 export default post;
