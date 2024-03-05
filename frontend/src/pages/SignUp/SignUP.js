@@ -19,7 +19,7 @@ import { AppState } from '../../App';
 /*
 
 */ 
- 
+
 const SignUP = () => {
     document.title = 'SignUp' // for naming the page the tab.
     const navigate = useNavigate(); // to navigate to anotehr page
@@ -39,6 +39,7 @@ const SignUP = () => {
     const [subdepartment, setSubdepartment] = useState('');
     const [visiblePassword, setVisiblePassword] = useState(false);
     const [visibleRepassword, setVisibleRepassword] = useState(false);
+    const [type, setType] = useState("");
     
     //alarms
     const [userNameAlarm, setUserNameAlarm] = useState({ show: false, msg: "" });
@@ -75,11 +76,15 @@ const SignUP = () => {
     };
 
     const handleIdAlarm = () => {
+        if (id.match(/\d\d(\d|p|q|t|w)\d\d\d\d/i)) {
+            setType("student");
+        } else if (id.match(/\d\d(\d|p|q|t|w)\d\d\d/i)) {
+            setType("teacher");
+        }
+
         if (id === '') {
             setIdAlarm({ show: true, msg: "Enter your id" });
-        } else if (id.length !== 7) {
-            setIdAlarm({ show: true, msg: "Must be 7 characters" });
-        } else if (!id.match(/\d\d(\d|p|q|t|w)\d\d\d\d/i)) {
+        } else if (!id.match(/\d\d(\d|p|q|t|w)\d\d\d\d/i) && !id.match(/\d\d(\d|p|q|t|w)\d\d\d/i)) {
             setIdAlarm({ show: true, msg: "Enter a valid id" });
         }
     };
@@ -142,33 +147,35 @@ const SignUP = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // if (!alarms.includes(true) && !primaryStates.includes("") &&
-        //     ((level === 'Junior' || level === 'Senior1' || level === 'Senior2') ?
-        //         ((secondaryStates.includes('')) ? false : true) : true)) {
+        if ( !alarms.includes(true) && 
+            ( !primaryStates.includes("") || (level === "" && type === "teacher") ) &&
+            ((level === 'Junior' || level === 'Senior1' || level === 'Senior2') ?
+                ((secondaryStates.includes('')) ? false : true) : 
+                (level === "" && type === "teacher") ? ((secondaryStates.includes('')) ? false : true) : true) ) {
 
-        //     try{
-        //         //send a request to backend.
-        //         const result = await axios.post('http://localhost:8000/person/signup',
-        //         {
-        //             username,
-        //             student_id: id,
-        //             password,
-        //             studnet_level: level,
-        //             student_department: department,
-        //             student_subdepartment: subdepartment
-        //         })
-        //         setStuCourses(result.data.sugesstedCourses); // here I set the default courses for the student, which comes from server
-        //         navigate('/welcome'); // then navigate to welcome page. 
-        //     }catch(error){
-        //         // handle error coming from api
-        //         if(error.isAxiosError){
-        //             console.log(error.isAxiosError)
-        //         }else if(error.response){
-        //             console.log(error.response)
-        //         }
-        //     }
+            // try{
+            //     //send a request to backend.
+            //     const result = await axios.post('http://localhost:8000/person/signup',
+            //     {
+            //         username,
+            //         student_id: id,
+            //         password,
+            //         studnet_level: level,
+            //         student_department: department,
+            //         student_subdepartment: subdepartment
+            //     })
+            //     setStuCourses(result.data.sugesstedCourses); // here I set the default courses for the student, which comes from server
+            //     navigate('/welcome'); // then navigate to welcome page. 
+            // }catch(error){
+            //     // handle error coming from api
+            //     if(error.isAxiosError){
+            //         console.log(error.isAxiosError)
+            //     }else if(error.response){
+            //         console.log(error.response)
+            //     }
+            // }
 
-        // }
+        }
     };
     return (
         <>
@@ -195,7 +202,7 @@ const SignUP = () => {
                             <input className={idAlarm.show ? "in id invalid" : "in id"}
                                 value={id} name='id' type="text" placeholder='ID' maxLength="7"
                                 onChange={(e) => setId(e.target.value)} onBlur={handleIdAlarm}
-                                onFocus={() => setIdAlarm({ show: false, msg: "" })}>
+                                onFocus={() => {setIdAlarm({ show: false, msg: "" }); setType("") }}>
                             </input>
                             <p className={idAlarm.show ? "invalid" : "at"}>@eng.asu.edu.eg</p>
                         </div>
@@ -230,21 +237,25 @@ const SignUP = () => {
                             <div className='alarm-container'><p className='alarm'>*{repasswordAlarm.msg}!</p></div>}
 
 
-                        <select className={level === '' ? (levelAlarm.show ? "in invalid holder" : "in holder") :
-                            (levelAlarm.show ? "in invalid" : "in")}
-                            value={level} onChange={(e) => setLevel(e.target.value)} onBlur={handleLevelAlarm}
-                            onFocus={() => setLevelAlarm({ show: false, msg: "" }) }>
-                            <option value="" disabled selected hidden >
-                                Select Your Level
-                            </option>
-                            {levels.map(lev => (<option value={lev}>{lev}</option>))}
-                        </select>
-                        {levelAlarm.show && <div className='alarm-container'><p className='alarm'>*{levelAlarm.msg}!</p></div>}
-
+                        {(type === "student") && 
+                        <>
+                            <select className={level === '' ? (levelAlarm.show ? "in invalid holder" : "in holder") :
+                                (levelAlarm.show ? "in invalid" : "in")}
+                                value={level} onChange={(e) => setLevel(e.target.value)} onBlur={handleLevelAlarm}
+                                onFocus={() => setLevelAlarm({ show: false, msg: "" }) }>
+                                <option value="" disabled selected hidden >
+                                    Select Your Level
+                                </option>
+                                {levels.map(lev => (<option value={lev}>{lev}</option>))}
+                            </select>
+                            {levelAlarm.show && <div className='alarm-container'><p className='alarm'>*{levelAlarm.msg}!</p></div>}
+                        </>
+                        }
 
                         {/*  departments (Electrical - Civil - Mechanical) */}
                         {
-                            (level === 'Junior' || level === 'Senior1' || level === 'Senior2' || level === 'Somophore') &&
+                            (level === 'Junior' || level === 'Senior1' || level === 'Senior2' || level === 'Somophore' ||
+                            (level === "" && type === "teacher")) &&
                             (
                                 <>
                                     <select className={department === '' ? (departmentAlarm.show ? "in invalid holder" : "in holder") :
@@ -266,7 +277,8 @@ const SignUP = () => {
                         {/* Sub departments (Elctronics - Computer - Power) */}
                         {
                             // condition
-                            ((level === 'Junior' || level === 'Senior1' || level === 'Senior2') && (department === 'Electrical'
+                            ((level === 'Junior' || level === 'Senior1' || level === 'Senior2' || 
+                            (level === "" && type === "teacher")) && (department === 'Electrical'
                                 || department === 'Mechanical' || department === 'Civil' || department === 'Architectural')) &&
 
                             (
