@@ -1,13 +1,16 @@
-$color_1: black;
-$color_2: rgb(25, 219, 233);
 
 .statisticsview-container {
+	background-image: linear-gradient(to bottom, #1E554E, #091233);
+	view-timeline: --s-v;
+	.title {
+		height: 0%;
+	}
 	height: 100vh;
 	width: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	color: $color_1;
+	color: white;
 	position: relative;
 	overflow: hidden;
 	font-size: 1.25rem;
@@ -19,10 +22,14 @@ $color_2: rgb(25, 219, 233);
 		height: 90%;
 		border-radius: 50px;
 		background-image: linear-gradient(to bottom, #EF5350, #419296);
+
+		.descrip {
+			font-size: 1.75rem;
+		}
 	}
 }
 .statistics-no {
-	color: $color_2;
-	font-size: 2rem;
+	color: #FFCA28;
+	font-size: 3rem;
 	font-weight: 900;
 }

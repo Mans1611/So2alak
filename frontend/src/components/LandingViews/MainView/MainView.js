@@ -8,18 +8,18 @@ import mainlogo from "../../../assets/landing/SO_alak.svg";
 import { Link } from "react-router-dom";
 
 import AOS from "aos";
-import "aos/dist/aos.css";
+import "aos/dist/aos.css"; 
 
 const MainView = () => {
 
   useEffect(()=> {
-    AOS.init({duration: 2000});
+    AOS.init({duration: 3000});
   }, []);
 
   return (
     <div className="mainview-container">
       <div className="mianimg-container">
-        <div className="laptop" data-aos="fade-up">
+        <div className="laptop" data-aos="fade-left">
           <img className="laptop-bg" src={laptop_bg} alt="laptop" />
           <img className="laptop-img" src={laptop} alt="laptop" />
         </div>
@@ -29,7 +29,7 @@ const MainView = () => {
         </div>
       </div>
       <div className="mainview-description">
-        <img className="mainlogo" src={mainlogo} alt="mainlogo" data-aos="zoom-in" />
+        <img className="mainlogo" src={mainlogo} alt="mainlogo" />
         <p className="description" data-aos="flip-up">
           College community platform where students are asking their questions
           related to specific course. And their colleagues are being able to

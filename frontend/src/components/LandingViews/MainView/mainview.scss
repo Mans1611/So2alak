@@ -6,11 +6,13 @@ $background-color_2: #028064;
 
 /* =========================== Phone =========================== */
 .mainview-container {
+	background-image: linear-gradient(to bottom, #1E554E, #091233);
 	height: 100vh;
 	width: 100%;
 	display: flex;
 	align-items: center;
 	font-size: 16px;
+
 	.mianimg-container {
 		width: 50%;
 		height: 100%;
@@ -19,6 +21,7 @@ $background-color_2: #028064;
 		display: grid;
 		grid-template-columns: repeat(9, 1f);
 		grid-template-rows: repeat(7, auto);
+
 		.phone {
 			grid-column: 4/7;
 			grid-row-start: 5;
@@ -26,16 +29,26 @@ $background-color_2: #028064;
 			position: relative;
 			justify-content: center;
 			align-items: center;
+
+			.phone-bg,
+			.phone-img {
+				animation: fade-left linear both;
+				animation-timeline: scroll();
+				animation-range: exit 10% 25%;
+			}
+
 			.phone-img {
 				width: 50%;
 				position: absolute;
 			}
+
 			.phone-bg {
 				width: 100%;
 				position: absolute;
 				clip-path: polygon(36% 26%, 65% 26%, 67% 29%, 67% 68%, 64% 73%, 36% 73%, 33% 68%, 33% 31%);
 			}
 		}
+
 		.laptop {
 			grid-column: 1/7;
 			grid-row-start: 4;
@@ -43,10 +56,19 @@ $background-color_2: #028064;
 			position: relative;
 			justify-content: center;
 			align-items: center;
+
+			.laptop-bg,
+			.laptop-img {
+				animation: fade-right linear both;
+				animation-timeline: scroll();
+				animation-range: exit 5% 25%;
+			}
+
 			.laptop-img {
 				width: 100%;
 				position: absolute;
 			}
+
 			.laptop-bg {
 				width: 100%;
 				position: absolute;
@@ -54,6 +76,7 @@ $background-color_2: #028064;
 			}
 		}
 	}
+
 	.mainview-description {
 		display: flex;
 		flex-flow: column;
@@ -62,24 +85,34 @@ $background-color_2: #028064;
 		height: 100vh;
 		width: 50%;
 		flex: 0 0 50%;
+
 		.mainlogo {
 			width: 70%;
+
+			animation: zoom linear both;
+				animation-timeline: scroll();
+				animation-range: exit 5% 20%;
 		}
+
 		.description {
-			color: $color_1;
+			color: $color_2;
 			font-size: 130%;
 			padding: 5%;
 			text-align: center;
 			font-family: $font-family_1;
 			line-height: 25px;
-			animation: discription linear both;
+
+
+			animation: fade linear both;
 			animation-timeline: scroll();
-			animation-range: contain;
+			animation-range: exit 10% 25%;
 		}
+
 		.signin-signup {
 			display: flex;
 			width: 100%;
 			justify-content: space-evenly;
+
 			.signin {
 				width: 40%;
 				padding: 5px;
@@ -90,13 +123,16 @@ $background-color_2: #028064;
 				box-shadow: 0 1px 3px #000;
 				background-color: $background-color_1;
 				cursor: pointer;
+
 				&:hover {
 					box-shadow: 0 2px 5px #000;
 				}
+
 				&:active {
 					box-shadow: 0 0 1px #000;
 				}
 			}
+
 			.signup {
 				width: 40%;
 				padding: 5px;
@@ -108,9 +144,11 @@ $background-color_2: #028064;
 				background-color: $background-color_1;
 				cursor: pointer;
 				background-color: $background-color_2;
+
 				&:hover {
 					box-shadow: 0 2px 5px #000;
 				}
+
 				&:active {
 					box-shadow: 0 0 1px #000;
 				}
@@ -118,24 +156,80 @@ $background-color_2: #028064;
 		}
 	}
 }
+
 @media screen and (max-width: 480px) {
 	.mainview-container {
 		flex-flow: column;
+
 		.mianimg-container {
 			width: 100%;
+
 			.phone {
 				grid-row-start: 6;
 			}
 		}
+
 		.mainview-description {
 			width: 100%;
+
 			.description {
 				font-size: 110%;
 				line-height: 20px;
 			}
+
 			.mainlogo {
 				display: none;
 			}
 		}
+	}
+}
+
+
+
+/* Animations */
+
+@keyframes fade-right {
+	from {
+		transform: translateX(0px);
+		opacity: 1;
+	}
+
+	to {
+		transform: translateX(100px);
+		opacity: 0;
+	}
+}
+@keyframes fade-left {
+	from {
+		transform: translateX(0px);
+		opacity: 1;
+	}
+
+	to {
+		transform: translateX(-100px);
+		opacity: 0;
+	}
+}
+
+
+@keyframes zoom {
+	from {
+		transform: scale(1);
+		opacity: 1;
+	}
+
+	to {
+		transform: scale(0);
+		opacity: 0;
+	}
+}
+
+@keyframes fade {
+	from {
+		opacity: 1;
+	}
+
+	to {
+		opacity: 0;
 	}
 }

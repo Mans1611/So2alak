@@ -23,7 +23,7 @@ import "aos/dist/aos.css";
 const Landing = () => {
 
   useEffect(() => {
-    AOS.init({ duration: 2000 });
+    AOS.init({ duration: 1000 });
   }, []);
 
   const [device, setDevice] = useState(false);
@@ -54,41 +54,11 @@ const Landing = () => {
     });
   }
 
-
-/*
-  const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [view, setView] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('https://jsonplaceholder.typicode.com/posts/1');
-        setData(response.data);
-        setView(data);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  if (loading) {
-   setView("Loading Component");
-  }
-
-  if (error) {
-    setView({error});
-  }
-*/
-
-
   return (
     <div className="landing-container" onLoad={detectDevice}>
+
+      <div className="scroll-bar"></div>
+
       <MainView />
       {device ? <Slideshow comps={[
         <SlideComponent title="Answers" img={answers} description="The students can share a videos or articles’ link to the student, and
@@ -100,9 +70,9 @@ const Landing = () => {
                 it will be in the suggestion section for the question."/>]} /> : <QuestionsView />}
       <BadgesView />
       {device ? <Slideshow comps={[
-        <SlideComponent title="" img={students} description={<p>Join more than <p className="statistics-no"> + data.sn </p> Students.</p>} />,
-        <SlideComponent title="" img={QandA} description={<p>More than <p className="statistics-no"> + data.van </p> question with <span> verified answers</span>.</p>} />,
-        <SlideComponent title="" img={courses} description={<p>Get trusted information in more than <p className="statistics-no"> + data.cn </p> courses.</p>} />]} /> : <StatisticsView />}
+        <SlideComponent title="" img={students} description={<p>Join more than <p className="statistics-no"> +10000 </p> Students.</p>} />,
+        <SlideComponent title="" img={QandA} description={<p>More than <p className="statistics-no"> +1000 </p> question with <span> verified answers</span>.</p>} />,
+        <SlideComponent title="" img={courses} description={<p>Get trusted information in <p className="statistics-no"> 170 </p> courses.</p>} />]} /> : <StatisticsView />}
       {showTopBtn && <div className="go-top" onClick={goTop}>&uarr;</div>}
     </div>
   );

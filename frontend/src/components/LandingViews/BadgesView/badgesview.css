@@ -1,0 +1,140 @@
+
+.badgesview-container {
+	height: 100vh;
+	width: 100%;
+	background-image: linear-gradient(to bottom, #1E554E, #091233);
+	display: flex;
+	flex-flow: column;
+	color: white;
+	view-timeline: --b-v;
+
+	.label {
+		width: 100%;
+		text-align: center;
+		font-size: 5rem;
+		margin-top: 2.5%;
+	}
+	.badges-container {
+		width: 90%;
+		height: 75%;
+		background-color: rgba(36, 36, 36, 0.6);
+		position: relative;
+		margin: auto;
+		border-radius: 50px;
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-evenly;
+
+		.gold-badge {
+			animation: fade-ud linear both;
+		}
+		.silver-badge {
+			align-self: flex-end;
+			animation: fade-l linear both;
+		}
+		.bronze-badge {
+			align-self: flex-end;
+			animation: fade-r linear both;
+		}
+		.gold-badge,
+		.silver-badge,
+		.bronze-badge {
+			width: 30%;
+			display: inline-block;
+			animation-timeline: --b-v;
+		}
+	}
+}
+
+
+/* =========================== Phone =========================== */
+@media screen and (max-width: 480px) {
+	.badgesview-container {
+		.label {
+			font-size: 4rem;
+			margin-top: 5%;
+		}
+		.badges-container {
+			flex-flow: column;
+			.gold-badge,
+			.bronze-badge,
+			.silver-badge {
+				align-self: center;
+				width: 40%;
+			}
+		}
+	}
+}
+
+
+
+
+/* Animations */
+
+@supports(animation-timeline: view()) {
+		@keyframes fade-l {
+		entry 60% {
+			opacity: 0;
+			transform: translateX(100px);
+		}
+
+		entry 80% {
+			opacity: 1;
+			transform: translateX(0px);
+		}
+
+		exit 40% {
+			opacity: 1;
+			transform: translateX(0px);
+		}
+
+		exit 100% {
+			opacity: 0;
+			transform: translateX(100px);
+		}
+	}
+
+	@keyframes fade-r {
+		entry 60% {
+			opacity: 0;
+			transform: translateX(-100px);
+		}
+
+		entry 80% {
+			opacity: 1;
+			transform: translateX(0px);
+		}
+
+		exit 40% {
+			opacity: 1;
+			transform: translateX(0px);
+		}
+
+		exit 100% {
+			opacity: 0;
+			transform: translateX(-100px);
+		}
+	}
+
+	@keyframes fade-ud {
+		entry 50% {
+			opacity: 0;
+			transform: translateY(100px);
+		}
+
+		entry 70% {
+			opacity: 1;
+			transform: translateY(0px);
+		}
+
+		exit 30% {
+			opacity: 1;
+			transform: translateY(0px);
+		}
+
+		exit 50% {
+			opacity: 0;
+			transform: translateY(100px);
+		}
+	}
+}

@@ -1,10 +1,6 @@
-$color_1: black;
-$background-color_1: #c4c4c4;
-$background-color_2: #6a0dad;
 
-/* Slideshow */
-/* Buttons */
 .slideshow {
+	background-image: linear-gradient(to bottom, #1E554E, #091233);
 	position: relative;
 	margin: 0 auto;
 	overflow: hidden;
@@ -22,7 +18,7 @@ $background-color_2: #6a0dad;
 			display: inline-block;
 			height: 100%;
 			width: 100%;
-			color: $color_1;
+			color: white;
 			text-wrap: wrap;
 		}
 	}
@@ -36,10 +32,10 @@ $background-color_2: #6a0dad;
 			border-radius: 50%;
 			cursor: pointer;
 			margin: 0 20px;
-			background-color: $background-color_1;
+			background-color: #c4c4c4;
 		}
 		.slideshowDot.active {
-			background-color: $background-color_2;
+			background-color: #6a0dad;
 		}
 	}
 }

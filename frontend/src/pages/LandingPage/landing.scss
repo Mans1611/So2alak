@@ -7,11 +7,21 @@ $background-color_1: #f5f5f5;
 .landing-container {
 	width: 100%;
 	height: 100vh;
-	background-image: url(../../assets/landing/landing-bg.jpg);
-	background-size: cover;
-	background-attachment: fixed;
-	overflow: scroll;
+	/*url(../../assets/landing/landing-bg.jpg)*/
+	/*overflow: scroll;*/
 	font-size: clamp(1.125rem, 2vh, 1.25rem);
+
+	.scroll-bar {
+		position: fixed;
+		top: 0;
+		z-index: 999;
+		height: 10px;
+		background-color: $color_2;
+
+		animation: scrolling linear both;
+		animation-timeline: scroll();
+	}
+
 	.go-top {
 		position: fixed;
 		bottom: 0px;
@@ -21,30 +31,48 @@ $background-color_1: #f5f5f5;
 		color: $color_1;
 		cursor: pointer;
 		padding: 15px 25px;
+
 		&:hover {
 			color: $color_2;
 		}
 	}
 }
+
 ::-webkit-scrollbar {
 	width: 20px;
 	background-color: $background-color_1;
 }
+
 ::-webkit-scrollbar-thumb {
 	border-radius: 10px;
 	background: linear-gradient(to left, #96a6bf, #63738c);
 	box-shadow: inset 0 0 1px 1px #5c6670;
+
 	&:hover {
 		background: linear-gradient(to left, #8391a6, #536175);
 	}
 }
+
 ::-webkit-scrollbar-track {
 	border-radius: 10px;
 	background: #eee;
 	box-shadow: 0 0 1px 1px #bbb, inset 0 0 7px rgba(0, 0, 0, 0.3);
 }
+
 @media screen and (max-width: 480px) {
 	.landing-container {
 		background-position: right;
+	}
+}
+
+/* Animations */
+
+@keyframes scrolling {
+	from {
+		width: 0%;
+	}
+
+	to {
+		width: 100%;
 	}
 }
