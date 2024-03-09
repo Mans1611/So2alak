@@ -10,13 +10,18 @@ import Search from '../Search/Search';
 
 const Navbar = () => {
   // states
-  const {dark,setDark} = useContext(AppState);
+  const {dark,setDark,
+    username,
+    sidebarSelected,setSideBarSelected
+  } = useContext(AppState);
   const [showToggleList,setShowToggleList] = useState(false);
   // handlers.
   const changeTheme = ()=>setDark(dark=>!dark);
-  const showAvatar = ()=>setShowToggleList(show=>!show);
-  const username = 'mansour '
+  const showAvatar = ()=>setShowToggleList(show=>!show); 
   const logout = ()=>{};
+  const handleActive=()=>{
+    setSideBarSelected('general')
+  }
   return (
     <div className={`navbar ${dark && 'dark'}`}>
         <div className="logo-wrapper">
@@ -24,13 +29,15 @@ const Navbar = () => {
           </div>
         <Search/>
         <div className="links-wrapper">
-            <Link className='links' to={'/main/feedpage'}> Home</Link>
+            <Link onClick={()=>handleActive('general')} className='links' to={'/main/feedpage'}> Home</Link>
             <Link className='links' to={'/leaderboard'}> LeaderBoard</Link>
             <Link className='links' to={'/faviourte'}> Fav</Link>
         </div>
         <div className="avatar-wrapper">
+          <h1 className="username">
+            {username?username:'Mans1611'}
+          </h1>
           <div className="img-wrapper">
-
           <img onClick = {showAvatar} src={avatar} alt="" srcset="" />
             {showToggleList && 
               <ul className='toggle-list'>

@@ -84,7 +84,7 @@
                 background-color: $semi-dark-blue;
                 color: $light-white;
                 &::placeholder{
-                    color: $sky-blue;
+                    color: #6ddbf386;
                 }
             }
             
@@ -92,7 +92,7 @@
               
                 color: $light-white;
                 background-color: $sky-blue;
-               
+                cursor: pointer;
                 &:hover{
                     background-color: $semi-dark-blue;
                 }

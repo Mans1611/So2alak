@@ -17,8 +17,7 @@ const WelcomePage = () => {
   const {
     dark,
     username,
-    studentCourses,
-    setStuCourses,
+    studentCourses,setStuCourses,
     id: student_id,
   } = useContext(AppState);
 
@@ -39,12 +38,13 @@ const WelcomePage = () => {
       `http://localhost:8000/course/searchcourse/${e.target.value}`
     );
     const timeout = setTimeout(() => {
-      setLoading(false);
       setSearchedCourses(data.courses);
-      clearTimeout(timeout);
-    }, 750);
+      setLoading(false);
+    }, 250);
+    clearTimeout(timeout);
     console.log(data)
   };
+  console.log(student_id)
   const RegisterCourses = async () => {
     if (studentCourses.length === 0) return; // if no courses is selected no request send to backend.
     try {
@@ -55,10 +55,13 @@ const WelcomePage = () => {
         {
           studentCourses,
           student_id,
+          username
         }
       );
-      navigate("/feedpage");
+      if(result.status == 201)
+        navigate("/main/feedpage");
     } catch (error) {
+      console.log(error)
       if (error.response.status === 400) console.log("Error");
     }
   };

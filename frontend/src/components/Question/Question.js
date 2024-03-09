@@ -11,7 +11,7 @@ import { AppState } from '../../App';
 const Question = ({question}) => {
     const [helped,setHelp] = useState(false);
     const circle = useRef(null);
-    const [helpCount,setHelpCount] = useState(3)
+    const [helpCount,setHelpCount] = useState(question.q_upvotes)
     const [showAnswer,setShowAnswer] = useState(false);
     const [answer,setAnswer] = useState('');
     const {dark} = useContext(AppState);
@@ -21,14 +21,14 @@ const Question = ({question}) => {
         if(helped && circle.current){
             circle.current.style.transform = 'rotate(180deg)';
             setHelp(false)
-            setHelpCount(count=>count=count-1)
+            setHelpCount(count=>count-1)
         }
         else {
             pop.play();
             if (circle.current)
                 circle.current.style.transform = 'rotate(0deg)';
                 setHelp(true)
-                setHelpCount(count=>count=count+1)
+                setHelpCount(count=>count+1)
 
         }
     
@@ -62,7 +62,7 @@ const Question = ({question}) => {
                         <RemoveIcon/>
                         :<AddIcon/>}
                     </div>
-                    <h3 className='help-counts'>{question.q_upvotes}</h3>
+                    <h3 className='help-counts'>{helpCount}</h3>
                 </div>
             </div>
             <div className='question-wrapper'>

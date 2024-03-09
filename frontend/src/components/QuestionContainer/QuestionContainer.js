@@ -1,26 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './questioncontainer.scss';
 import Question from '../Question/Question';
-import Answer from '../Answer/Answer';
-import axios from 'axios';
 import LoadingQuestion from '../Question/LoadingQuestion';
+import FetchPost from '../../utilis/FetchPost';
 
 const QuestionContainer = () => {
   const [loading,setLoading] = useState(true);
   const [questions,setQuestions] = useState([]);
-
   const [questionsPage,setQuestionsPage] = useState(0);
 
   useEffect(()=>{
-    const fetchQuestions = async()=>{
-      const result = await axios.get(`http://localhost:8000/post/allquestions/${questionsPage}`);
-      setQuestions(result.data.data);
-      setLoading(false)
-    }
-    fetchQuestions();
-  },[questionsPage])
-  
-  
+    setLoading(true)
+    const data= async()=> {
+      const {data} = await FetchPost(`http://localhost:8000/post/allquestions/1`)
+      setQuestions(data.data)
+    };
+    data();
+    setLoading(false)
+  },[])
+    
   
   return (
     <div  className='questions-container'>

@@ -1,12 +1,15 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import './askquestion.scss';
 import axios from 'axios';
 import ImageIcon from '@mui/icons-material/Image';
+import { AppState } from '../../App';
 const AskQuestion = () => {
     const [question,setQuestion]=useState('');
     const questionInput = useRef(null);
     const [imgPreview,setImgPrev] = useState(null);
     const [file,setFile] = useState(null);
+
+    const {sidebarSelected} = useContext(AppState);
    const detectLang = (question)=>{
     // this to detect the first letetr of the question if its:
     // if it in english the input will be -> left to right (ltr).
@@ -25,8 +28,7 @@ const AskQuestion = () => {
             questionInput.current.style.borderTopLeftRadius = '0px'
             questionInput.current.style.borderTopRightRadius = '0px'
         }
-        const reader = new FileReader();
-        
+        const reader = new FileReader()
         reader.onload = (e)=>{
             setImgPrev(e.target.result);
         }
@@ -55,7 +57,7 @@ const AskQuestion = () => {
                     imgPreview &&
                     <img  className='img-preview' src={imgPreview} alt="" srcset="" />
                 }
-            <textarea ref={questionInput} onChange={(e)=>{detectLang(e.target.value);setQuestion(e.target.value);}} placeholder='Ask Your Question' type="text" />
+            <textarea ref={questionInput} onChange={(e)=>{detectLang(e.target.value);setQuestion(e.target.value);}} placeholder= {`Ask Your Question ${sidebarSelected == 'general' ?'':'related to '+sidebarSelected}`} type="text" />
             <div className="files-wrapper">
                 <input onChange={handleImageUpload} type="file" name="img" id="img-uploader" />
                 <label className='img-label' for='img-uploader'>

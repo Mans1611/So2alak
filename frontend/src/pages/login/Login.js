@@ -109,7 +109,7 @@ const Login = () => {
       console.log(res.request.status);
       if (res.request.status === 200)
         // this means that the user is signed in
-        navigate("/feedpage");
+        navigate("/main/feedpage");
     } catch (error) {
       if (error.isAxiosError)
         // this means that you have a network error or server is not working

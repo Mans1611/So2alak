@@ -141,13 +141,14 @@ const SignUP = () => {
     };
 
     const handleSubmit = async (e) => {
+        
         e.preventDefault();
         if (!alarms.includes(true) && !primaryStates.includes("") &&
             ((level === 'Junior' || level === 'Senior1' || level === 'Senior2') ?
-                ((secondaryStates.includes('')) ? false : true) : true)) {
-
+            ((secondaryStates.includes('')) ? false : true) : true)) {
             try{
                 //send a request to backend.
+                console.log("passing requesrt")
                 const result = await axios.post('http://localhost:8000/person/signup',
                 {
                     username,
@@ -157,14 +158,16 @@ const SignUP = () => {
                     student_department: department,
                     student_subdepartment: subdepartment
                 })
-                setStuCourses(result.data.sugesstedCourses); // here I set the default courses for the student, which comes from server
-                navigate('/welcome'); // then navigate to welcome page. 
+                if(result.status === 201){
+                    setStuCourses(result.data.sugesstedCourses); // here I set the default courses for the student, which comes from server
+                    navigate('/welcome'); // then navigate to welcome page. 
+                }
             }catch(error){
                 // handle error coming from api
-                if(error.isAxiosError){
-                    console.log(error.isAxiosError)
-                }else if(error.response){
-                    console.log(error.response)
+                console.log(error)
+                if(error?.response?.data.msg){
+                    console.log("passed")
+                    setIdAlarm({show:true,msg:error.response.data.msg})
                 }
             }
 

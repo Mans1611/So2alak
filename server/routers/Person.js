@@ -20,14 +20,16 @@ person.post('/signup',async(req,res)=>{
         let sqlCommand = `SELECT * FROM students WHERE student_id='${student_id}' OR username='${username}'`;
         let databaseResponse = await conn.query(sqlCommand);
         // check if this student_id has an account already or not.
-        if(databaseResponse.rows.length > 0)
-            return res.status(400).json({msg:"This id is already exists, try login"});
+        if(databaseResponse.rows.length > 0){
+            conn.release()
+            return res.status(400).json({msg:"Your Username or id may be exist"});
+        }
 
         const salt = await bcrypt.genSalt(parseInt(process.env.Salt));
         const hashedPass =  await bcrypt.hash(password,salt) // encrypting the password 
        if(student_department){
            sqlCommand = `INSERT INTO students (student_id,username,student_level,password,student_department,student_subDepartment) 
-           VALUES('${student_id}','${username}','${studnet_level}','${hashedPass}','${student_department}',${student_subdepartment?`${student_subdepartment}`:null})`;
+           VALUES('${student_id}','${username}','${studnet_level}','${hashedPass}','${student_department}',${student_subdepartment?`'${student_subdepartment}'`:null})`;
         }
        else{
             sqlCommand = `INSERT INTO students (student_id,username,student_level,password) 
@@ -45,7 +47,7 @@ person.post('/signup',async(req,res)=>{
         const courses = await DefaultCourses(studnet_level,student_department,student_subdepartment);
         
         conn.release(); // release the connection with the database
-        return res.status(200).json({sugesstedCourses : courses,token});
+        return res.status(201).json({sugesstedCourses : courses,token});
     }   
     catch(err){
         console.log(err);
@@ -73,9 +75,9 @@ person.post('/signin',async(req,res)=>{
 })
 
 person.post('/registercourse',async(req,res)=>{
-    const {student_name,studentCourses} = req.body // studentCourses is an array of courses that the studnet choose to follow
+    const {student_id,username,studentCourses} = req.body // studentCourses is an array of courses that the studnet choose to follow
     
-    if(!student_name)
+    if(!username)
         return res.status(400).json({msg : 'No provided id'})
     
     try{
@@ -83,7 +85,7 @@ person.post('/registercourse',async(req,res)=>{
         let sqlCommand = 
         `INSERT INTO students_courses (student_name,course_id)
          VALUES
-            ${studentCourses.map(course=> `('${student_name}','${course.course_id}')`)};
+            ${studentCourses.map(course=> `('${username}','${course.course_id}')`)};
         `
         const con = await client.connect();
         await con.query(sqlCommand);
@@ -108,7 +110,7 @@ person.get('/getStudentCourses/:s_name',async(req,res)=>{
         WHERE sc.student_name='${s_name}';`;
 
         const {rows} = await con.query(sqlCommand);
-        con.release()
+        con.release();
         return res.status(200).json({'data':rows})
     }catch(err){
         console.log(err);

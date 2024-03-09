@@ -70,7 +70,11 @@ $searchWidth : 90%;
         position: relative;
         display: flex;
         align-items: center;
-        
+        .username{
+            font-weight: 600;
+            margin-right: 5px;
+            color: $semi-dark-blue;
+        }
         .img-wrapper{
             position: relative;
             img{
@@ -131,6 +135,11 @@ $searchWidth : 90%;
             }
             .search-result{
                 background-color: $fully-dark-blue;
+            }
+        }
+        .avatar-wrapper{
+            .username{
+                color: $sky-blue;
             }
         }
         .theme-mode{

@@ -16,7 +16,6 @@ const post = Router();
 
 post.get('/allquestions/:page',async(req,res)=>{
     const {page} = req.params;
-    console.log(page)
     let length = 5;
     try {
         const con = await client.connect();
