@@ -12,10 +12,11 @@ import HeartComponent from "./components/HeartComponent/HeartComponent";
 import FeedPage from "./pages/FeedPage/FeedPage";
 import About from "./pages/About/About";
 import Profile from './pages/Profile/Profile';
+import TeacherProfile from "./pages/TeacherProfile/TeacherProfile";
 
 export const AppState = createContext(null); // I export it to be accessable in the whole components
 function App() {
-  const [dark, setDark] = useState(true);
+  const [dark, setDark] = useState(false);
   const [studentCourses, setStuCourses] = useState([]);
   const [username, setUsername] = useState("");
   const [id, setId] = useState("aaaa");
@@ -39,6 +40,7 @@ function App() {
             <Route path="/welcome" element={<WelcomePage />} />
             <Route path="/signup" element={<SignUP />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/teacherprofile" element={<TeacherProfile />} />
             
             {/*Nesting Routes*/}
             <Route path="/main" element={<MainPage/>}>
