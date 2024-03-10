@@ -391,7 +391,7 @@ post.get('/:course_code',async(req,res)=>{
                           ORDER BY q_time DESC;`
 
         const result = await con.query(sqlCommand);
-
+        con.release()
         return res.status(200).json({data:result.rows})
     }catch(err){
 
