@@ -1,44 +1,16 @@
 @import '../../mainStyle.scss';
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    border: none;
-}
-
-::selection {
-    color: white;
-    background-color: #0c2c43;
-}
 
 .profile_container {
-    min-height: 100dvh;
+   
     display: flex;
     flex-direction: column;
-
-    .nav_bar {
-        border: 2px solid #f0f0f0;
-        @include centerChild;
-        height: 8dvh;
-        box-shadow: 2px 0px 4px #888888;
-    }
-
+    padding-left: 250px;
     .content {
-        height: 92dvh;
+        min-height: 92vh;
         display: flex;
-
-        .side_bar {
-            border: 2px solid #f0f0f0;
-            box-shadow: 0px 2px 4px #888888;
-            width: 17vw;
-            @include centerChild;
-            background-color: #f0f0f0;
-        }
-
         .info {
-            max-height: fit-content;
-            width: 83vw;
+            min-height: fit-content;
             flex-direction: column;
             display: flex;
 
@@ -59,7 +31,7 @@
                     height: 100%;
 
                     .score_in {
-                        box-shadow: 2px 2px 4px #888888;
+                        box-shadow: 5px 5px 5px #75757550;
                         height: 40%;
                         background-color: #f0f0f0;
                         width: 80%;
@@ -81,7 +53,7 @@
                     height: 100%;
                     
                     .badges_in {
-                        box-shadow: 2px 2px 4px #888888;
+                        box-shadow: 5px 5px 5px #75757555;
                         height: 60%;
                         width: 80%;
                         background-color: #f0f0f0;

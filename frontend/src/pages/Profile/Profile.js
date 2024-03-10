@@ -4,9 +4,8 @@ import avatar from "../../assets/user-tie-solid.svg";
 import {AppState} from "../../App";
 
 const Profile = () => {
-    const {dark} = useContext(AppState);
-
-    const [username, setUserame] = useState("Mans116");
+    const {dark,username} = useContext(AppState);
+   
     const [description, setDescription] = useState("Senior CSE Student @ ASU");
 
     const months = Array(12).fill(Array(30).fill(0));
@@ -30,13 +29,7 @@ const Profile = () => {
 
     return (
         <div className={`profile_container ${dark? "dark" : ""}`}>
-            <div className='nav_bar'>
-                nav bar {currentDate}{dark}
-            </div>
             <div className='content'>
-                <div className='side_bar'>
-                    side bar
-                </div>
                 <div className='info'>
                     <div className="preUpper">
                         <img src={avatar} alt="" />

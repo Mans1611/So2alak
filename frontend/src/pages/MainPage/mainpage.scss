@@ -2,7 +2,7 @@
 .body-content{
     padding-top: $navbar-height;
     display: flex;
-    min-height: 200vh;
+    min-height: 100vh;
     &.dark{
         background-color:$fully-dark-blue ;
     }
