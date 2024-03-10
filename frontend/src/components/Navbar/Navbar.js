@@ -14,6 +14,8 @@ const Navbar = () => {
     username,
     sidebarSelected,setSideBarSelected
   } = useContext(AppState);
+  
+  console.log("render the navbar")
   const [showToggleList,setShowToggleList] = useState(false);
   // handlers.
   const changeTheme = ()=>setDark(dark=>!dark);

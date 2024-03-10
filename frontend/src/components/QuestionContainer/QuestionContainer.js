@@ -1,23 +1,31 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import './questioncontainer.scss';
 import Question from '../Question/Question';
 import LoadingQuestion from '../Question/LoadingQuestion';
 import FetchPost from '../../utilis/FetchPost';
-
-const QuestionContainer = () => {
+import { AppState } from '../../App';
+import axios from 'axios'
+const QuestionContainer = React.memo(()=>{
   const [loading,setLoading] = useState(true);
   const [questions,setQuestions] = useState([]);
-  const [questionsPage,setQuestionsPage] = useState(0);
+  // const [questionsPage,setQuestionsPage] = useState(0);
+  const {sidebarSelected} = useContext(AppState);
 
   useEffect(()=>{
     setLoading(true)
     const data= async()=> {
-      const {data} = await FetchPost(`http://localhost:8000/post/allquestions/1`)
-      setQuestions(data.data)
+      let response = null
+      if(sidebarSelected!=='general'){
+        response = await axios.get(`http://localhost:8000/post/CSE351`)
+      }else{
+        response = await axios.get(`http://localhost:8000/post/allquestions/1`)
+      }
+      setQuestions(response.data?.data? response.data?.data :[])
     };
     data();
-    setLoading(false)
-  },[])
+    setTimeout(()=>setLoading(false),200)
+    
+  },[sidebarSelected])
     
   
   return (
@@ -27,6 +35,6 @@ const QuestionContainer = () => {
         </div>
     </div>
   )
-}
+})
 
 export default QuestionContainer

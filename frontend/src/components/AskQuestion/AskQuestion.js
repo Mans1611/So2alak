@@ -8,9 +8,9 @@ const AskQuestion = () => {
     const questionInput = useRef(null);
     const [imgPreview,setImgPrev] = useState(null);
     const [file,setFile] = useState(null);
-
+    console.log("render the ask question")
     const {sidebarSelected} = useContext(AppState);
-   const detectLang = (question)=>{
+    const detectLang = (question)=>{
     // this to detect the first letetr of the question if its:
     // if it in english the input will be -> left to right (ltr).
     // if it in arabic the input will be ->  right to left (rtl). 

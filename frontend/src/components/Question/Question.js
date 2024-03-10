@@ -84,7 +84,7 @@ const Question = ({question}) => {
                 <QuestionAnswerIcon onClick={()=>setShowAnswer(show=>!show)} className='reply-btn'/>
             </div>
         </div>
-        {question.answers.length>0 &&
+        {question?.answers?.length>0 &&
             <Answer answer = {question.answers[0]}/>
         }
     </div>
