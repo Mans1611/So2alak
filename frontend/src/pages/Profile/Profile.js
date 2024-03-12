@@ -34,7 +34,7 @@ const Profile = () => {
                     <div className="preUpper">
                         <img src={avatar} alt="" />
                         <div className="discription">
-                            <p>{username}</p>
+                            <p>MAnsoru</p>
                             <p>{description}</p>
                         </div>
                     </div>

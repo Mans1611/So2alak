@@ -1,0 +1,16 @@
+@import '../../mainStyle.scss';
+.small-profile{
+    position: absolute;
+    width: 220px;
+    height: 260px;
+    border-radius: 15px;
+    background-color: #e1e1e1;
+    z-index: 8;
+}
+
+.dark{
+    .small-profile{
+        background-color: $semi-dark-blue;
+    }
+    
+}

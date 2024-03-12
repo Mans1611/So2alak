@@ -2,5 +2,13 @@
 @import './../../.mainStyle.scss';
 .answer{
 
-    
+    .circle{
+        width: 40px !important;
+        width: 40px !important;
+        svg{
+            width: 40px;
+            height: 40px;
+            font-weight: 600;
+        }
+    }
 }

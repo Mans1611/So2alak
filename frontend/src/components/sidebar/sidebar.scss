@@ -50,6 +50,7 @@
             padding: 7px 5px 4px 10px ;
             font-size: 22px;
             transition: all 150ms;
+            margin: 2px 0;
             .flex{
                 display: flex;
                 align-items: center;
@@ -58,11 +59,7 @@
                   margin-top: 5px;
                 }
             }
-            a{
-                text-decoration: none;
-                color: inherit;
-            }
-            &:hover{
+            &:hover,&.active{
                 background-color:$blue ;
                 cursor: pointer;
                 color: #ffffff;
@@ -89,6 +86,9 @@
         }
         .sidebar-logo{
             background-color: $fully-dark-blue;
+            i::before{
+                color: $sky-blue;
+            }
         }
         hr {
             border-top: 3px solid $full-white; 
@@ -96,12 +96,13 @@
         .side-bar-items{
             color: #d1d1d1;
             .items{
-                color: $fully-dark-blue;
+                    color: $fully-dark-blue;
                     color: inherit;
-                    &:hover{
+                    &:hover,&.active{
                         background-color:$fully-dark-blue ;
                         color: $sky-blue;
                     }
+
                 }
             }
             .loading-card{
@@ -134,5 +135,9 @@
       /* Style the scrollbar handle on hover */
       &::-webkit-scrollbar-thumb:hover {
         background: #555; /* Color of the scrollbar handle on hover */
+      }
+
+      &.dark {
+        
       }
 }

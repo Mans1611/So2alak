@@ -3,7 +3,7 @@ import logo from "../../assets/logo.svg"; // this how to import an images
 import "./login.scss";
 import { AppState } from "../../App";
 import { Link, useNavigate } from "react-router-dom";
-// import axios from "axios";
+import axios from "axios";
 
 // No button to nav create account
 
@@ -97,33 +97,33 @@ const Login = () => {
     // */
     // if (!handleCheck(e)) return;
 
-    // // sending a request to the backendafter passing the validations
-    // setLoading(true); // I will set the loading state to be ture
-    // let res;
-    // try {
-    //   // sending a request to sign in api, {id,password}
-    //   res = await axios.post(`http://localhost:8000/person/signin`, {
-    //     student_id: form.email,
-    //     password: form.password,
-    //   });
-    //   console.log(res.request.status);
-    //   if (res.request.status === 200)
-    //     // this means that the user is signed in
-    //     navigate("/feedpage");
-    // } catch (error) {
-    //   if (error.isAxiosError)
-    //     // this means that you have a network error or server is not working
-    //     setErrors((e) => {
-    //       return { ...e, password: "check the network" };
-    //     });
-    //   // means you got an error from our server, so the server is working, buth there is an error from api
-    //   else if (error.response.status === 400)
-    //     /* here we will put the error msg coming from the server */
-    //     setErrors((e) => {
-    //       return { ...e, password: error.response.data.msg };
-    //     });
-    // }
-    // setLoading(false);
+    // sending a request to the backendafter passing the validations
+    setLoading(true); // I will set the loading state to be ture
+    let res;
+    try {
+      // sending a request to sign in api, {id,password}
+      res = await axios.post(`http://localhost:8000/person/signin`, {
+        student_id: form.email,
+        password: form.password,
+      });
+      console.log(res.request.status);
+      if (res.request.status === 200)
+        // this means that the user is signed in
+        navigate("/main/feedpage");
+    } catch (error) {
+      if (error.isAxiosError)
+        // this means that you have a network error or server is not working
+        setErrors((e) => {
+          return { ...e, password: "check the network" };
+        });
+      // means you got an error from our server, so the server is working, buth there is an error from api
+      else if (error.response.status === 400)
+        /* here we will put the error msg coming from the server */
+        setErrors((e) => {
+          return { ...e, password: error.response.data.msg };
+        });
+    }
+    setLoading(false);
   };
 
   return (

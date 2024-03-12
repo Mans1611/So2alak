@@ -7,7 +7,7 @@ import logo from "../../assets/Logo(122)5.png";
 // import axios from 'axios';
 import { levDeps } from '../../data/LevelsDepartments';
 import { AppState } from '../../App';
-
+import axios from 'axios'
 /* comments : 
     - delete states like passwordAlarm, rePasswordLength state.  ==> solved
     - I moved (username,id) state in app context, as i need it in welcome page and all other pages,
@@ -146,6 +146,7 @@ const SignUP = () => {
     };
 
     const handleSubmit = async (e) => {
+        
         e.preventDefault();
         if ( !alarms.includes(true) && 
             ( !primaryStates.includes("") || (level === "" && type === "teacher") ) &&
@@ -153,27 +154,32 @@ const SignUP = () => {
                 ((secondaryStates.includes('')) ? false : true) : 
                 (level === "" && type === "teacher") ? ((secondaryStates.includes('')) ? false : true) : true) ) {
 
-            // try{
-            //     //send a request to backend.
-            //     const result = await axios.post('http://localhost:8000/person/signup',
-            //     {
-            //         username,
-            //         student_id: id,
-            //         password,
-            //         studnet_level: level,
-            //         student_department: department,
-            //         student_subdepartment: subdepartment
-            //     })
-            //     setStuCourses(result.data.sugesstedCourses); // here I set the default courses for the student, which comes from server
-            //     navigate('/welcome'); // then navigate to welcome page. 
-            // }catch(error){
-            //     // handle error coming from api
-            //     if(error.isAxiosError){
-            //         console.log(error.isAxiosError)
-            //     }else if(error.response){
-            //         console.log(error.response)
-            //     }
-            // }
+           
+           
+            try{
+                //send a request to backend.
+                console.log("passing requesrt")
+                const result = await axios.post('http://localhost:8000/person/signup',
+                {
+                    username,
+                    student_id: id,
+                    password,
+                    studnet_level: level,
+                    student_department: department,
+                    student_subdepartment: subdepartment
+                })
+                if(result.status === 201){
+                    setStuCourses(result.data.sugesstedCourses); // here I set the default courses for the student, which comes from server
+                    navigate('/welcome'); // then navigate to welcome page. 
+                }
+            }catch(error){
+                // handle error coming from api
+                console.log(error)
+                if(error?.response?.data.msg){
+                    console.log("passed")
+                    setIdAlarm({show:true,msg:error.response.data.msg})
+                }
+            }
 
         }
     };
@@ -312,6 +318,5 @@ const SignUP = () => {
         </>
     )
 }
-
 export default SignUP
 
