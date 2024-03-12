@@ -11,6 +11,7 @@ import MainPage from "./pages/MainPage/MainPage";
 import FeedPage from "./pages/FeedPage/FeedPage";
 import About from "./pages/About/About";
 import Profile from './pages/Profile/Profile';
+import TeacherProfile from "./pages/TeacherProfile/TeacherProfile";
 import Landing from "./pages/LandingPage/Landing";
 import { QueryClient, QueryClientProvider} from 'react-query'
 export const AppState = createContext(null); // I export it to be accessable in the whole components
@@ -18,7 +19,7 @@ const queryClient = new QueryClient();
 
 
 function App() {
-  const [dark, setDark] = useState(true);
+  const [dark, setDark] = useState(false);
   const [studentCourses, setStuCourses] = useState([]);
   const [username, setUsername] = useState("");
   const [id, setId] = useState("");
@@ -43,6 +44,8 @@ function App() {
             <Route path="/signin" element={<Login />} />
             <Route path="/welcome" element={<WelcomePage />} />
             <Route path="/signup" element={<SignUP />} />
+            <Route path="/teacherprofile" element={<TeacherProfile />} />
+            
             {/*Nesting Routes*/}
             <Route path="/main" element={<MainPage/>}>
               <Route path="profile" element={<Profile />} />
