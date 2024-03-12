@@ -44,10 +44,10 @@ function App() {
             <Route path="/signin" element={<Login />} />
             <Route path="/welcome" element={<WelcomePage />} />
             <Route path="/signup" element={<SignUP />} />
-            <Route path="/teacherprofile" element={<TeacherProfile />} />
             
             {/*Nesting Routes*/}
             <Route path="/main" element={<MainPage/>}>
+              <Route path="teacherprofile" element={<TeacherProfile />} />
               <Route path="profile" element={<Profile />} />
               <Route path="feedpage" element={<FeedPage/>} />
             <Route path="course" element={<div style={{paddingLeft:"250px"}}> </div>}/>

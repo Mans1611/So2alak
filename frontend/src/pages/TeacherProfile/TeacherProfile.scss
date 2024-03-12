@@ -1,16 +1,6 @@
 @import '../../mainStyle.scss';
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    border: none;
-}
 
-::selection {
-    color: white;
-    background-color: #0c2c43;
-}
 
 .tprofile_container {
     min-height: 100dvh;
@@ -20,14 +10,8 @@
     .content {
         height: 100dvh;
         display: flex;
-
-        .side_bar {
-            border: 2px solid #f0f0f0;
-            box-shadow: 0px 2px 4px #888888;
-            width: 17vw;
-            @include centerChild;
-            background-color: #f0f0f0;
-        }
+        padding-left: 250px;
+        
 
         .info {
             max-height: fit-content;

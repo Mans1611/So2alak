@@ -28,9 +28,7 @@ const TeacherProfile = () => {
     return (
         <div className={`tprofile_container ${dark? "dark" : ""}`}>
             <div className='content'>
-                <div className='side_bar'>
-                    side bar
-                </div>
+                
                 <div className='info'>
                     <div className="preUpper">
                         <img src={avatar} alt="" />
