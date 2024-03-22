@@ -14,7 +14,9 @@ import Profile from './pages/Profile/Profile';
 import TeacherProfile from "./pages/TeacherProfile/TeacherProfile";
 import Landing from "./pages/LandingPage/Landing";
 import { QueryClient, QueryClientProvider} from 'react-query'
+import Course from "./pages/Course/Course";
 export const AppState = createContext(null); // I export it to be accessable in the whole components
+
 const queryClient = new QueryClient();
 
 
@@ -23,7 +25,7 @@ function App() {
   const [studentCourses, setStuCourses] = useState([]);
   const [username, setUsername] = useState("");
   const [id, setId] = useState("");
-  const [sidebarSelected,setSideBarSelected] = useState('general');
+  const [sidebarSelected,setSideBarSelected] = useState(null);
 
   return (
     <Router>
@@ -50,6 +52,8 @@ function App() {
               <Route path="teacherprofile" element={<TeacherProfile />} />
               <Route path="profile" element={<Profile />} />
               <Route path="feedpage" element={<FeedPage/>} />
+              <Route path=":course_code" element={<Course/>} />
+            
             <Route path="course" element={<div style={{paddingLeft:"250px"}}> </div>}/>
               <Route path="list" element={<div style={{paddingLeft:"250px"}}>list </div>}/>
             </Route>

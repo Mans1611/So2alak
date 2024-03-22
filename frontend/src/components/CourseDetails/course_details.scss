@@ -1,0 +1,69 @@
+@import '../../mainStyle.scss';
+.third_part_child{
+    width: 100%;
+    background-color: #e1e1e1;
+    border-radius: 15px;
+    min-height: 300px;
+    padding: 10px;
+    position: sticky;
+    top: 90px;
+    margin-bottom: 20px;
+    h1,h2{
+        text-align: center;
+        color: $semi-dark-blue;
+    }
+    .header{
+        .flex{
+            margin: 15px 0;
+            align-items: center;
+            justify-content:space-between;
+            .courselogo{
+                margin-right: 10px;
+                display: flex;
+                align-items: center;
+                img{
+                    width: 65px;
+                    height: 65px;
+                    border-radius: 10px;
+                    margin-right: 10px;
+                }
+            }
+            .title{
+                color: $semi-dark-blue;
+                &.code{
+                    padding-right: 10px;
+                }
+            }
+        }  
+    }
+    .instructors-title{
+        text-decoration: underline;
+    }
+    
+}
+.dark{
+    .course_details{
+        background-color: $semi-dark-blue;
+        h2{
+            text-align: center;
+            color: #e1e1e1;
+        }
+        .header{
+            align-items: center;
+            .courselogo{
+                margin-right: 10px;
+                img{
+                    width: 70px;
+                    height: 70px;
+                    border-radius: 10px;
+                }
+            }
+            .title{
+                color: $light-white;
+            }  
+        }
+        h3{
+            color: #e1e1e1;
+        }
+    }
+}

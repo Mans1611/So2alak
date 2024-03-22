@@ -6,6 +6,9 @@ import { MakeActivity } from "../utilis/MakeActivitylog.js";
 import multer from "multer";
 import { GetFiles } from "../utilis/GetFiles.js";
 import { CheckAuth } from "../middleware/CheckAuth.js";
+import b2 from "../Bucket/Bucket.js";
+
+
 
 const storage = multer.memoryStorage();
 const uploader = multer({storage:storage})
@@ -41,7 +44,7 @@ post.get('/allquestions/:page',async(req,res)=>{
 })
 
 
-post.post('/createQuestion',CheckAuth,uploader.single('image'),async(req,res)=>{
+post.post('/createQuestion',/*CheckAuth,*/uploader.single('image'),async(req,res)=>{
     // this api need to check the the auth of the user.
     const {course_id,student_id,username,question} = req.body;
     let con = null;
@@ -56,23 +59,40 @@ post.post('/createQuestion',CheckAuth,uploader.single('image'),async(req,res)=>{
         // to check if the course exist or not
         if (! await CheckValueExisit('courses','course_id',course_id,client))
             return res.status(400).json({msg:"this course is not exist"})
+        
+        sqlCommand = `INSERT INTO questions (course_id,q_username,question) 
+            VALUES ('${course_id}','${username}','${question}')
+            RETURNING question_id;`;
+        const {rows} = await con.query(sqlCommand);
+        console.log(rows[0])
         if (req.file){
             sqlCommand = `INSERT INTO files (filename,mimtype,data) 
             VALUES ($1,$2,$3) RETURNING id;`
             const { originalname, mimetype, buffer} = req.file;
             result = await con.query(sqlCommand,[originalname,mimetype,buffer])
+        
+            
+            const url = await b2.getUploadUrl({
+                bucketId: process.env.BUCKET_ID
+            });
+            await b2.uploadFile({
+                uploadAuthToken: url.data.authorizationToken,
+                fileName: `question_${rows[0].question_id}`,
+                data:buffer,
+                uploadUrl:url.data.uploadUrl
+            })
+            result = await b2.downloadFileByName({
+                fileName:`question_27`,
+                bucketName:'So2alak'
+            })
         }
-        sqlCommand = `INSERT INTO questions (course_id,q_username,question,q_files) 
-                            VALUES ('${course_id}','${username}','${question}',
-                            ${(result?.rows[0].id)? result?.rows[0].id:null })
-                            RETURNING question_id;`;
-        const {rows} = await con.query(sqlCommand);
         res.status(201).json({'msg':'Your question is posted'});
         
         await MakeActivity(student_id,'ask',rows[0].question_id,con,null);
         con.release();
         
     }catch(error){
+        con.release();
         console.log(error)
         res.status(400).json({'msg':'an error occured, Try again'});
     }
@@ -91,6 +111,7 @@ post.delete('/deleteQuestion/:q_id',async(req,res)=>{
     }catch(err){
         console.log(err)
         res.send(err);
+        con.release();
     }
 });
 
@@ -109,6 +130,7 @@ post.put('/modifyQuestion/:q_id', async(req, res)=>{
         con.release();
         res.send('Question is modified');
     } catch(err) {
+        con.release();
         console.log(err);
         res.send(err);
     }
@@ -148,6 +170,7 @@ post.put('/verifyQuestion/:q_id', async(req, res)=>{
         res.status(200).send('Question is verified');
     } catch(err) {
         console.log(err);
+        con.release();
         res.send(err);
     }
 });
@@ -166,6 +189,7 @@ post.get('/getQuestion/:question_id',async(req,res)=>{
         res.json({'data':result.rows});
         con.release()
     }catch(error){
+        con.release()
         console.log(error)
     }
 })
@@ -184,6 +208,7 @@ post.get('/getUnverifiedQuestions', async(req, res)=>{
             'data': rows
         });
     } catch(err) {
+        con.release();
         console.log(err);
         res.send(err);
     }
@@ -205,6 +230,7 @@ post.post("/createAnswer", async(req, res)=>{
         MakeActivity(student_id, 'answer', question_id, con, rows[0].answer_id);
         con.release();
     } catch(error) {
+        con.release();
         console.log(error);
         res.status(400).json({'msg': 'an error occured, Try again'});
     }
@@ -222,6 +248,7 @@ post.delete('/deleteAnswer/:ans_id', async(req, res)=>{
         con.release();
         res.status(200).send('Answer is deleted');
     } catch(err) {
+        con.release();
         console.log(err);
         res.send(err);
     }
@@ -242,6 +269,7 @@ post.put('/modifyAnswer/:ans_id', async(req, res)=>{
         con.release();
         res.status(200).send('Answer is modified');
     } catch(err) {
+        con.release();
         console.log(err);
         res.send(err);
     }
@@ -262,6 +290,7 @@ post.put('/upvoteAnswer/:ans_id', async(req, res)=>{
         res.status(200).send('Answer is upvoted');
     } catch(err) {
         console.log(err);
+        con.release();
         res.send(err);
     }
 });
@@ -289,6 +318,7 @@ post.put('/downvoteAnswer/:ans_id',async(req, res)=>{
         con.release()
         res.status(200).send("Answer downvoted Done"); 
     } catch(err) {
+        con.release()
         console.log(err);
         res.send(err);
     }
@@ -307,6 +337,7 @@ post.put('/verifyAnswer/:ans_id', async(req, res)=>{
         con.release();
         res.status(206).send('Answer is verified');
     } catch(err) {
+        con.release();
         console.log(err);
         res.send(err);
     }
@@ -325,6 +356,7 @@ post.put('/unverifyAnswer/:ans_id', async(req, res)=>{
         con.release();
         res.status(200).send('Answer is unverified');
     } catch(err) {
+        con.release();
         console.log(err);
         res.send(err);
     }
@@ -345,6 +377,7 @@ post.get('/getVerifiedAnswers', async(req, res)=>{
             'data': rows
         });
     } catch(err) {
+        con.release();
         console.log(err);
         res.status(404).send(err);
     }
@@ -360,8 +393,9 @@ post.post('/addToFavQues',async(req,res)=>{
         await con.query(sqlCommand);
         con.release()
         return res.status(201).json({msg:'Questions is added to your list'})
-
+        
     }catch(err){
+        con.release()
         console.log(err)
     }
 })
@@ -378,6 +412,7 @@ post.delete('/deleteFromFavQues', async(req, res)=>{
         con.release();
         res.status(200).send('Question is deleted from favorite');
     } catch(err) {
+        con.release();
         console.log(err);
         res.send(err);
     }
@@ -398,6 +433,7 @@ post.get('/:course_code',async(req,res)=>{
         con.release()
         return res.status(200).json({data:result.rows})
     }catch(err){
+        con.release()
 
     }
 })
@@ -419,6 +455,7 @@ post.get('/search/:search',async(req,res)=>{
         con.release();
     }
     catch(err){
+        con.release();
         console.log(err)
     }
 });

@@ -5,18 +5,18 @@ import LoadingQuestion from '../Question/LoadingQuestion';
 import FetchPost from '../../utilis/FetchPost';
 import { AppState } from '../../App';
 import axios from 'axios'
+
 const QuestionContainer = React.memo(()=>{
   const [loading,setLoading] = useState(true);
   const [questions,setQuestions] = useState([]);
   // const [questionsPage,setQuestionsPage] = useState(0);
   const {sidebarSelected} = useContext(AppState);
-
   useEffect(()=>{
     setLoading(true)
     const data= async()=> {
       let response = null
-      if(sidebarSelected!=='general'){
-        response = await axios.get(`http://localhost:8000/post/CSE351`)
+      if(sidebarSelected!==null){
+        response = await axios.get(`http://localhost:8000/post/${sidebarSelected.toUpperCase()}`)
       }else{
         response = await axios.get(`http://localhost:8000/post/allquestions/1`)
       }

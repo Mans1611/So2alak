@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import './sidebar.scss';
-import {Link} from 'react-router-dom';
 import axios from 'axios';
 import { AppState } from '../../App';
+import { useParams,Link } from 'react-router-dom'
 
 const SideBar = () => {
   const [loading,setLoading]=useState(true);
@@ -10,7 +10,9 @@ const SideBar = () => {
     sidebarSelected,setSideBarSelected,
     username,
     studentCourses,setStuCourses} = useContext(AppState);
-  
+    
+    
+    const {course_code} = useParams();
 
 
   useEffect(()=>{
@@ -25,6 +27,7 @@ const SideBar = () => {
   const handleActive=(selected)=>{
       setSideBarSelected(selected)
   }
+
   return (
     <div className={`sidebar ${dark && 'dark'} `}>
       <div className="sidebar-logo">
@@ -43,7 +46,6 @@ const SideBar = () => {
                 My Questions
               </li>
             <li className='items'>
-              
                 <i className="fi fi-sr-answer"></i>
                 My Answers
             </li>
@@ -59,8 +61,12 @@ const SideBar = () => {
           <LoadingCourses/>
           :
           <>
-             {studentCourses.map((course,index)=>
-              <li key={index} onClick={()=>handleActive(course.course_name)} className={`items ${sidebarSelected === course.course_name?'active':''}`}>{course.course_name}</li>
+             {studentCourses.map(course=>
+             <Link to={`${course.course_id.toLowerCase()}`}>
+                <li key={course.course_id} onClick={()=>handleActive(course.course_id.toLowerCase())} className={`items ${
+                  (sidebarSelected === course.course_name || course_code === course.course_id.toLowerCase())?'active':''}`}>{course.course_name}
+                  </li>
+              </Link>
              )}
           </>
             }

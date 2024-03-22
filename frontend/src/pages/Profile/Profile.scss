@@ -2,7 +2,6 @@
 
 
 .profile_container {
-   
     display: flex;
     flex-direction: column;
     padding-left: 250px;
@@ -87,7 +86,6 @@
                         overflow-x: scroll;
                         flex-wrap: nowrap;
                         gap: 20px;
-
                         &::-webkit-scrollbar {
                             height: 0;
                         }
@@ -97,15 +95,13 @@
                             @include centerChild;
                             flex-direction: column;
                             gap: 10px;
-                            
                             .cells {
                                 @include centerChild;
                                 flex-wrap: wrap;
-                                gap: 10px;
-
+                                gap: 5px;
                                 .cell {
-                                    width: 10px;
-                                    height: 10px;
+                                    width: 15px;
+                                    height: 15px;
                                     border-radius: 2px;
 
                                     &.active {

@@ -57,7 +57,7 @@ const AskQuestion = () => {
                     imgPreview &&
                     <img  className='img-preview' src={imgPreview} alt="" srcset="" />
                 }
-            <textarea ref={questionInput} onChange={(e)=>{detectLang(e.target.value);setQuestion(e.target.value);}} placeholder= {`Ask Your Question ${sidebarSelected == 'general' ?'':'related to '+sidebarSelected}`} type="text" />
+            <textarea ref={questionInput} onChange={(e)=>{detectLang(e.target.value);setQuestion(e.target.value);}} placeholder= {`Ask Your Question ${sidebarSelected == null ?'':'related to '+sidebarSelected}`} type="text" />
             <div className="files-wrapper">
                 <input onChange={handleImageUpload} type="file" name="img" id="img-uploader" />
                 <label className='img-label' for='img-uploader'>

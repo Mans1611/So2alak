@@ -11,8 +11,7 @@ import { getTime } from '../../utilis/getTime';
 import SmallProfile from '../SmallProfile/SmallProfile';
 
 const Question = ({question}) => {
-    console.log((Date.now() - new Date(question.q_time)) /  (1000*24 *60*60))
-
+    
     const [helped,setHelp] = useState(false);
     const circle = useRef(null);
     const [helpCount,setHelpCount] = useState(question.q_upvotes)
@@ -64,7 +63,7 @@ const Question = ({question}) => {
             onMouseLeave={()=>handleProfile(false)} 
             onMouseOver={()=>handleProfile(true)} 
             to={`/profile/${question.q_username.replace(" ","")}`}> 
-            {question.q_username}</Link> related to <Link>DataBase</Link>
+            {question.q_username}</Link> related to <Link>{}</Link>
             {showProfile &&
             <SmallProfile 
              handleProfile = {handleProfile}

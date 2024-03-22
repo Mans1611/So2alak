@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import './Profile.scss'
 import avatar from "../../assets/user-tie-solid.svg";
 import {AppState} from "../../App";
+import Calander from '../../components/Calander/Calander';
 
 const Profile = () => {
     const {dark,username} = useContext(AppState);
@@ -53,18 +54,7 @@ const Profile = () => {
                         </div>
                     </div>
                     <div className='lower'>
-                        <div className='lower_in'>
-                            <h1>Activity Calendar</h1>
-                            <div className='calendar'>
-                                {months.map((month, index) =>
-                                    <div ref={months_refs[index]} className='month'>
-                                        <div className='cells'>
-                                            {month.map((cell) => <div className={`cell ${cell? "active":"passive"}`}></div>)}
-                                        </div>
-                                        <div className='month_name'>{months_names[index]}</div>
-                                    </div>)}
-                            </div>
-                        </div>
+                        <Calander/>
                     </div>
                 </div>
             </div>

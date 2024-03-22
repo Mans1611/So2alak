@@ -20,8 +20,8 @@ const Navbar = () => {
   const changeTheme = ()=>setDark(dark=>!dark);
   const showAvatar = ()=>setShowToggleList(show=>!show); 
   const logout = ()=>{};
-  const handleActive=()=>{
-    setSideBarSelected('general')
+  const handleActive=(param)=>{
+    setSideBarSelected(param)
   }
   return (
     <div className={`navbar ${dark && 'dark'}`}>
@@ -30,7 +30,7 @@ const Navbar = () => {
           </div>
         <Search/>
         <div className="links-wrapper">
-            <Link onClick={()=>handleActive('general')} className='links' to={'/main/feedpage'}> Home</Link>
+            <Link onClick={()=>handleActive(null)} className='links' to={'/main/feedpage'}> Home</Link>
             <Link className='links' to={'/leaderboard'}> LeaderBoard</Link>
             <Link className='links' to={'/faviourte'}> Fav</Link>
         </div>
