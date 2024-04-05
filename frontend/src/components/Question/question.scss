@@ -3,7 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Seymour+One&display=swap');
 .question{
     width:80%;
-    margin: 20px auto;
+    margin: 0px auto;
     height: fit-content;
     margin-bottom: 40px;
     cursor: pointer;
@@ -120,6 +120,16 @@
             flex: 1;
         }
         
+    }
+    .answer-question-input{
+        width: 100%;
+        background-color: #E0E0E0;
+        height: 40px;
+        border-radius: 10px;
+        outline: none;
+        padding: 5px;
+        font-size: 18px;
+
     }
     .answer-wrapper{
         margin-top: 5px;

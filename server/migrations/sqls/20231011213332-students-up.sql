@@ -81,11 +81,12 @@ CREATE TABLE IF NOT EXISTS teachers(
 	id VARCHAR(30) NOT NULL PRIMARY KEY,
 	title teachers_title,
 	password varchar(255) NOT NULL, 
-	department VARCHAR(30) NOT NULL 
+	department VARCHAR(30) NOT NULL
 	REFERENCES sub_departments(department_id)
 	ON UPDATE CASCADE
 	ON DELETE SET NULL
 );
+
 CREATE TABLE IF NOT EXISTS questions(
     question_id SERIAL PRIMARY KEY,
     course_id VARCHAR(30) NOT NULL
@@ -151,7 +152,10 @@ CREATE TABLE activity_log (
 
     activity_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     activity_type VARCHAR(30) CHECK (activity_type IN ('ask','answer')) 
-    
+    points Integer DEFAULT 0 ,
+	course_code REFERENCES courses(course_id)
+	ON UPDATE CASCADE
+	ON DELETE SET NULL
 );
 
 -- INSERT INTO departments 

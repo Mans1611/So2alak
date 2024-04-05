@@ -29,7 +29,7 @@ const SideBar = () => {
   }
 
   return (
-    <div className={`sidebar ${dark && 'dark'} `}>
+    <div className={`sidebar ${dark?'dark':''}`}>
       <div className="sidebar-logo">
       <i className="fi fi-sr-home"></i>
       </div>
@@ -61,10 +61,10 @@ const SideBar = () => {
           <LoadingCourses/>
           :
           <>
-             {studentCourses.map(course=>
-             <Link to={`${course.course_id.toLowerCase()}`}>
-                <li key={course.course_id} onClick={()=>handleActive(course.course_id.toLowerCase())} className={`items ${
-                  (sidebarSelected === course.course_name || course_code === course.course_id.toLowerCase())?'active':''}`}>{course.course_name}
+             {studentCourses.map((course,id)=>
+             <Link key={id} to={`${course.course_id}`}>
+                <li key={course.course_id} onClick={()=>handleActive(course.course_id)} className={`items ${
+                  (sidebarSelected === course.course_name || course_code === course.course_id)?'active':''}`}>{course.course_name}
                   </li>
               </Link>
              )}

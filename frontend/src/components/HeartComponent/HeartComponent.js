@@ -1,14 +1,15 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext} from 'react'
 import './heartcomponent.scss'
 import AskQuestion from '../AskQuestion/AskQuestion'
 import QuestionContainer from '../QuestionContainer/QuestionContainer'
-const HeartComponent = () => {
-  const [dark,setDark]=useState(false)
- 
+import { AppState } from '../../App'
+
+
+const HeartComponent = ({children}) => {
+  const {dark}=useContext(AppState)
   return (
     <div className={`heartcomponent ${dark?'dark':''}`}>
-        <AskQuestion/>
-        <QuestionContainer/>
+        {children}
     </div>
   )
 }

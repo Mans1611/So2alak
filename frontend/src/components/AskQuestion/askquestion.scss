@@ -5,6 +5,24 @@
     padding-left: 50px;
     padding-top: 30px;
     height: fit-content;
+    &.post-answer{
+        padding: 5px;
+        margin: auto;
+        border: 2px solid #6b6a6a;
+        background-color: #fff;
+        border-radius: 20px;
+        .askQuestion-wrapeer{
+            textarea{
+                height: 50px;
+                background-color: #fff;
+                font-weight: normal;
+                &::placeholder{
+                    font-size: 18px;
+                    font-weight: 400;
+                }
+            }
+        }
+    }
     .askQuestion-wrapeer{
         display: flex;
         flex-direction: column;
@@ -47,7 +65,6 @@
             background-color: $light-white;
             resize: none; 
             overflow: hidden;
-           @include input;
             &::placeholder{
                 color: #929292cc;
                 font-weight: 600;

@@ -2,6 +2,8 @@ import React, { useRef } from 'react'
 import './feedpage.scss';
 import HeartComponent from '../../components/HeartComponent/HeartComponent';
 import ThirdPart from '../../components/ThirdPart/ThirdPart';
+import AskQuestion from '../../components/AskQuestion/AskQuestion';
+import QuestionContainer from '../../components/QuestionContainer/QuestionContainer';
 
 
 const FeedPage = () => {
@@ -9,7 +11,10 @@ const FeedPage = () => {
   const detectBottom = ()=>{}
   return (
     <div ref={ques_container} onScroll={detectBottom} className='feedpage'>
-        <HeartComponent/>
+        <HeartComponent>
+          <AskQuestion/>
+          <QuestionContainer/>
+        </HeartComponent>
         <ThirdPart/>
     </div>
   )

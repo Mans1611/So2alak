@@ -20,6 +20,7 @@ const post = Router();
 post.get('/allquestions/:page',async(req,res)=>{
     const {page} = req.params;
     let length = 5;
+    console.log("first")
     try {
         const con = await client.connect();
         let sqlCommand = `
@@ -28,6 +29,8 @@ post.get('/allquestions/:page',async(req,res)=>{
             SELECT * FROM answers  
             ORDER BY ans_verified DESC, ans_upvotes DESC , ans_time DESC
         ) AS ans ON ans.q_id = q.question_id
+        LEFT JOIN (SELECT course_name,course_id FROM courses) 
+        as cor ON cor.course_id = q.course_id
         ORDER BY q.q_time DESC , ans_verified DESC , ans_upvotes DESC 
         ;`; //LIMIT ${length} OFFSET ${page * 5}
         const result = await con.query(sqlCommand);
@@ -64,7 +67,6 @@ post.post('/createQuestion',/*CheckAuth,*/uploader.single('image'),async(req,res
             VALUES ('${course_id}','${username}','${question}')
             RETURNING question_id;`;
         const {rows} = await con.query(sqlCommand);
-        console.log(rows[0])
         if (req.file){
             sqlCommand = `INSERT INTO files (filename,mimtype,data) 
             VALUES ($1,$2,$3) RETURNING id;`
@@ -88,7 +90,7 @@ post.post('/createQuestion',/*CheckAuth,*/uploader.single('image'),async(req,res
         }
         res.status(201).json({'msg':'Your question is posted'});
         
-        await MakeActivity(student_id,'ask',rows[0].question_id,con,null);
+        await MakeActivity(student_id,'ask',rows[0].question_id,4,con,null);
         con.release();
         
     }catch(error){
@@ -130,7 +132,6 @@ post.put('/modifyQuestion/:q_id', async(req, res)=>{
         con.release();
         res.send('Question is modified');
     } catch(err) {
-        con.release();
         console.log(err);
         res.send(err);
     }
@@ -170,7 +171,6 @@ post.put('/verifyQuestion/:q_id', async(req, res)=>{
         res.status(200).send('Question is verified');
     } catch(err) {
         console.log(err);
-        con.release();
         res.send(err);
     }
 });
@@ -178,18 +178,23 @@ post.put('/verifyQuestion/:q_id', async(req, res)=>{
 post.get('/getQuestion/:question_id',async(req,res)=>{
     // this might not needs auth -> like face when you dont have an account, but you still can see the post.
     const {question_id} = req.params; // I set  question_id = 1 from Postman.
-    
     try{
         const con = await client.connect();
-        const sqlCommand = `SELECT * from answers as ans, questions  as q
-                        WHERE q.question_id = ${question_id} AND q.question_id = ans.q_id
-                        ORDER BY ans.ans_verified DESC , ans.ans_upvotes DESC,
-                        ans.ans_time DESC;`;
+        const sqlCommand = `SELECT * FROM questions  as q
+                            LEFT JOIN answers as ans
+                            ON q.question_id = ans.q_id
+                            LEFT JOIN (SELECT course_id,course_name 
+                                FROM courses) AS c 
+                                ON c.course_id = q.course_id 
+                            WHERE q.question_id = ${question_id}
+                            ORDER BY ans.ans_verified DESC , ans.ans_upvotes DESC,
+                            ans.ans_time DESC;`;
         const result = await con.query(sqlCommand);
-        res.json({'data':result.rows});
+        const data = AggregateQuestionsAnswers(result.rows)
+
+        res.status(200).json({'data':data[question_id]});
         con.release()
     }catch(error){
-        con.release()
         console.log(error)
     }
 })
@@ -227,15 +232,15 @@ post.post("/createAnswer", async(req, res)=>{
         `;
         const {rows} = await con.query(sqlCommand);
         res.status(201).json({'msg': 'you answered sucessfully'});
-        MakeActivity(student_id, 'answer', question_id, con, rows[0].answer_id);
+        MakeActivity(student_id, 'answer', question_id, 5 ,con, rows[0].answer_id);
         con.release();
     } catch(error) {
-        con.release();
         console.log(error);
         res.status(400).json({'msg': 'an error occured, Try again'});
     }
 });
 
+// need authorization.
 post.delete('/deleteAnswer/:ans_id', async(req, res)=>{
     const {ans_id} = req.params;
     try {
@@ -430,8 +435,10 @@ post.get('/:course_code',async(req,res)=>{
                           ORDER BY q_time DESC;`
 
         const result = await con.query(sqlCommand);
+        let newData =  await GetFiles(result.rows,con)
+        const data = AggregateQuestionsAnswers(newData)
         con.release()
-        return res.status(200).json({data:result.rows})
+        return res.status(200).json({data:data})
     }catch(err){
         con.release()
 

@@ -32,7 +32,6 @@ app.listen(port,async ()=>{
     console.log(`http://localhost:${port}`);
     try{
         await b2.authorize()
-        
     }catch(err){
         console.log(err)
     }

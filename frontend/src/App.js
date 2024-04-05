@@ -15,6 +15,7 @@ import TeacherProfile from "./pages/TeacherProfile/TeacherProfile";
 import Landing from "./pages/LandingPage/Landing";
 import { QueryClient, QueryClientProvider} from 'react-query'
 import Course from "./pages/Course/Course";
+import FullQuestion from "./pages/FullQuestion/FullQuestion";
 export const AppState = createContext(null); // I export it to be accessable in the whole components
 
 const queryClient = new QueryClient();
@@ -50,11 +51,10 @@ function App() {
             {/*Nesting Routes*/}
             <Route path="/main" element={<MainPage/>}>
               <Route path="teacherprofile" element={<TeacherProfile />} />
-              <Route path="profile" element={<Profile />} />
               <Route path="feedpage" element={<FeedPage/>} />
+              <Route path="profile/:user_id" element={<Profile />} />
               <Route path=":course_code" element={<Course/>} />
-            
-            <Route path="course" element={<div style={{paddingLeft:"250px"}}> </div>}/>
+              <Route path="question/:question_id" element={<FullQuestion/>} />
               <Route path="list" element={<div style={{paddingLeft:"250px"}}>list </div>}/>
             </Route>
             

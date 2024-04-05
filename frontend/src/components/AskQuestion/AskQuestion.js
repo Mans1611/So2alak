@@ -3,12 +3,11 @@ import './askquestion.scss';
 import axios from 'axios';
 import ImageIcon from '@mui/icons-material/Image';
 import { AppState } from '../../App';
-const AskQuestion = () => {
+const AskQuestion = ({isAnswer,questionDetails}) => {
     const [question,setQuestion]=useState('');
     const questionInput = useRef(null);
     const [imgPreview,setImgPrev] = useState(null);
     const [file,setFile] = useState(null);
-    console.log("render the ask question")
     const {sidebarSelected} = useContext(AppState);
     const detectLang = (question)=>{
     // this to detect the first letetr of the question if its:
@@ -43,28 +42,50 @@ const AskQuestion = () => {
             'image' : file,
             'course_id' : 'CSE471'
        }
-       
-        const res = await axios.post('http://localhost:8000/post/createQuestion',form,{
-            "headers":{
-                'Content-Type': 'multipart/form-data'
-            }
+       if(isAnswer){
+        //answer, ans_username, student_id, question_id
+        form = {
+            'ans_username':'mostafa mohamed',
+            'answer': question,
+            'student_id' : '1802308',
+            'question_id' : questionDetails.question_id
         }
-   )}
+        const res = await axios.post('http://localhost:8000/post/createAnswer',form
+            )
+       }
+       else{
+           const res = await axios.post('http://localhost:8000/post/createQuestion',form,{
+               "headers":{
+                   'Content-Type': 'multipart/form-data'
+                }
+            }
+            )
+        }
+}
    return (
-    <div className='askQuestion-container'>
+    <div className={`askQuestion-container ${isAnswer&& 'post-answer'}`}>
         <div className="askQuestion-wrapeer">
                 {
                     imgPreview &&
                     <img  className='img-preview' src={imgPreview} alt="" srcset="" />
                 }
-            <textarea ref={questionInput} onChange={(e)=>{detectLang(e.target.value);setQuestion(e.target.value);}} placeholder= {`Ask Your Question ${sidebarSelected == null ?'':'related to '+sidebarSelected}`} type="text" />
+            <textarea ref={questionInput} 
+            onChange={(e)=>{detectLang(e.target.value);setQuestion(e.target.value);}} 
+            
+            placeholder = {
+                isAnswer ? 
+                `Answer to ${questionDetails.q_username}`
+                :  
+                `Ask Your Question ${sidebarSelected == null ?'':'related to '+sidebarSelected}`
+            }
+            type="text" />
             <div className="files-wrapper">
                 <input onChange={handleImageUpload} type="file" name="img" id="img-uploader" />
                 <label className='img-label' for='img-uploader'>
                     <ImageIcon/>
                 </label>
             </div>
-            <button onClick={handlePost} disabled={question.trim()==''}>Ask</button>
+            <button onClick={handlePost} disabled={question.trim()==''}>{isAnswer?'Answer':'Ask'}</button>
         </div>
     </div>
   )

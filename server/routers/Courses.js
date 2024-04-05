@@ -70,4 +70,44 @@ course.get('/getimage',async(req,res)=>{
 
 })
 
+course.get('/course_details/:course_id',async(req,res)=>{
+    const {course_id} = req.params;
+    
+    try{
+
+        let sqlCommand = null;
+        let result = {}
+        let row = null;
+
+        const con = await client.connect();
+
+        //  this to fetch the teaching staff of that cousrse.
+        sqlCommand = `SELECT * FROM teaching 
+                        WHERE course_id = '${course_id}';`;
+        const {rows} = await con.query(sqlCommand)
+        result['teachers'] = rows;
+
+        // getting the total studnets of that course.
+        sqlCommand = `SELECT count(*) AS stundets FROM students_courses 
+                WHERE course_id = '${course_id}'
+                GROUP BY course_id ;`
+        const {rows:numberOfStudents} = await con.query(sqlCommand);
+        console.log(numberOfStudents)
+        result = {...result,totalStudents:numberOfStudents[0]?.stundets}
+        // getting the top studentes in this course to show them.
+        sqlCommand = `SELECT al.student_id,username,sum(al.points) as points,course_id 
+                        FROM activity_log as al,students as s
+                        WHERE s.student_id = al.student_id
+                        AND course_id = '${course_id}'
+                        GROUP By course_id, al.student_id,username;`
+        const {rows:topStudents} = await con.query(sqlCommand) 
+        result = {...result,top3:topStudents}
+
+        res.status(200).json(result)
+        con.release()
+    }catch(err){
+        console.log(err);
+    }
+})
+
 export default course;
