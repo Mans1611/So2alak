@@ -32,13 +32,13 @@ $sidebar-width:250px;
     }
 }
 @mixin input{
-
+    
     &:focus{
         &::placeholder{
            visibility:hidden;
         }
-        border: none;
-        outline: none;
+        border: none !important;
+        outline: none !important;
     }
 }
 

@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import './navbar.scss';
 import logo from '../../assets/logo.png' 
 import avatar from '../../assets/avatar.png' 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AppState } from '../../App';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
@@ -11,38 +11,43 @@ import Search from '../Search/Search';
 const Navbar = () => {
   // states
   const {dark,setDark,
-    username,
-    sidebarSelected,setSideBarSelected
+    stundetInfo,setStudentInfo,
+    sidebarSelected,setSideBarSelected,
+    setAuth,
   } = useContext(AppState);
-  
+  const nav = useNavigate();
   const [showToggleList,setShowToggleList] = useState(false);
   // handlers.
   const changeTheme = ()=>setDark(dark=>!dark);
   const showAvatar = ()=>setShowToggleList(show=>!show); 
-  const logout = ()=>{};
+  const logout = ()=>{
+    setAuth(false);
+    setStudentInfo({});
+    nav('/signin')
+  };
   const handleActive=(param)=>{
     setSideBarSelected(param)
   }
   return (
-    <div className={`navbar ${dark && 'dark'}`}>
+    <div id='navbar' className={`navbar ${dark ? 'dark':''}`}>
         <div className="logo-wrapper">
-            <img src={logo} alt="So2alak" srcset="" />
+            <img src={logo} alt="So2alak" srcSet="" />
           </div>
         <Search/>
         <div className="links-wrapper">
             <Link onClick={()=>handleActive(null)} className='links' to={'/main/feedpage'}> Home</Link>
-            <Link className='links' to={'/leaderboard'}> LeaderBoard</Link>
+            <Link className='links' to={'leaderboard'}> LeaderBoard</Link>
             <Link className='links' to={'/faviourte'}> Fav</Link>
         </div>
         <div className="avatar-wrapper">
           <h1 className="username">
-            {username?username:'Mans1611'}
+            {stundetInfo.username?stundetInfo.username:'Mans1611'}
           </h1>
           <div className="img-wrapper">
-          <img onClick = {showAvatar} src={avatar} alt="" srcset="" />
+          <img onClick = {showAvatar} src={avatar} alt="" srcSet="" />
             {showToggleList && 
               <ul className='toggle-list'>
-                <li><Link to={`/profile/${username}`}>My profile</Link></li>
+                <li><Link to={`/main/profile/${stundetInfo.username.replace(" ","")}`}>My profile</Link></li>
                 <li onClick={logout}>Log Out</li>
               </ul>
             }

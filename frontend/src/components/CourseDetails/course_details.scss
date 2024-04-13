@@ -1,5 +1,6 @@
 @import '../../mainStyle.scss';
 .third_part_child{
+    transition: all 300ms;
     width: 100%;
     background-color: #e1e1e1;
     border-radius: 15px;
@@ -13,6 +14,25 @@
         color: $semi-dark-blue;
     }
     .header{
+        .button-wrapper{
+            width: 100%;
+            @include centerChild;
+            .register{
+                margin: 10px auto;
+                width: 70%;
+                background-color: $sky-blue;
+                color: $full-white;
+                padding: 5px 3px;
+                border-radius: 5px;
+                font-size: 22px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 200ms;
+                &:hover{
+                    background-color: $fully-dark-blue;
+                }
+            }
+        }
         .flex{
             margin: 15px 0;
             align-items: center;
@@ -39,25 +59,15 @@
     .instructors-title{
         text-decoration: underline;
     }
-    
 }
 .dark{
-    .course_details{
+    .third_part_child{
         background-color: $semi-dark-blue;
         h2{
             text-align: center;
             color: #e1e1e1;
         }
         .header{
-            align-items: center;
-            .courselogo{
-                margin-right: 10px;
-                img{
-                    width: 70px;
-                    height: 70px;
-                    border-radius: 10px;
-                }
-            }
             .title{
                 color: $light-white;
             }  

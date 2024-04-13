@@ -4,6 +4,7 @@ import avatar from "../../assets/user-tie-solid.svg";
 import {AppState} from "../../App";
 import Calander from '../../components/Calander/Calander';
 import { useParams } from 'react-router-dom'
+import Badges from '../../components/Badges/Badges';
 const Profile = () => {
     const {user_id} = useParams();// get the user id or name for the link as a params.
     const {dark,username} = useContext(AppState);
@@ -35,14 +36,8 @@ const Profile = () => {
                                 <div className='achieved'><p>{answers}</p> <p>Answers</p></div>
                             </div>
                         </div>
-
                         {/* Badges Comp */}
-                        <div className='badges'>
-                            <div className="badges_in">
-                            Badges
-                            </div>
-                            
-                        </div>
+                        <Badges/>
                     </div>
                     <div className='lower'>
                         <Calander/>

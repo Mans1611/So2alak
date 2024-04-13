@@ -70,11 +70,10 @@ course.get('/getimage',async(req,res)=>{
 
 })
 
-course.get('/course_details/:course_id',async(req,res)=>{
+course.get('/course_details/:course_id',async(req,res,next)=>{
     const {course_id} = req.params;
-    
+    console.log(course_id)
     try{
-
         let sqlCommand = null;
         let result = {}
         let row = null;
@@ -92,19 +91,22 @@ course.get('/course_details/:course_id',async(req,res)=>{
                 WHERE course_id = '${course_id}'
                 GROUP BY course_id ;`
         const {rows:numberOfStudents} = await con.query(sqlCommand);
-        console.log(numberOfStudents)
-        result = {...result,totalStudents:numberOfStudents[0]?.stundets}
+        const {rows:courseDetails} = await con.query(`SELECT * FROM courses WHERE course_id ='${course_id}' `)
+        result = {...result,...(courseDetails[0]),totalStudents:numberOfStudents[0]?.stundets}
         // getting the top studentes in this course to show them.
         sqlCommand = `SELECT al.student_id,username,sum(al.points) as points,course_id 
                         FROM activity_log as al,students as s
                         WHERE s.student_id = al.student_id
                         AND course_id = '${course_id}'
-                        GROUP By course_id, al.student_id,username;`
+                        GROUP By course_id, al.student_id,username
+                        ORDER BY points DESC 
+                        LIMIT 3;`
         const {rows:topStudents} = await con.query(sqlCommand) 
         result = {...result,top3:topStudents}
 
         res.status(200).json(result)
         con.release()
+        next()
     }catch(err){
         console.log(err);
     }

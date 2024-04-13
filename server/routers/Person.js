@@ -1,9 +1,13 @@
-import { Router } from "express"
+import { query, Router } from "express"
 import client from "../databse.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import DefaultCourses from "../utilis/DefaultCourses.js";
+import { sendEmail } from "../mailer/Mailer.js";
+import multer from "multer";
+const storage = multer.memoryStorage();
+const uploader = multer({storage:storage})
 
 dotenv.config();
 
@@ -45,7 +49,9 @@ person.post('/signup',async(req,res)=>{
             isTeacher:false,
         },process.env.JWTPASS);
         const courses = await DefaultCourses(studnet_level,student_department,student_subdepartment);
-        
+        sendEmail(student_id,
+            [['${username}',username],
+            ['${verfication_code}',1611254]])
         conn.release(); // release the connection with the database
         return res.status(201).json({sugesstedCourses : courses,token});
     }   
@@ -68,18 +74,24 @@ person.post('/signin',async(req,res)=>{
         if (!checkPass)
             return res.status(400).json({msg:"Invalid Email or password"});
        
-        return res.status(200).json({msg:"Welcome"});
+        return res.status(200).json({msg:"Welcome",student:rows[0]});
     }catch(err){
         console.log(err)
     }
 })
-
+person.put('/defualtCourses',async(req,res)=>{
+    try{
+        const {level,department,sub_department} = req.body;
+        const courses = await DefaultCourses(level,department,sub_department)
+        return res.status(200).json(courses)
+    }catch(err){
+        console.log(err)
+    }
+})
 person.post('/registercourse',async(req,res)=>{
     const {student_id,username,studentCourses} = req.body // studentCourses is an array of courses that the studnet choose to follow
-    
     if(!username)
         return res.status(400).json({msg : 'No provided id'})
-    
     try{
         // as I will insert many values in the table as he might register many courses.
         let sqlCommand = 
@@ -89,6 +101,12 @@ person.post('/registercourse',async(req,res)=>{
         `
         const con = await client.connect();
         await con.query(sqlCommand);
+        if (studentCourses.length === 1 ){
+            sqlCommand = `SELECT * from courses WHERE course_id = '${studentCourses[0].course_id}'`
+            const {rows} = await con.query(sqlCommand)
+            con.release();
+            return res.status(201).json({course:rows[0]})
+        }
         con.release();
         return res.status(201).json({msg:"Done"})
     }catch(err){
@@ -96,8 +114,41 @@ person.post('/registercourse',async(req,res)=>{
     }
 
 })
+person.put('/editProfileImg/:student_id',uploader.single('image'),async(req,res)=>{
+    const {student_id} = req.params;
+    try{
+        let sqlCommand;
+        if (req.file){
+            const con = await client.connect();
+            const { originalname, mimetype, buffer} = req.file;
+            sqlCommand = `INSERT INTO files (filename,mimtype,data) 
+            VALUES ($1,$2,$3) RETURNING id;` 
+            const {rows} = await con.query(sqlCommand,[originalname,mimetype,buffer])
+            
+            sqlCommand = `UPDATE students SET img_id = ${rows[0].id} WHERE student_id='${student_id}';`
+            await con.query(sqlCommand);
+            return res.status(201).json({msg:"Image Uploaded"})
+            }else{
+                res.status(400).json({msg:"No File uploaded"});
+            }
 
+    }catch(err){
+        console.log(err)
+    }
+})
+person.get('/getBadges/:student_id',async(req,res)=>{
+    const {student_id} = req.params;
+    try{
+        const con = await client.connect();
+        let sqlCommand = `SELECT * FROM earned_badges
+        WHERE student_id = '${student_id}';`
+        const {rows} = await con.query(sqlCommand)
+        res.status(200).json({badges:rows})
 
+    }catch(err){
+        console.log(err)
+    }
+})
 person.get('/getStudentCourses/:s_name',async(req,res)=>{
     const {s_name} = req.params;
     
@@ -145,6 +196,7 @@ person.get('/personalInfo/:student_name',async(req,res)=>{
 })
 person.get('/get_activity_log/:student_id',async(req,res)=>{
     const {student_id} = req.params;
+    console.log(student_id)
     try{
         const con = await client.connect();
         let sqlCommand = `SELECT student_id , TO_CHAR(DATE(activity_time),'DD-MM-YYYY') AS date 

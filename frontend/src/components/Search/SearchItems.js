@@ -47,7 +47,7 @@ const SearchItems = ({title,items}) => {
           <ul>
             {items.map((item,key)=>
                <li className='search-li'>
-                  <Link key={key} to = {`/course/${item.course_name?.toLowerCase().replace(' ','')}`}>
+                  <Link key={key} to = {`/main/${item.course_id}`}>
                         <div className="flex">
                           <img src={avatar} alt="" srcset="" />
                           <div className="main_title">{item.course_name}</div>

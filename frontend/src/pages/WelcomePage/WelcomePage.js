@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./welcomepage.scss";
 import SimpleNavBar from "../../components/SimpleNavBar/SimpleNavBar";
 import wave from "../../assets/wave.png";
@@ -17,7 +17,7 @@ const WelcomePage = () => {
   const navigate = useNavigate();
   const {
     dark,
-    username,
+    stundetInfo,setStudentInfo,
     studentCourses,setStuCourses,
     id: student_id,
   } = useContext(AppState);
@@ -25,6 +25,7 @@ const WelcomePage = () => {
   const [searchedCourses, setSearchedCourses] = useState([]);
   const [search, setSearch] = useState("");
   const [Lodaing, setLoading] = useState(false);
+
   const searchForCourse = async (e) => {
     /*
             1 - Check if string is empty. (Done)
@@ -45,18 +46,16 @@ const WelcomePage = () => {
     clearTimeout(timeout);
     console.log(data)
   };
-  console.log(student_id)
   const RegisterCourses = async () => {
     if (studentCourses.length === 0) return; // if no courses is selected no request send to backend.
     try {
-      console.log(studentCourses);
       // 'result' is assigned a value but never used
       const result = await axios.post(
         "http://localhost:8000/person/registercourse",
         {
           studentCourses,
-          student_id,
-          username
+          student_id:stundetInfo.student_id,
+          username:stundetInfo?.username
         }
       );
       if(result.status == 201)
@@ -66,12 +65,26 @@ const WelcomePage = () => {
       if (error.response.status === 400) console.log("Error");
     }
   };
+  useEffect(()=>{
+    if(studentCourses.length == 0 ){
+      let subscrbe = true
+      const fetchCourses = async()=>{
+        const {data} = await axios.put('http://localhost:8000/person/defualtCourses',{
+          level: stundetInfo?.student_level,
+          department:stundetInfo?.student_department,
+          sub_department: stundetInfo?.student_subdepartment
+        })
+        setStuCourses(data)
+      }
+      fetchCourses()
 
+    }
+  },[])
   return (
     <div className={`welcome-page ${dark ? "dark" : ""}`}>
       <SimpleNavBar />
       <h1 className="welcome-sentance">
-        Welcome <span>{username.split(" ")[0]},</span>
+        Welcome <span>{stundetInfo?.username?.split(" ")[0]},</span>
       </h1>
       <div className="search-wrapper">
         <input

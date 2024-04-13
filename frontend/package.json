@@ -17,11 +17,13 @@
     "mui": "^0.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-easy-crop": "^5.0.6",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.16.0",
     "react-scripts": "5.0.1",
     "sass": "^1.69.5",
     "scss": "^0.2.4",
+    "socket.io-client": "^4.7.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

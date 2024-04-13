@@ -97,10 +97,15 @@ CREATE TABLE IF NOT EXISTS questions(
     REFERENCES students(username) 
     ON UPDATE CASCADE
 	ON DELETE SET NULL,
+	student_id VARCHAR(30) 
+	REFERENCES studnets(student_id)
+	ON UPDATE CASCADE 
+	ON DELETE SET NULL,
     question TEXT NOT NULL,
 	q_upvotes INTEGER DEFAULT 0,
  	q_verified BOOLEAN default false,
-    q_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    q_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	q_files INTEGER REFERENCES files(id)
 );
 
 CREATE TABLE IF NOT EXISTS fav_questions (

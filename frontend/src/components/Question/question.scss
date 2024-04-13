@@ -21,18 +21,18 @@
                 color: #000000;
             }
         }
+    };
+    .help-wrapper,.options{
+        position: sticky;
+        top: 70px;
     }
     .flex{
         display: flex;
+        align-items: center;
         .question-help{
             flex: 1;
             margin-right: 5px;
             cursor: pointer;
-            .help-wrapper{
-                position: sticky;
-                top: 10px;
-            }
-            
             .circle{
                 font-family: 'Seymour One', sans-serif;
                 width: 40px;
@@ -63,7 +63,7 @@
                 }
             }
             .help-counts{
-                font-size: 26px;
+                font-size: 22px;
                 font-weight: 600;
                 margin-top: 5px;
                 text-align: center;
@@ -93,14 +93,35 @@
                        
                     }
             }
-            
+            div{
+                margin-top: 5px;
+                margin-left: 10px;
+                &.downQuestion{
+                    display: flex;
+                    align-items: center;
+                }
+                .icon-wrapper{
+                    color: $fully-dark-blue;
+                    margin: 0 5px;
+                    display: flex;
+                    align-items: center;
+                    margin-left: 10px;
+                }
+                .post-icons{
+                    color: $semi-dark-blue;
+                    font-size: 25px;
+                    font-weight: 600;
+                    margin: 0 5px;
+                    
+                }
+            }
             .time{
                 position: absolute;
                 bottom: 5px;
                 right: 15px;
                 color: $fully-dark-blue;
                 text-align: right;
-                font-size: 17px;
+                font-size: 14px;
                 
             }
             
@@ -118,6 +139,12 @@
                 transform: scale(1.1);
             }
             flex: 1;
+        }
+        .options{
+            font-size: 30px;
+            font-weight: 700;
+            margin-top: 5px;
+            cursor: pointer;
         }
         
     }
@@ -138,16 +165,7 @@
         padding: 10px;
         float: right;
         transition: all 200ms;
-        input{
-            background-color: #e0e0e0;
-            border-radius: 10px;
-            width: 90%;
-            outline: none;
-            padding: 5px;
-            height: 40px;
-            margin-right: 5px;
-            @include input;
-        }
+       
         button{
            @include btn;
            background-color: $semi-dark-blue;
@@ -176,9 +194,8 @@
             transition: all 200ms;
             a{
                 color: $sky-blue;
-                transition: all 200ms;
                 &:hover{
-                    color: #000000;
+                    color: #f0f0f0;
                 }
             }
         }
@@ -188,17 +205,15 @@
                     background-color: $semi-dark-blue;
                     transition: all 300ms;
                     &.loading-ques{
-                        width: 60px;
-                        height: 60px;
-                        cursor: default;
                         animation: blinking 1600ms alternate forwards infinite;
                     }
                     svg{
                         color: $full-white;
                     }
                     &:hover,&.active{
+                        background-color: $sky-blue;
                         svg{
-                            color: $sky-blue !important;
+                            color: $blue !important;
                         }
                         &.loading-ques{
                             background-color: #dddddd;
@@ -216,12 +231,22 @@
                         color: $full-white;
                     }
                 }
+                .icon-wrapper{
+                    color: $full-white;
+                }
+                .post-icons{
+                    color: $full-white;
+                    
+                }
                 .time{
                     color: #b1b1b1a1;
                 }
             }
             .reply-btn{
                 color: $full-white;  
+            }
+            .options{
+               color: $full-white;
             }
         }
     }

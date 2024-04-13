@@ -1,5 +1,3 @@
-
-
 import B2 from 'backblaze-b2';
 import dotenv from 'dotenv'
 

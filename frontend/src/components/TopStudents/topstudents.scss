@@ -1,0 +1,63 @@
+@import '../../mainStyle.scss';
+.topstudnets{
+    margin-top: 10px;
+   .table-wrapper{
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #d0d0d0;
+        color: #ffffff;
+        .flex{
+            display: grid;
+            grid-template-columns: repeat(2,50%);
+            position: relative;
+        }
+        .header{
+            background-color: $semi-dark-blue;
+            font-size: 20px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            text-align: center;
+        }
+        .value{
+            background-color: #919191;
+            padding: 8px 0;
+            color: $fully-dark-blue;
+            margin: auto;
+            text-align: center;
+            font-weight: 300;
+            font-size: 14px;
+            &:nth-child(odd){
+                background-color: #c1c1c1;
+            }
+            &:last-child{
+                border-bottom-left-radius: 10px;
+                border-bottom-right-radius: 10px;
+            }
+            .medal{
+                position: absolute;
+                width: 25px;
+                height: 25px;
+                left: 2px;
+            }
+        }
+        .property{
+
+        }
+   } 
+}
+
+.dark{
+    .topstudnets{
+        .table-wrapper{
+            background-color:$fully-dark-blue ;
+            .value{
+                
+                background-color: $blue;
+                color: $full-white;
+                &:nth-child(odd){
+                    background-color: $semi-dark-blue;
+                }
+        }
+    }
+}
+}

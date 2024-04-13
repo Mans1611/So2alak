@@ -16,6 +16,9 @@ import Landing from "./pages/LandingPage/Landing";
 import { QueryClient, QueryClientProvider} from 'react-query'
 import Course from "./pages/Course/Course";
 import FullQuestion from "./pages/FullQuestion/FullQuestion";
+import ListsPage from "./pages/Lists/ListsPage";
+import LeaderBoard from "./pages/LeaderBoard/LeaderBoard";
+import ListPage from "./pages/ListPage/ListPage";
 export const AppState = createContext(null); // I export it to be accessable in the whole components
 
 const queryClient = new QueryClient();
@@ -24,10 +27,10 @@ const queryClient = new QueryClient();
 function App() {
   const [dark, setDark] = useState(false);
   const [studentCourses, setStuCourses] = useState([]);
-  const [username, setUsername] = useState("");
-  const [id, setId] = useState("");
+  const [stundetInfo,setStudentInfo] = useState(null); 
   const [sidebarSelected,setSideBarSelected] = useState(null);
-
+  const [auth,setAuth]=useState(false);
+  const [showNotification,setShowNotification] = useState(false);
   return (
     <Router>
       <div className="App">
@@ -35,10 +38,11 @@ function App() {
         <AppState.Provider
           value={{
             dark,setDark,
+            auth,setAuth,
+            stundetInfo,setStudentInfo,
             studentCourses,setStuCourses,
-            username,setUsername,
-            id,setId,
-            sidebarSelected,setSideBarSelected
+            sidebarSelected,setSideBarSelected,
+            showNotification,setShowNotification
           }}
         >
           {/* in the value i put all the state and handlers which i would like to share in the app */}
@@ -52,10 +56,12 @@ function App() {
             <Route path="/main" element={<MainPage/>}>
               <Route path="teacherprofile" element={<TeacherProfile />} />
               <Route path="feedpage" element={<FeedPage/>} />
+              <Route path="leaderboard" element={<LeaderBoard/>} />
               <Route path="profile/:user_id" element={<Profile />} />
               <Route path=":course_code" element={<Course/>} />
               <Route path="question/:question_id" element={<FullQuestion/>} />
-              <Route path="list" element={<div style={{paddingLeft:"250px"}}>list </div>}/>
+              <Route path="lists/:student_id" element={<ListsPage/>}/>
+              <Route path="lists/:student_id/list/:list_id" element={<ListPage/>}/>
             </Route>
             
             <Route path="/loading" element={<Loading />} />

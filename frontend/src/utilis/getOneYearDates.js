@@ -13,6 +13,7 @@ const today = new Date();
 const oneYearAgo = new Date();
 oneYearAgo.setFullYear(today.getFullYear() - 1);
 const datesInRange = getDatesBetween(oneYearAgo,today);
+
 let months = {}
 
 export const dates = datesInRange.reduce((acc,curr)=>{

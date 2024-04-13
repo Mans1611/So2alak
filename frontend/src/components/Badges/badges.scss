@@ -1,0 +1,28 @@
+@import '../../mainStyle.scss';
+.badges {
+    flex: 6;
+    .badges_in{
+        width: 80%;
+        height: 150px;
+        padding: 10px;
+        background-color: $light-white;
+        border-radius: 10px;
+        @include centerChild;
+        .badge{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+            .badge_icon{
+                width: 65px;
+                height: 65px;
+            }
+            .badge_title{
+                font-size: 22px;
+                text-align: center;
+            }
+
+        }
+    }
+}

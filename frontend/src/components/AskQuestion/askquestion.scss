@@ -8,31 +8,54 @@
     &.post-answer{
         padding: 5px;
         margin: auto;
-        border: 2px solid #6b6a6a;
-        background-color: #fff;
         border-radius: 20px;
-        .askQuestion-wrapeer{
-            textarea{
-                height: 50px;
-                background-color: #fff;
-                font-weight: normal;
-                &::placeholder{
-                    font-size: 18px;
-                    font-weight: 400;
-                }
-            }
-        }
     }
     .askQuestion-wrapeer{
         display: flex;
         flex-direction: column;
         width: 80% !important;
         margin: auto;
+        padding: 5px 2px;
+        border-radius: 20px;
+        height: 50px;
+        transition: all 500ms;
+        overflow: hidden;
+        border: 2px solid #c1c1c1;
+        position: relative;
+        .askQuestion-content{
+            min-height: 60px;
+            height: fit-content;
+            border: 2px solid #6b6a6a;
+            font-weight: normal;
+            border: none;
+            cursor: text;
+            padding: 5px;
+            font-size: 18px;
+            &:focus{
+                border: none;
+                outline: none;
+            }
+        }
+        .down-options{
+            display: flex;
+            .course-selection{
+                margin-left: 20px;
+                select{
+                    background-color: #e0e0e0;
+                    width: 120px;
+                    height: 30px;
+                    border-radius: 5px;
+                    option{
+                        text-align: center;
+
+                    }
+                }
+            }
+        }
         .img-preview{
             max-width: 100%;
             border-top-right-radius: 15px;
             border-top-left-radius: 15px;
-            
         }
         .files-wrapper{
             input{  
@@ -54,37 +77,23 @@
                 }
             }
         }
-        textarea{
-            height: 120px;
-            width: 100%;
-            border-radius: 15px;
-            margin: auto;
-            outline: none;
-            padding: 15px;
-            font-size: 22px;
-            background-color: $light-white;
-            resize: none; 
-            overflow: hidden;
-            &::placeholder{
-                color: #929292cc;
-                font-weight: 600;
-                font-size: 26px;
-            }
-        }
         button{
-            margin-top: -10px;
-            padding: 10px 20px;
+            @include centerChild;
+            padding: 5px;
+            font-size: 22px;
+            margin-right:15px ;
+            margin-top: -20px;
             color: $light-white;
             background-color: $semi-dark-blue;
             border-radius: 10px;
             cursor: pointer;
             transition: all 200ms;
-            font-size: 24px;
             font-weight: 500;
-            align-self: flex-end;
-            margin-right:15px ;
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
             &:hover{
-                background-color: $fully-dark-blue;
+                background-color: $semi-dark-blue;
             }
             &:disabled{
                 background-color: #6D6D6D;
@@ -96,9 +105,8 @@
 .dark{
     .askQuestion-container{
         .askQuestion-wrapeer{
-            
-            textarea{
-                background-color: $semi-dark-blue;
+            border: 2px solid $blue;
+            .askQuestion-content{
                 color: $light-white;
                 &::placeholder{
                     color: #6ddbf386;
@@ -106,12 +114,20 @@
             }
             
             button{
-              
                 color: $light-white;
                 background-color: $sky-blue;
                 cursor: pointer;
                 &:hover{
                     background-color: $semi-dark-blue;
+                }
+            }
+            .down-options{
+                .course-selection{
+                   select{
+                        background-color: $semi-dark-blue;
+                        color: #f0f0f0;
+                       
+                    }
                 }
             }
         }

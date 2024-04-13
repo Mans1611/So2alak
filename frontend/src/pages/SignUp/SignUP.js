@@ -27,11 +27,12 @@ const SignUP = () => {
 
     //states
     const {setStuCourses,
-        username,setUsername,
-        id,setId
     } = useContext(AppState);
     const levels = ['Freshmen', 'Somophore', 'Junior', 'Senior1', 'Senior2'];
     const departments = levDeps;
+    
+    const [username, setUsername] = useState('');
+    const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const [repassword, setRepassword] = useState('');
     const [level, setLevel] = useState('');
@@ -158,8 +159,7 @@ const SignUP = () => {
            
             try{
                 //send a request to backend.
-                console.log("passing requesrt")
-                const result = await axios.post('http://localhost:8000/person/signup',
+                const result = await axios.post(`${process.env.REACT_APP_API_URL}/person/signup`,
                 {
                     username,
                     student_id: id,

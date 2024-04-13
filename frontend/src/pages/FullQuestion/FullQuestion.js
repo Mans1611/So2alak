@@ -1,25 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import {useParams} from 'react-router-dom';
 import './fullQuestion.scss';
 import HeartComponent from '../../components/HeartComponent/HeartComponent';
 import Question from '../../components/Question/Question';
+import { AppState } from '../../App';
 
 const FullQuestion = () => {
 
     const {question_id} = useParams();
     const [question,setQuestion] = useState({});
     const [loading,setLoading] = useState(true);
-    console.log(question)
+    const {stundetInfo} = useContext(AppState);
     useEffect(()=>{
         let subscribe = true;
         const fetchQuestion = async()=>{
-            const {data} = await axios.get(`http://localhost:8000/post/getQuestion/${question_id}`);
+            const {data} = await axios.get(`${process.env.REACT_APP_API_URL}/post/getQuestion/?question_id=${question_id}&student_id=${stundetInfo.student_id}`);
             setQuestion(data.data);
             setLoading(false);
-            document.title = question.question;
+            document.title = data.data.question;
         }
-        fetchQuestion();
+        if (subscribe) fetchQuestion();
         return ()=>{
             subscribe = false;
         }
@@ -29,7 +30,7 @@ const FullQuestion = () => {
     return (
     <div className='fullquestion'>
         <HeartComponent>
-            <Question singleQuestion={true} question={question}/>
+            <Question singleQuestion={true} setQuestion={setQuestion} question={question}/>
         </HeartComponent>
     </div>
   )

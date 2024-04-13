@@ -8,7 +8,7 @@ const Search = () => {
     useEffect(()=>{
         const fetchSearch = async ()=>{
             try{
-                const result = await axios.get(`http://localhost:8000/post/search/${search}`);
+                const result = await axios.get(`${process.env.REACT_APP_API_URL}/post/search/${search}`);
                 setSearchResult(result.data);
             }catch(err){
                 console.log(err)

@@ -1,0 +1,40 @@
+@import '../../mainStyle.scss';
+.question_filter{
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 80%;
+    margin: 10px auto;
+    .filter_name{
+        border: 2px solid  $sky-blue;
+        border-radius: 20px;
+        padding: 5px 10px;
+        min-width: 50px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: 500;
+        cursor: pointer;
+        &.active{
+            background-color: $semi-dark-blue;
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+    }
+}
+.dark{
+.question_filter{
+
+    .filter_name{
+       color: $full-white;
+        background-color: $semi-dark-blue;
+        &.active{
+            background-color: $sky-blue;
+            color: #fff;
+            
+        }
+        
+    }
+    }
+}

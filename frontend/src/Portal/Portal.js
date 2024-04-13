@@ -1,12 +1,10 @@
+
 import {createPortal} from "react-dom";
+import './portal.scss'
 
-
-const Portal = ()=>{
-    const portaldom =  document.getElementById('portal')
-    return createPortal(
-        'mansour is an idiot',
-        portaldom)
-
+const Portal = ({children})=>{
+    const portal =  document.getElementById('portal')
+    return createPortal(children,portal)
 }
 
 export default Portal; 

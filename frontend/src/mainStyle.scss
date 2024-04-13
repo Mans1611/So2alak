@@ -24,7 +24,13 @@ $navbar-height: 60px;
     text-decoration: none;
     color: #000000
 }
-
-.flex{
-    display: flex;
+@mixin modal {
+    position: fixed;
+    background-color: #a9a9a91b;
+    top: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999;
+    @include centerChild;  
 }

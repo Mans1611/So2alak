@@ -7,6 +7,9 @@ import multer from "multer";
 import { GetFiles } from "../utilis/GetFiles.js";
 import { CheckAuth } from "../middleware/CheckAuth.js";
 import b2 from "../Bucket/Bucket.js";
+import { sendEmail } from "../mailer/Mailer.js";
+import { io } from "../index.js";
+import { GiveSimpleBadge } from "../utilis/GiveSimpleBadge.js";
 
 
 
@@ -17,32 +20,22 @@ const post = Router();
 1 - middleware for authntication 
 */
 
-post.get('/allquestions/:page',async(req,res)=>{
-    const {page} = req.params;
+post.get('/allquestions/',async(req,res)=>{
+    const {student_name,student_id,filter} = req.query;
     let length = 5;
-    console.log("first")
     try {
         const con = await client.connect();
-        let sqlCommand = `
-        SELECT * FROM questions AS q
-        LEFT JOIN (
-            SELECT * FROM answers  
-            ORDER BY ans_verified DESC, ans_upvotes DESC , ans_time DESC
-        ) AS ans ON ans.q_id = q.question_id
-        LEFT JOIN (SELECT course_name,course_id FROM courses) 
-        as cor ON cor.course_id = q.course_id
-        ORDER BY q.q_time DESC , ans_verified DESC , ans_upvotes DESC 
-        ;`; //LIMIT ${length} OFFSET ${page * 5}
+         //LIMIT ${length} OFFSET ${page * 5}
+        let sqlCommand = FilterSQLQuery(filter,student_id,student_name); 
         const result = await con.query(sqlCommand);
-    
-    let data =  await GetFiles(result.rows,con)
-    data = AggregateQuestionsAnswers(data);
-    con.release();
-       return res
-       .status(200)
-       .json({data});
+        let data = await GetFiles(result.rows,con)
+        data = AggregateQuestionsAnswers(data);
+        con.release();
+        return res
+        .status(200)
+        .json({data});
     } catch (error) {
-        
+        console.log(error)
     }
 })
 
@@ -72,24 +65,22 @@ post.post('/createQuestion',/*CheckAuth,*/uploader.single('image'),async(req,res
             VALUES ($1,$2,$3) RETURNING id;`
             const { originalname, mimetype, buffer} = req.file;
             result = await con.query(sqlCommand,[originalname,mimetype,buffer])
-        
-            
             const url = await b2.getUploadUrl({
                 bucketId: process.env.BUCKET_ID
             });
-            await b2.uploadFile({
+            const uploadedFile = await b2.uploadFile({
                 uploadAuthToken: url.data.authorizationToken,
                 fileName: `question_${rows[0].question_id}`,
+                uploadUrl:url.data.uploadUrl,
                 data:buffer,
-                uploadUrl:url.data.uploadUrl
-            })
-            result = await b2.downloadFileByName({
-                fileName:`question_27`,
-                bucketName:'So2alak'
+                fileInfo:{
+                    mimetype,
+                    originalname,  
+                }
             })
         }
-        res.status(201).json({'msg':'Your question is posted'});
-        
+        const badge = await GiveSimpleBadge(student_id,'First Question',course_id,con)
+        res.status(201).json({'msg':'Your question is posted',badge});
         await MakeActivity(student_id,'ask',rows[0].question_id,4,con,null);
         con.release();
         
@@ -99,7 +90,20 @@ post.post('/createQuestion',/*CheckAuth,*/uploader.single('image'),async(req,res
         res.status(400).json({'msg':'an error occured, Try again'});
     }
 });
+import axios from 'axios';
+import { FilterSQLQuery } from "../utilis/FilterSQLQuery.js";
 
+post.get('/getPicture',async(req,res)=>{
+    let auth = await b2.authorize() 
+    let result = await axios.get(`${auth.data.apiUrl}/file/${process.env.BUCKET_NAME}/question_57`,{
+        responseType: 'arraybuffer',
+        headers:{
+            Authorization: auth.data.authorizationToken,
+        }
+    })
+    console.log(result)
+    return res.send(Buffer.from(result.data).toString('base64'))
+})
 post.delete('/deleteQuestion/:q_id',async(req,res)=>{
     // delete the question for the database, still need :
     //  1 - Auth & Authorization.
@@ -110,6 +114,7 @@ post.delete('/deleteQuestion/:q_id',async(req,res)=>{
         await con.query(sqlCommand);
         con.release();
         res.status(200).send("Deleted Question");
+        axios
     }catch(err){
         console.log(err)
         res.send(err);
@@ -141,14 +146,29 @@ post.put('/upvoteQuestion/:q_id',async(req,res)=>{
     // in this function needs auth.
     // need to take the student_id , in order not to make multiple upvotes.
     const {q_id} = req.params;
-    const {student_id} = req.body;
+    const {student_id,course_id,helped} = req.body;
     try{
         const con = await client.connect();
-        const sqlCommand = `
-        UPDATE questions 
-        SET q_upvotes = q_upvotes + 1
-        WHERE question_id = ${q_id};`
-        await con.query(sqlCommand);
+        let sqlCommand = null
+        if (helped){
+            sqlCommand=`
+            UPDATE questions 
+            SET q_upvotes = q_upvotes + 1
+            WHERE question_id = ${q_id};`
+            await con.query(sqlCommand);
+            await MakeActivity(student_id,'help',q_id,0,con,null,course_id);
+        }
+        else{
+            sqlCommand=`
+            UPDATE questions 
+            SET q_upvotes = q_upvotes - 1
+            WHERE question_id = ${q_id};
+            DELETE FROM activity_log 
+            WHERE student_id='${student_id}' AND 
+            question_id=${q_id} AND 
+            activity_type='help';`
+            await con.query(sqlCommand);
+        }
         res.status(200).send("Done"); 
         con.release()
     } catch(err){
@@ -175,9 +195,10 @@ post.put('/verifyQuestion/:q_id', async(req, res)=>{
     }
 });
 
-post.get('/getQuestion/:question_id',async(req,res)=>{
+post.get('/getQuestion/',async(req,res)=>{
     // this might not needs auth -> like face when you dont have an account, but you still can see the post.
-    const {question_id} = req.params; // I set  question_id = 1 from Postman.
+    const {question_id,student_id} = req.query; // I set  question_id = 1 from Postman.
+    console.log(question_id,student_id)
     try{
         const con = await client.connect();
         const sqlCommand = `SELECT * FROM questions  as q
@@ -186,12 +207,15 @@ post.get('/getQuestion/:question_id',async(req,res)=>{
                             LEFT JOIN (SELECT course_id,course_name 
                                 FROM courses) AS c 
                                 ON c.course_id = q.course_id 
-                            WHERE q.question_id = ${question_id}
+                            LEFT JOIN activity_log AS al 
+                            ON al.question_id = q.question_id
+                            WHERE q.question_id = ${question_id} 
+                            AND al.student_id = '${student_id}'
                             ORDER BY ans.ans_verified DESC , ans.ans_upvotes DESC,
                             ans.ans_time DESC;`;
         const result = await con.query(sqlCommand);
         const data = AggregateQuestionsAnswers(result.rows)
-
+        console.log("render question")
         res.status(200).json({'data':data[question_id]});
         con.release()
     }catch(error){
@@ -228,10 +252,16 @@ post.post("/createAnswer", async(req, res)=>{
         const sqlCommand = `
             INSERT INTO answers (answer, ans_username, q_id) 
             VALUES ('${answer}', '${ans_username}', ${question_id})
-            RETURNING answer_id;
-        `;
+            RETURNING *;`;
         const {rows} = await con.query(sqlCommand);
-        res.status(201).json({'msg': 'you answered sucessfully'});
+        const badge = await GiveSimpleBadge(student_id,'First Answer',null,con)
+        if (badge){
+            res.status(201).json({'msg': 'you answered sucessfully',badge});
+        }
+        else{
+            res.status(201).json({'msg': 'you answered sucessfully',badge:false});
+        }
+        io.emit('question-change',rows[0]);
         MakeActivity(student_id, 'answer', question_id, 5 ,con, rows[0].answer_id);
         con.release();
     } catch(error) {
@@ -390,17 +420,29 @@ post.get('/getVerifiedAnswers', async(req, res)=>{
 
 // Fav Ques
 post.post('/addToFavQues',async(req,res)=>{
-    const {s_id,q_id,username} = req.body;
+    const {s_id,q_id,username,course_id,bookMarked,list_id} = req.body;
+    console.log(req.body)
     try{
         const con = await client.connect();
-        const sqlCommand = `INSERT INTO fav_questions(s_id,username,q_id)
-        VALUES ('${s_id}','${username}',${q_id});`
+        let sqlCommand;
+        if (list_id){
+            // to add it to a spesific list which the user create before 
+            sqlCommand = `INSERT INTO fav_questions(s_id,username,q_id,course_id,list_id)
+            VALUES ('${s_id}','${username}',${q_id},'${course_id}',${list_id});`
+        }
+        else if (bookMarked){
+            // to added it the list which is the course 
+            sqlCommand = `INSERT INTO fav_questions(s_id,username,q_id,course_id)
+            VALUES ('${s_id}','${username}',${q_id},'${course_id}');`
+        }
+        else {
+            sqlCommand = `DELETE FROM fav_questions WHERE s_id = '${s_id}' AND username = '${username}' AND q_id = ${q_id};`    
+        }
         await con.query(sqlCommand);
-        con.release()
+        con.release();
         return res.status(201).json({msg:'Questions is added to your list'})
         
     }catch(err){
-        con.release()
         console.log(err)
     }
 })
@@ -423,22 +465,27 @@ post.delete('/deleteFromFavQues', async(req, res)=>{
     }
 });
 
-post.get('/:course_code',async(req,res)=>{
+post.get('/:course_code',async(req,res,next)=>{
     // this get all of the questions related to the course code provided.
     const {course_code} = req.params;
     try{
         if (!CheckValueExisit('courses','course_id',course_code,client))
             return res.status(400).json({msg:"This Course dosn't exist"})
         const con = await client.connect();
-        let sqlCommand = `SELECT * FROM questions 
-                          WHERE course_id = '${course_code}'
+        let sqlCommand = `SELECT * FROM questions as q 
+                          LEFT JOIN (
+                            SELECT course_name,course_id 
+                            FROM courses ) AS c
+                            ON c.course_id = q.course_id
+                          WHERE q.course_id = '${course_code}'
                           ORDER BY q_time DESC;`
 
         const result = await con.query(sqlCommand);
         let newData =  await GetFiles(result.rows,con)
         const data = AggregateQuestionsAnswers(newData)
         con.release()
-        return res.status(200).json({data:data})
+        res.status(200).json({data:data})
+        next()
     }catch(err){
         con.release()
 
