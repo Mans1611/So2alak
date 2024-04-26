@@ -29,9 +29,11 @@
 	.img1 {
 		animation: img-fade-l linear both;
 	}
+
 	.img2 {
 		animation: img-fade linear both;
 	}
+
 	.img3 {
 		animation: img-fade-r linear both;
 	}
@@ -46,6 +48,7 @@
 		animation: text-opacity linear both;
 		/*animation-range: exit -10%;*/
 	}
+
 	.q-v {
 		animation-timeline: --q-v;
 	}
@@ -57,7 +60,7 @@
 
 /* =========================== Phone =========================== */
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 600px) {
 	.slider {
 		.question-img {
 			width: 50%;

@@ -1,4 +1,3 @@
-
 .badgesview-container {
 	height: 100vh;
 	width: 100%;
@@ -14,6 +13,7 @@
 		font-size: 5rem;
 		margin-top: 2.5%;
 	}
+
 	.badges-container {
 		width: 90%;
 		height: 75%;
@@ -28,14 +28,17 @@
 		.gold-badge {
 			animation: fade-ud linear both;
 		}
+
 		.silver-badge {
 			align-self: flex-end;
 			animation: fade-l linear both;
 		}
+
 		.bronze-badge {
 			align-self: flex-end;
 			animation: fade-r linear both;
 		}
+
 		.gold-badge,
 		.silver-badge,
 		.bronze-badge {
@@ -48,19 +51,22 @@
 
 
 /* =========================== Phone =========================== */
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 600px) {
 	.badgesview-container {
 		.label {
 			font-size: 4rem;
 			margin-top: 5%;
 		}
+
 		.badges-container {
 			flex-flow: column;
+
 			.gold-badge,
 			.bronze-badge,
 			.silver-badge {
 				align-self: center;
-				width: 40%;
+				width: 35%;
+				animation: none;
 			}
 		}
 	}
@@ -72,7 +78,7 @@
 /* Animations */
 
 @supports(animation-timeline: view()) {
-		@keyframes fade-l {
+	@keyframes fade-l {
 		entry 60% {
 			opacity: 0;
 			transform: translateX(100px);

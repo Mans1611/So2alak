@@ -11,8 +11,8 @@ const BadgesView = () => {
     <div className="badgesview-container">
       <h1 className="label">Badges</h1>
       <div className="badges-container">
-        <img src={gold} alt="gold" className="gold-badge" />
         <img src={silver} alt="silver" className="silver-badge" />
+        <img src={gold} alt="gold" className="gold-badge" />
         <img src={bronze} alt="bronze" className="bronze-badge" />
       </div>
     </div>

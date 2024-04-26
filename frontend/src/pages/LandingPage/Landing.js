@@ -30,7 +30,7 @@ const Landing = () => {
 
   const detectDevice = () => {
     let deviceType = device;
-    if (window.innerWidth < 480) deviceType = true;
+    if (window.innerWidth < 600) deviceType = true;
     else deviceType = false;
     setDevice(deviceType);
   }
@@ -69,11 +69,13 @@ const Landing = () => {
         <SlideComponent title="Suggestions" img={suggestions} description="The students can share a videos or articles’ link to the student, and
                 it will be in the suggestion section for the question."/>]} /> : <QuestionsView />}
       <BadgesView />
-      {device ? <Slideshow comps={[
-        <SlideComponent title="" img={students} description={<p>Join more than <p className="statistics-no"> +10000 </p> Students.</p>} />,
-        <SlideComponent title="" img={QandA} description={<p>More than <p className="statistics-no"> +1000 </p> question with <span> verified answers</span>.</p>} />,
-        <SlideComponent title="" img={courses} description={<p>Get trusted information in <p className="statistics-no"> 170 </p> courses.</p>} />]} /> : <StatisticsView />}
-      {showTopBtn && <div className="go-top" onClick={goTop}>&uarr;</div>}
+      {
+        device ? <Slideshow comps={[
+          <SlideComponent title="" img={students} description={<p>Join more than <p className="statistics-no"> +10000 </p> Students.</p>} />,
+          <SlideComponent title="" img={QandA} description={<p>More than <p className="statistics-no"> +1000 </p> question with <span> verified answers</span>.</p>} />,
+          <SlideComponent title="" img={courses} description={<p>Get trusted information in <p className="statistics-no"> 170 </p> courses.</p>} />]} /> : <StatisticsView />
+      }
+      <div className={`go-top ${showTopBtn ? "visable" : ""}`} onClick={goTop}>&uarr;</div>
     </div>
   );
 };

@@ -25,6 +25,8 @@
 	.slideshowDots {
 		text-align: center;
 		padding-bottom: 50px;
+		position: relative;
+		z-index: 9;
 		.slideshowDot {
 			display: inline-block;
 			height: 20px;

@@ -24,16 +24,24 @@ $background-color_1: #f5f5f5;
 
 	.go-top {
 		position: fixed;
-		bottom: 0px;
-		right: 0px;
 		z-index: 99;
+		bottom: 0px;
+		right: -50px;
 		font-size: 50px;
 		color: $color_1;
 		cursor: pointer;
 		padding: 15px 25px;
 
+		transition: right 0.25s ease-in-out;
+
+		&.visable {
+			right: 0px;
+			animation: jump_shake 2s linear infinite;
+		}
+
 		&:hover {
 			color: $color_2;
+			animation: none;
 		}
 	}
 }
@@ -76,3 +84,14 @@ $background-color_1: #f5f5f5;
 		width: 100%;
 	}
 }
+
+@keyframes jump_shake {
+	0% { transform: translateX(0) }
+	25% { transform: translateY(-9px) }
+	35% { transform: translateY(-9px) rotate(17deg) }
+	45% { transform: translateY(-9px) rotate(-17deg) }
+	55% { transform: translateY(-9px) rotate(17deg) }
+	65% { transform: translateY(-9px) rotate(-17deg) }
+	85% { transform: translateY(0px) rotate(0) }
+	100% { transform: translateY(0) rotate(0) }
+  }
