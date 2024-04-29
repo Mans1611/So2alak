@@ -1,12 +1,11 @@
 import React, { useContext, useState } from 'react'
 import './coursestabs.scss'
 import { AppState } from '../../App'
-const CoursesTabs = () => {
+const CoursesTabs = ({active,setActive}) => {
   const {stundetInfo,studentCourses}= useContext(AppState);
-  const [active,setActive] = useState('general')
     return (
-        <div className='courses_tabs'>
-            <div className={`tab ${active==='general'? 'active':''}`}>
+        <div  className='courses_tabs'>
+            <div onClick={()=>setActive('general')} className={`tab ${active==='general'? 'active':''}`}>
                 General
             </div>
             {

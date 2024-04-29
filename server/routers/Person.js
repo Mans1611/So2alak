@@ -212,4 +212,62 @@ person.get('/get_activity_log/:student_id',async(req,res)=>{
         console.log(err)
     }
 })
+
+person.get('/leaderboard',async(req,res)=>{
+    const {level,course_id} = req.query;
+    const con = await client.connect();
+    try{
+        if (course_id == 'undefined' || course_id === 'general'){
+            console.log(course_id)
+            let sqlCommand = `SELECT * FROM students WHERE student_level = '${level}' ORDER BY points DESC LIMIT 10`
+            const {rows} = await con.query(sqlCommand);
+            res.status(200).json({data:rows})
+        }
+        else{
+            let sqlCommand = `
+            SELECT al.student_id ,course_id,username, SUM(al.points) AS points FROM activity_log al , students S
+            WHERE course_id = '${course_id}'  AND S.student_id = al.student_id
+            GROUP BY al.student_id, course_id,username
+            ORDER BY points DESC LIMIT 10;`
+            const {rows} = await con.query(sqlCommand);
+            res.status(200).json({data:rows})
+        }
+        con.release();
+    }catch(err){
+        con.release()
+        console.log(err)
+
+    }
+})
+
+person.get('/getStudnetPersonalDetails/:student_id',async(req,res)=>{
+    const {student_id} = req.params;
+    const con = await client.connect();
+    try{
+        let sqlCommand
+        sqlCommand = `
+        SELECT * FROM (SELECT
+            *,
+         ROW_NUMBER() OVER (ORDER BY points) AS row_rank
+         FROM
+         students) AS ranked
+         WHERE ranked.student_id = '${student_id}';`
+         const {rows} = await con.query(sqlCommand) 
+         console.log(student_id)
+         sqlCommand = `
+         SELECT * FROM (SELECT
+             *,
+          ROW_NUMBER() OVER (ORDER BY points) AS row_rank
+          FROM
+          students) AS ranked
+          WHERE ranked.username = '${student_id}';`
+
+        const {rows:usernameData} = await con.query(sqlCommand)
+        res.status(200).json({data:{...rows[0],...usernameData[0]}})
+        con.release()
+    }catch(err){
+        con.release()
+        console.log(err)
+    }
+})
 export default person;

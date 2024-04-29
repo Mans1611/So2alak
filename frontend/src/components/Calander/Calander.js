@@ -3,7 +3,7 @@ import {dates} from '../../utilis/getOneYearDates';
 import axios from 'axios';
 import { AppState } from '../../App';
 
-const Calander = () => {
+const Calander = ({user_id}) => {
     const calander = useMemo(()=>dates,[]);
     const [activeDates,setActiveDates] = useState([]);
     const {stundetInfo} = useContext(AppState);

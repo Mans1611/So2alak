@@ -19,7 +19,7 @@ const ListPage = () => {
             }
         }
         fetchList();
-    })
+    },[])
   return (
     <div className='listpage'>
         <h1>List Name</h1>

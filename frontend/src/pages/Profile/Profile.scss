@@ -1,11 +1,10 @@
 @import '../../mainStyle.scss';
 
-
 .profile_container {
-    display: flex;
     flex-direction: column;
     padding-left: 250px;
     flex: 10;
+    width: 100%;
     .content {
         min-height: 92vh;
         .info {
@@ -23,7 +22,7 @@
                 font-weight: 600;
                 .score {
                     @include centerChild;
-                    flex: 6;
+                    flex: 5;
                     .score_in {
                         width: 80%;
                         height: fit-content;
@@ -43,10 +42,8 @@
                 }
 
             .lower {
-                flex: 6;
                 @include centerChild;
                 align-items: flex-start;
-
                 .lower_in{
                     @include centerChild;
                     align-items: flex-start;
@@ -55,14 +52,16 @@
                     h1 {
                         color: #0c2c43;
                         font-size: 2.3em;
+                        margin-bottom: 10px;
                     }
+                    padding: 10px;
                     .calendar {
-                        width: 90%;
-                        overflow-x: scroll;
+                        width: 100%;
                         @include centerChild;
                         justify-content: flex-start;
                         flex-wrap: nowrap;
-                        gap: 20px;
+                        gap: 10px;
+                        overflow: scroll;
                         &::-webkit-scrollbar {
                             height: 0;
                         }
@@ -73,15 +72,15 @@
                             min-width: 75px;
                             @include centerChild;
                             flex-direction: column;
-                            gap: 5px;
+                            gap: 1px;
                             .cells {
                                 display: grid;
-                                grid-template-rows: repeat(7,15px);
-                                grid-template-columns: repeat(6,15px);
+                                grid-template-rows: repeat(7,12px);
+                                grid-template-columns: repeat(6,12px);
                                 flex-wrap: wrap;
                                 .cell {
-                                    width: 12px;
-                                    height: 12px;
+                                    width: 10px;
+                                    height: 10px;
                                     margin: auto;
                                     border-radius: 2px;
                                     background-color: #b9b9b9;
@@ -106,7 +105,6 @@
 
     &.dark{
         background-color: #041622;
-        
         .content{
             .info{
                 .upper{
@@ -116,11 +114,9 @@
                         box-shadow: 1px 1px 4px #217487;
                     }
                 }
-
                 .lower{
                     background-color: #041622;
                     .lower_in{
-                        
                         h1{
                             color: #8deaff;
                         }

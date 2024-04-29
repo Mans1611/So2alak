@@ -45,6 +45,10 @@
             height: 150px;
         }
     }
+    .username{
+        text-align: center;
+        font-size: 20px;
+    }
     hr {
         border: none; /* Remove default border */
         border-top: 2px solid $semi-dark-blue; /* Customize line color, thickness, etc. */

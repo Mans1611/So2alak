@@ -40,7 +40,7 @@ const Profile = () => {
                         <Badges/>
                     </div>
                     <div className='lower'>
-                        <Calander/>
+                        <Calander user_id={user_id}/>
                     </div>
                 </div>
             </div>

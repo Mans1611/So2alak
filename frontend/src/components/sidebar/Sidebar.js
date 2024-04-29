@@ -7,6 +7,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import EditIcon from '@mui/icons-material/Edit';
 import Portal from '../../Portal/Portal';
 import ImagePreview from '../../Portal/ImagePreview/ImagePreview';
+import PersonalDetail from '../PersonalDetail/PersonalDetail';
 
 const SideBar = React.memo(() => {
   const [loading,setLoading]=useState(true);
@@ -16,8 +17,12 @@ const SideBar = React.memo(() => {
   stundetInfo,
     studentCourses,setStuCourses} = useContext(AppState);
     const {course_code} = useParams();
+    const {user_id} = useParams();
 
   const link = window.location.href;
+  
+  const [profilePage,setProfilePage] = useState(false);
+  
   useEffect(()=>{
     const fetchCourses = async ()=>{
       const result = await axios.get(`${process.env.REACT_APP_API_URL}/person/getStudentCourses/${stundetInfo.username?stundetInfo.username:'Ahmed'}`)
@@ -25,9 +30,11 @@ const SideBar = React.memo(() => {
       setLoading(false);
     }
     if (link.includes('profile')){
-      
+      setProfilePage(true);
     }
     else{
+      
+      setProfilePage(false);
       fetchCourses();
     }
   },[link]);
@@ -41,7 +48,6 @@ const SideBar = React.memo(() => {
 
   const [profileImg,setImgProfile] = useState(null);
   const [imgFile,setImgFile]=useState(null);
-  
   const handleImageUpload = (e)=>{
     const file = e.target.files[0];
     setImgFile(file)
@@ -82,7 +88,7 @@ const SideBar = React.memo(() => {
     <div className={`sidebar ${dark?'dark':''}`}>
       <div className="sidebar-logo">
         {
-          link.includes('profile')?
+          profilePage?
           <div className="profile_img">
             <label htmlFor="profile_img">
               <EditIcon className='edit'/>
@@ -91,10 +97,14 @@ const SideBar = React.memo(() => {
             <PersonIcon className='person'/>
           </div>
           :
-        <i className="fi fi-sr-home"></i>
+          <i className="fi fi-sr-home"></i>
         }
       </div>
+        <div className='username'>Username :</div>
       <hr/>
+      {profilePage && <PersonalDetail user_id={user_id}/>}
+      
+
         <div className="side-bar-items">
           <h2 className='title'>You</h2>
           <ul className='list'>

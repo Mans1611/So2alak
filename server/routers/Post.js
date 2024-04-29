@@ -198,7 +198,7 @@ post.put('/verifyQuestion/:q_id', async(req, res)=>{
 post.get('/getQuestion/',async(req,res)=>{
     // this might not needs auth -> like face when you dont have an account, but you still can see the post.
     const {question_id,student_id} = req.query; // I set  question_id = 1 from Postman.
-    console.log(question_id,student_id)
+    console.log(student_id)
     try{
         const con = await client.connect();
         const sqlCommand = `SELECT * FROM questions  as q
@@ -210,12 +210,11 @@ post.get('/getQuestion/',async(req,res)=>{
                             LEFT JOIN activity_log AS al 
                             ON al.question_id = q.question_id
                             WHERE q.question_id = ${question_id} 
-                            AND al.student_id = '${student_id}'
+                            AND al.student_id = ${student_id? `${student_id}`: null }
                             ORDER BY ans.ans_verified DESC , ans.ans_upvotes DESC,
                             ans.ans_time DESC;`;
         const result = await con.query(sqlCommand);
         const data = AggregateQuestionsAnswers(result.rows)
-        console.log("render question")
         res.status(200).json({'data':data[question_id]});
         con.release()
     }catch(error){
