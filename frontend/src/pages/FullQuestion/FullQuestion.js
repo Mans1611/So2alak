@@ -16,9 +16,10 @@ const FullQuestion = () => {
         let subscribe = true;
         const fetchQuestion = async()=>{
             const {data} = await axios.get(`${process.env.REACT_APP_API_URL}/post/getQuestion/?question_id=${question_id}&student_id=${stundetInfo.student_id}`);
-            setQuestion(data.data);
+            setQuestion(data[0]);
+            console.log(data)
             setLoading(false);
-            document.title = data.data.question;
+            document.title = data[0]?.question;
         }
         if (subscribe) fetchQuestion();
         return ()=>{

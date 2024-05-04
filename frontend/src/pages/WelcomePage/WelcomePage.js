@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "./welcomepage.scss";
 import SimpleNavBar from "../../components/SimpleNavBar/SimpleNavBar";
 import wave from "../../assets/wave.png";
@@ -11,65 +11,62 @@ import { AppState } from "../../App";
 import { useNavigate } from "react-router-dom";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import axios from 'axios'
+import {debounce} from 'lodash';
+import { useCourseRegister } from "../../hooks/useCourseRegister";
 
 const WelcomePage = () => {
   document.title = "Welcome";
   const navigate = useNavigate();
   const {
     dark,
+    isTeacher,
     stundetInfo,setStudentInfo,
     studentCourses,setStuCourses,
     id: student_id,
   } = useContext(AppState);
 
   const [searchedCourses, setSearchedCourses] = useState([]);
-  const [search, setSearch] = useState("");
+  const search = useRef(""); // here i used useRef, as i don't want the comp to be updated when the input changes. 
   const [Lodaing, setLoading] = useState(false);
 
-  const searchForCourse = async (e) => {
+
+  const debouncedFunction = debounce(async()=>{
+      console.log("invoked")
+      if (search.current.trim() === "") return setLoading(false);
+      try{
+        const { data } = await axios.get(
+          `${process.env.REACT_APP_API_URL}/course/searchcourse/${search.current}`
+          );  
+        setSearchedCourses(data.courses);
+      }catch(err){
+        console.log(err);
+      }
+      setLoading(false);
+  },500);
+  
+  const searchForCourse = (e) => {
     /*
             1 - Check if string is empty. (Done)
-            2 - multiple requests will be sent if the function is invoked onChange.
+            2 - multiple requests will be sent if the function is invoked onChange.(Done)
             3 - check if the request returned with an empty array. 
         */
+    
     setLoading(true);
     // if the value in search for courses is empty it will not send a request.
-    if (e.target.value.trim() === "") return setLoading(false);
-    setSearch(e.target.value);
-    const { data } = await axios.get(
-      `http://localhost:8000/course/searchcourse/${e.target.value}`
-    );
-    const timeout = setTimeout(() => {
-      setSearchedCourses(data.courses);
-      setLoading(false);
-    }, 250);
-    clearTimeout(timeout);
-    console.log(data)
+    search.current  = e.target.value;
+    debouncedFunction()
+    
+   
   };
-  const RegisterCourses = async () => {
-    if (studentCourses.length === 0) return; // if no courses is selected no request send to backend.
-    try {
-      // 'result' is assigned a value but never used
-      const result = await axios.post(
-        "http://localhost:8000/person/registercourse",
-        {
-          studentCourses,
-          student_id:stundetInfo.student_id,
-          username:stundetInfo?.username
-        }
-      );
-      if(result.status == 201)
-        navigate("/main/feedpage");
-    } catch (error) {
-      console.log(error)
-      if (error.response.status === 400) console.log("Error");
-    }
+
+  const RegisterCourses = () => {
+    useCourseRegister(stundetInfo,studentCourses);
   };
   useEffect(()=>{
     if(studentCourses.length == 0 ){
       let subscrbe = true
       const fetchCourses = async()=>{
-        const {data} = await axios.put('http://localhost:8000/person/defualtCourses',{
+        const {data} = await axios.put(`${process.env.REACT_APP_API_URL}/person/defualtCourses`,{
           level: stundetInfo?.student_level,
           department:stundetInfo?.student_department,
           sub_department: stundetInfo?.student_subdepartment
@@ -84,11 +81,11 @@ const WelcomePage = () => {
     <div className={`welcome-page ${dark ? "dark" : ""}`}>
       <SimpleNavBar />
       <h1 className="welcome-sentance">
-        Welcome <span>{stundetInfo?.username?.split(" ")[0]},</span>
+        Welcome <span>{ isTeacher? 'Dr' + stundetInfo?.username?.split(" ")[0] :  stundetInfo?.username?.split(" ")[0]},</span>
       </h1>
       <div className="search-wrapper">
         <input
-          onChange={(e) => searchForCourse(e)}
+          onChange={searchForCourse}
           placeholder="Search for a course"
           type="text"
         />
@@ -96,7 +93,7 @@ const WelcomePage = () => {
       <img className="wave" src={wave} alt="wave" />
 
       <div
-        style={{ visibility: `${search.trim() === "" ? "hidden" : "visible"}` }}
+        style={{ visibility: `${search.current.trim() === "" ? "hidden" : "visible"}` }}
         className={`course-card-container ${
           searchedCourses.length === 0 ? "no-scroll" : ""
         }`}

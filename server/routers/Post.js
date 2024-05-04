@@ -5,12 +5,10 @@ import { AggregateQuestionsAnswers } from "../utilis/AggregateQuestionsAnswers.j
 import { MakeActivity } from "../utilis/MakeActivitylog.js";
 import multer from "multer";
 import { GetFiles } from "../utilis/GetFiles.js";
-import { CheckAuth } from "../middleware/CheckAuth.js";
 import b2 from "../Bucket/Bucket.js";
-import { sendEmail } from "../mailer/Mailer.js";
 import { io } from "../index.js";
 import { GiveSimpleBadge } from "../utilis/GiveSimpleBadge.js";
-
+import {FilterSQLQuery} from '../utilis/FilterSQLQuery.js';
 
 
 const storage = multer.memoryStorage();
@@ -25,10 +23,10 @@ post.get('/allquestions/',async(req,res)=>{
     let length = 5;
     try {
         const con = await client.connect();
-         //LIMIT ${length} OFFSET ${page * 5}
+         //LIMIT ${length} OFFSET ${page * 5} this for pagination.
         let sqlCommand = FilterSQLQuery(filter,student_id,student_name); 
         const result = await con.query(sqlCommand);
-        let data = await GetFiles(result.rows,con)
+        let data = await GetFiles(result.rows,con);
         data = AggregateQuestionsAnswers(data);
         con.release();
         return res
@@ -90,8 +88,7 @@ post.post('/createQuestion',/*CheckAuth,*/uploader.single('image'),async(req,res
         res.status(400).json({'msg':'an error occured, Try again'});
     }
 });
-import axios from 'axios';
-import { FilterSQLQuery } from "../utilis/FilterSQLQuery.js";
+
 
 post.get('/getPicture',async(req,res)=>{
     let auth = await b2.authorize() 
@@ -145,7 +142,7 @@ post.put('/modifyQuestion/:q_id', async(req, res)=>{
 post.put('/upvoteQuestion/:q_id',async(req,res)=>{
     // in this function needs auth.
     // need to take the student_id , in order not to make multiple upvotes.
-    const {q_id} = req.params;
+    const {q_id,ans_id} = req.params;
     const {student_id,course_id,helped} = req.body;
     try{
         const con = await client.connect();
@@ -166,7 +163,10 @@ post.put('/upvoteQuestion/:q_id',async(req,res)=>{
             DELETE FROM activity_log 
             WHERE student_id='${student_id}' AND 
             question_id=${q_id} AND 
-            activity_type='help';`
+            activity_type='help';
+            DELETE FROM activity_log 
+            WHERE student_id = '${student_id}' AND 
+            question_id = ${q_id} AND ans_id = ${ans_id?ans_id:null};`
             await con.query(sqlCommand);
         }
         res.status(200).send("Done"); 
@@ -198,7 +198,7 @@ post.put('/verifyQuestion/:q_id', async(req, res)=>{
 post.get('/getQuestion/',async(req,res)=>{
     // this might not needs auth -> like face when you dont have an account, but you still can see the post.
     const {question_id,student_id} = req.query; // I set  question_id = 1 from Postman.
-    console.log(student_id)
+    
     try{
         const con = await client.connect();
         const sqlCommand = `SELECT * FROM questions  as q
@@ -210,12 +210,12 @@ post.get('/getQuestion/',async(req,res)=>{
                             LEFT JOIN activity_log AS al 
                             ON al.question_id = q.question_id
                             WHERE q.question_id = ${question_id} 
-                            AND al.student_id = ${student_id? `${student_id}`: null }
+                            AND al.student_id = ${student_id? `'${student_id}'`: null }
                             ORDER BY ans.ans_verified DESC , ans.ans_upvotes DESC,
                             ans.ans_time DESC;`;
         const result = await con.query(sqlCommand);
         const data = AggregateQuestionsAnswers(result.rows)
-        res.status(200).json({'data':data[question_id]});
+        res.status(200).json(data);
         con.release()
     }catch(error){
         console.log(error)

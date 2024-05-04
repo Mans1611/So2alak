@@ -49,11 +49,11 @@ person.post('/signup',async(req,res)=>{
             isTeacher:false,
         },process.env.JWTPASS);
         const courses = await DefaultCourses(studnet_level,student_department,student_subdepartment);
-        sendEmail(student_id,
-            [['${username}',username],
-            ['${verfication_code}',1611254]])
+        // sendEmail(student_id,
+        //     [['${username}',username],
+        //     ['${verfication_code}',1611254]])
         conn.release(); // release the connection with the database
-        return res.status(201).json({sugesstedCourses : courses,token});
+        return res.status(201).json({data:{},sugesstedCourses : courses,token});
     }   
     catch(err){
         console.log(err);

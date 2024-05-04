@@ -76,15 +76,21 @@ CREATE TABLE IF NOT EXISTS students_courses (
 );
 
 CREATE TYPE  teachers_title AS ENUM('Doctor','TA'); 
+
 CREATE TABLE IF NOT EXISTS teachers(
 	name VARCHAR(120) NOT NULL ,
 	id VARCHAR(30) NOT NULL PRIMARY KEY,
 	title teachers_title,
-	password varchar(255) NOT NULL, 
+	password VARCHAR(255) NOT NULL,
+	verified BOOLEAN DEFAULT false,  
 	department VARCHAR(30) NOT NULL
+	REFERENCES departments(department_id)
+	ON UPDATE CASCADE
+	ON DELETE SET NULL,
+	sub_department VARCHAR(60) NOT NULL 
 	REFERENCES sub_departments(department_id)
 	ON UPDATE CASCADE
-	ON DELETE SET NULL
+	ON DELETE SET NULL,
 );
 
 CREATE TABLE IF NOT EXISTS questions(

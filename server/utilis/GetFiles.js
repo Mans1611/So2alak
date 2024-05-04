@@ -1,6 +1,7 @@
 
 export const GetFiles = async (data,con)=>{
     let newData = [];
+   
     for(let item of data){
         if(item.q_files){
             let {rows} = await con.query(`SELECT * FROM files WHERE id = ${item.q_files};`)
@@ -10,5 +11,6 @@ export const GetFiles = async (data,con)=>{
             newData.push({...item})
         }
     }
+   
     return newData
 }

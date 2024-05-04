@@ -31,6 +31,7 @@ function App() {
   const [sidebarSelected,setSideBarSelected] = useState(null);
   const [auth,setAuth]=useState(false);
   const [showNotification,setShowNotification] = useState(false);
+  const [isTeacher,setIsTeacher] = useState(false);
   return (
     <Router>
       <div className="App">
@@ -42,7 +43,8 @@ function App() {
             stundetInfo,setStudentInfo,
             studentCourses,setStuCourses,
             sidebarSelected,setSideBarSelected,
-            showNotification,setShowNotification
+            showNotification,setShowNotification,
+            isTeacher,setIsTeacher
           }}
         >
           {/* in the value i put all the state and handlers which i would like to share in the app */}
@@ -51,7 +53,6 @@ function App() {
             <Route path="/signin" element={<Login />} />
             <Route path="/welcome" element={<WelcomePage />} />
             <Route path="/signup" element={<SignUP />} />
-            
             {/*Nesting Routes*/}
             <Route path="/main" element={<MainPage/>}>
               <Route path="teacherprofile" element={<TeacherProfile />} />

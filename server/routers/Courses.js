@@ -10,10 +10,9 @@ course.get('/searchcourse/:searchString',async(req,res)=>{
     let {searchString} = req.params;
     try {
         const con = await client.connect();
-        let sqlCommand = `SELECT * FROM courses , files 
+        let sqlCommand = `SELECT * FROM courses 
         WHERE course_name ILIKE '%${searchString}%' 
-        OR course_id ILIKE '%${searchString}%'
-        AND files.id = courses.course_logo;`
+        OR course_id ILIKE '%${searchString}%';`
         const {rows} = await con.query(sqlCommand);
         let courses = rows.map(course=>{
             if (course.course_logo){
@@ -25,7 +24,7 @@ course.get('/searchcourse/:searchString',async(req,res)=>{
             }
         })
         con.release();
-        return res.status(200).json({courses:rows})
+        return res.status(200).json({courses})
     } catch (error) {
         console.log(error)
     }

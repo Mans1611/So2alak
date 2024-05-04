@@ -26,8 +26,7 @@ const SignUP = () => {
     const bttnRef = useRef(null); //button ref
 
     //states
-    const {setStuCourses,
-    } = useContext(AppState);
+    const {setStuCourses,setIsTeacher,setStudentInfo} = useContext(AppState);
     const levels = ['Freshmen', 'Somophore', 'Junior', 'Senior1', 'Senior2'];
     const departments = levDeps;
     
@@ -41,6 +40,7 @@ const SignUP = () => {
     const [visiblePassword, setVisiblePassword] = useState(false);
     const [visibleRepassword, setVisibleRepassword] = useState(false);
     const [type, setType] = useState("");
+    const [title, setTitle] = useState("Doctor"); // this for teacher even a teacher or a teacher assistant.
     
     //alarms
     const [userNameAlarm, setUserNameAlarm] = useState({ show: false, msg: "" });
@@ -79,13 +79,13 @@ const SignUP = () => {
     const handleIdAlarm = () => {
         if (id.match(/\d\d(\d|p|q|t|w)\d\d\d\d/i)) {
             setType("student");
-        } else if (id.match(/\d\d(\d|p|q|t|w)\d\d\d/i)) {
-            setType("teacher");
+        } else if (id.match(/^(?![0-9])[a-zA-Z].*$/)) {
+            setType("Doctor");
         }
 
         if (id === '') {
             setIdAlarm({ show: true, msg: "Enter your id" });
-        } else if (!id.match(/\d\d(\d|p|q|t|w)\d\d\d\d/i) && !id.match(/\d\d(\d|p|q|t|w)\d\d\d/i)) {
+        } else if (!id.match(/\d\d(\d|p|q|t|w)\d\d\d\d/i) && !id.match(/^(?![0-9])[a-zA-Z].*$/) && type !== 'Doctor') {
             setIdAlarm({ show: true, msg: "Enter a valid id" });
         }
     };
@@ -137,7 +137,9 @@ const SignUP = () => {
     };
 
     const handleHoverDisable = () => {
-        if (primaryStates.includes("")) {
+        if (type ==='Doctor' && department !== '' && subdepartment!=='')
+            return 
+        else if (primaryStates.includes("")) {
             bttnRef.current.disabled = true;
         } else if (level === 'Junior' || level === 'Senior1' || level === 'Senior2') {
             if (secondaryStates.includes('')) {
@@ -150,39 +152,66 @@ const SignUP = () => {
         
         e.preventDefault();
         if ( !alarms.includes(true) && 
-            ( !primaryStates.includes("") || (level === "" && type === "teacher") ) &&
+            ( !primaryStates.includes("") || (level === "" && type === "Doctor") ) &&
             ((level === 'Junior' || level === 'Senior1' || level === 'Senior2') ?
                 ((secondaryStates.includes('')) ? false : true) : 
-                (level === "" && type === "teacher") ? ((secondaryStates.includes('')) ? false : true) : true) ) {
+                (level === "" && type === "Doctor") ? ((secondaryStates.includes('')) ? false : true) : true) ) {
 
            
            
             try{
                 //send a request to backend.
-                const result = await axios.post(`${process.env.REACT_APP_API_URL}/person/signup`,
-                {
-                    username,
-                    student_id: id,
-                    password,
-                    studnet_level: level,
-                    student_department: department,
-                    student_subdepartment: subdepartment
-                })
-                if(result.status === 201){
-                    setStuCourses(result.data.sugesstedCourses); // here I set the default courses for the student, which comes from server
-                    navigate('/welcome'); // then navigate to welcome page. 
+                if(type==='student'){
+                    const result = await axios.post(`${process.env.REACT_APP_API_URL}/person/signup`,
+                    {
+                        username,
+                        student_id: id,
+                        password,
+                        studnet_level: level,
+                        student_department: department,
+                        student_subdepartment: subdepartment
+                    })
+                    if(result.status === 201){
+                        setStuCourses(result.data.sugesstedCourses); // here I set the default courses for the student, which comes from server
+                        setStudentInfo(result.data.data);
+                        navigate('/welcome'); // then navigate to welcome page. 
+                    }
+                }
+                else{
+                    const result = await axios.post(`${process.env.REACT_APP_API_URL}/teacher/signup`,{
+                        username,
+                        id,
+                        password,
+                        department,
+                        title,
+                        subdepartment,
+                    })
+                    if(result.status === 201){
+                        setIsTeacher(true);
+                        setStudentInfo(result.data.data);
+                        console.log(result.data)
+                        navigate('/welcome'); // then navigate to welcome page. 
+                    }
                 }
             }catch(error){
                 // handle error coming from api
                 console.log(error)
                 if(error?.response?.data.msg){
-                    console.log("passed")
                     setIdAlarm({show:true,msg:error.response.data.msg})
                 }
             }
 
         }
     };
+    const handleIdInput = (e)=>{
+        if (e.target.value.match(/\d\d(\d|p|q|t|w)\d\d\d\d/i)) {
+            setType("student");
+        } else if (e.target.value.match(/^[a-zA-Z]+$/)) {
+            setType("Doctor");
+        }
+
+        setId(e.target.value);
+    }
     return (
         <>
             <div className='signup-container'>
@@ -203,17 +232,18 @@ const SignUP = () => {
                         </input>
                         {userNameAlarm.show && <div className='alarm-container'><p className='alarm'>*{userNameAlarm.msg}!</p></div>}
 
-
+                        {/* ----------------------id----------------------------- */}
                         <div className='id-container'>
                             <input className={idAlarm.show ? "in id invalid" : "in id"}
-                                value={id} name='id' type="text" placeholder='ID' maxLength="7"
-                                onChange={(e) => setId(e.target.value)} onBlur={handleIdAlarm}
+                                value={id} name='id' type="text" placeholder='ID' maxLength={type === 'student' && "7"}
+                                onChange={handleIdInput} onBlur={handleIdAlarm}
                                 onFocus={() => {setIdAlarm({ show: false, msg: "" }); setType("") }}>
                             </input>
                             <p className={idAlarm.show ? "invalid" : "at"}>@eng.asu.edu.eg</p>
                         </div>
                         {idAlarm.show && <div className='alarm-container'><p className='alarm'>*{idAlarm.msg}!</p></div>}
 
+                        {/* ----------------------password----------------------------- */}
                         <div className='password-container'>
                             <input className={passwordAlarm.show ? "in pass invalid" : "in pass"}
                                 value={password} name='password' type={visiblePassword ? "text" : "password"} placeholder='Password'
@@ -261,7 +291,7 @@ const SignUP = () => {
                         {/*  departments (Electrical - Civil - Mechanical) */}
                         {
                             (level === 'Junior' || level === 'Senior1' || level === 'Senior2' || level === 'Somophore' ||
-                            (level === "" && type === "teacher")) &&
+                            (level === "" && type === "Doctor")) &&
                             (
                                 <>
                                     <select className={department === '' ? (departmentAlarm.show ? "in invalid holder" : "in holder") :
@@ -284,7 +314,7 @@ const SignUP = () => {
                         {
                             // condition
                             ((level === 'Junior' || level === 'Senior1' || level === 'Senior2' || 
-                            (level === "" && type === "teacher")) && (department === 'Electrical'
+                            (level === "" && type === "Doctor")) && (department === 'Electrical'
                                 || department === 'Mechanical' || department === 'Civil' || department === 'Architectural')) &&
 
                             (
@@ -306,6 +336,13 @@ const SignUP = () => {
                                         <div className='alarm-container'><p className='alarm'>*{subdepartmentAlarm.msg}!</p></div>}
                                 </>
                             )
+                        }
+                        {
+                            type === 'Doctor' && 
+                            <select value ={title} onChange={(e)=>setTitle(e.target.value)} className='in holder'>
+                                <option value={'Doctor'}>Doctor</option>
+                                <option value={'TA'}>TA</option>
+                            </select>
                         }
 
                         <button className='signup-button' type='submit' disabled={alarms.includes(true)} ref={bttnRef}

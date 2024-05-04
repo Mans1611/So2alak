@@ -78,6 +78,7 @@ const QuestionContainer = React.memo(()=>{
         response = await axios.get(`${process.env.REACT_APP_API_URL}${filter.API}`)
       }
       setQuestions(response.data?.data ? response.data?.data :[])
+      console.log(response.data.data)
       setLoading(false)
     };
     data();
@@ -88,7 +89,7 @@ const QuestionContainer = React.memo(()=>{
     <div  className='questions-container'>
         <QuestionFilter filter = {filter} dispatchFilter={dispatchFilter}/>
         <div className="questions-list">
-          {loading ? <LoadingQuestion/> : Object.keys(questions).map((id,key)=><Question question={questions[id]} key={key}/>)}
+          {loading ? <LoadingQuestion/> : questions.map((question,key)=><Question question={question} key={key}/>)}
         </div>
     </div>
   )
