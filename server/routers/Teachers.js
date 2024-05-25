@@ -102,5 +102,21 @@ teacher.get('/data/',async(req,res)=>{
         console.log(err)
     }
 })
+teacher.post('/bounsQuestion',async(req,res)=>{
+    let con,sqlCommand;
+    const {question,teacher_id,course_id} = req.body
+    try{
+        con = await client.connect();
+        sqlCommand = `INSERT INTO bounsQuestions(questions,teacher_id,course_id) 
+        VALUES('${question}','${teacher_id}','${course_id}')`;
+        con.query(sqlCommand);
+        return res.status(201).json({msg:'Bouns Question is Created'});
+    }catch(err){
+        console.log(err);
+    }
+    finally{
+        con.release();
+    }
+})
 
 export default teacher;

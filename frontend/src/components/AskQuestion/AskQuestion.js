@@ -9,7 +9,7 @@ import SendIcon from '@mui/icons-material/Send';
 const AskQuestion = ({isAnswer,questionDetails,setQuestions}) => {
     
     // called states from context.
-    const {sidebarSelected,user_courses,stundetInfo,setShowNotification} = useContext(AppState);
+    const {isTeacher,user_courses,stundetInfo,setShowNotification} = useContext(AppState);
     
     // states:
     const [question,setQuestion]=useState('');
@@ -35,7 +35,6 @@ const AskQuestion = ({isAnswer,questionDetails,setQuestions}) => {
    }
    const handleImageUpload = (event)=>{
     setFile(event.target.files[0]);
-    
     if (file){
         if (imgPreview){
             questionInput.current.style.borderTopLeftRadius = '0px'
@@ -95,9 +94,9 @@ const AskQuestion = ({isAnswer,questionDetails,setQuestions}) => {
     const HandleInput = ()=>{
         setPost(questionInput.current.innerHTML)
     }
+    
     useEffect(()=>{
-        questionInput.current.innerText = (question==='' && isAnswer) ? `Answer to ${questionDetails.q_username}'s Question`:question === '' && `Ask Question`
-
+        questionInput.current.innerText = (question==='' && isAnswer) ? `Answer to ${questionDetails.q_username}'s Question`: (question === '' && isTeacher) ? `Ask A Bouns Question`:`Ask Question`;
     },[])
    return (
     <div className={`askQuestion-container ${isAnswer&& 'post-answer'}`}>
