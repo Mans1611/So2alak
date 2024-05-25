@@ -25,15 +25,14 @@ const socket = io(process.env.REACT_APP_API_URL);
 
 const Question = ({singleQuestion,question,setQuestion}) => {
     
-    
     // states:
-    const [helped,setHelp] = useState(question.helped);
+    const [helped,setHelp] = useState(question?.helped? question.helped:false);
     const [helpCount,setHelpCount] = useState(question.q_upvotes)
     const [showProfile,setShowProfie] = useState(false);
     const [showQuesOptions,setShowQuesOptions] = useState(false);
     const [bookMarked,setBookMarked] = useState(false);
     const [showlists,setShowLists] = useState(false) 
-    const {dark,setSideBarSelected,stundetInfo} = useContext(AppState);
+    const {dark,setSideBarSelected,stundetInfo,isTeacher} = useContext(AppState);
     const [showQuestionModal,setShowQuestionModal] = useState(false);
     const nav = useNavigate();
     
@@ -153,11 +152,14 @@ const Question = ({singleQuestion,question,setQuestion}) => {
             <div className="flex">
                 <div ref = {stoplimit} className={`question-help`}>
                     <div className="help-wrapper">
+                    {!isTeacher
+                    && 
                         <div ref={circle} onClick={handleHelp} className={`circle ${helped?'active':''}`}>
                             {helped? 
                             <RemoveIcon/>
                             :<AddIcon/>}
                         </div>
+                    }
                         <h3 className='help-counts'>{helpCount}</h3>
                     </div>
                 </div>
@@ -191,7 +193,9 @@ const Question = ({singleQuestion,question,setQuestion}) => {
                 - FeedPage or coursePage*/}
             {!singleQuestion&&question?.answers?.length>0 &&<Answer answer = {question.answers[0]}/>}
             
-            {singleQuestion &&  <AskQuestion questionDetails={question} isAnswer={true}/>}
+            {/* for a the list page questions */}
+            
+            {singleQuestion && <AskQuestion questionDetails={question} isAnswer={true}/>}
             {/*  While if i was in the question page, i need to show all answers of the question*/}
             {singleQuestion&&
             question.answers?.map((ans,key)=>

@@ -5,9 +5,7 @@ import person from './routers/Person.js';
 import course from './routers/Courses.js';
 import bodyParser from 'body-parser';
 import post from './routers/Post.js';
-import {spawn} from 'child_process';
 import {Server} from 'socket.io';
-const pythonFiles = spawn('python',['utilis/mans.py',4,3]);
 import teacher from './routers/Teachers.js';
 import b2 from './Bucket/Bucket.js';
 import http from 'http'

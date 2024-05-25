@@ -1,7 +1,41 @@
 @import '../../mainStyle.scss';
 
+.chart-container{
+    background-color: #efefef;
+    padding: 10px;
+    h1{
+        text-align: center;
+    }
+    .flex-chart{
+        @include centerChild;
+        justify-content: space-between;
+        padding: 10px;
+        border-radius: 10px;
+        svg{
+            flex: 9;
+            @include centerChild;
+        }
+        .data-filter{
+            flex:3;
+            text-align: center;
+            align-items: center;
+            h3{
+                cursor: pointer;
+                transition: all 200ms;
+                margin: 5px 0;
+                &.active,&:hover{
+                    background-color: #041622;
+                    color: #f0f0f0;
+                    padding: 10px 20px;
+                    border-radius: 20px;
+                    text-align: center;
+                }
+            }
+        }
+    }
+    
 
-
+}
 .tprofile_container {
     min-height: 100dvh;
     display: flex;
@@ -91,70 +125,7 @@
                 }
             }
 
-            .lower {
-                flex: 10;
-                @include centerChild;
-                align-items: flex-start;
-
-                .lower_in{
-                    width: 90%;
-                    @include centerChild;
-                    align-items: flex-start;
-                    flex-direction: column;
-                    gap: 25px;
-
-                    h1 {
-                        color: #0c2c43;
-                        font-size: 2.1em;
-                    }
-    
-                    .calendar {
-                        width: 100%;
-                        @include centerChild;
-                        justify-content: flex-start;
-                        overflow-x: scroll;
-                        flex-wrap: nowrap;
-                        gap: 20px;
-
-                        &::-webkit-scrollbar {
-                            height: 0;
-                        }
-    
-                        .month {
-                            min-width: 75px;
-                            @include centerChild;
-                            flex-direction: column;
-                            gap: 10px;
-                            
-                            .cells {
-                                @include centerChild;
-                                flex-wrap: wrap;
-                                gap: 10px;
-
-                                .cell {
-                                    width: 10px;
-                                    height: 10px;
-                                    border-radius: 2px;
-
-                                    &.active {
-                                        background-color: #28c244;
-                                    }
-
-                                    &.passive {
-                                        background-color: #d9d9d9;
-                                    }
-                                }
-                            }
-
-                            .month_name {
-                                color: #0c2c43;
-                                font-size: 1.4em;
-                                font-weight: 600;
-                            }
-                        }
-                    }
-                }
-            }
+           
         }
     }
 

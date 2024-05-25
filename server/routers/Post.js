@@ -37,7 +37,31 @@ post.get('/allquestions/',async(req,res)=>{
     }
 })
 
-
+post.get('/allTeacherQuestions/:teacher_id',async(req,res)=>{
+    const {teacher_id} = req.params;
+    let con;
+    try{ 
+        let sqlCommand = ` SELECT * FROM questions AS q
+        LEFT JOIN (
+            SELECT * FROM answers  
+            ORDER BY ans_verified DESC, ans_upvotes DESC , ans_time DESC
+        ) AS ans ON ans.q_id = q.question_id
+        LEFT JOIN (SELECT course_name,course_id FROM courses) AS cor ON cor.course_id = q.course_id
+        INNER JOIN teaching AS SC ON SC.teacher_id = '${teacher_id}' AND cor.course_id = SC.course_id
+        
+        ORDER BY q.q_time DESC , ans_verified DESC , ans_upvotes DESC;`
+        con = await client.connect();
+        const result = await con.query(sqlCommand);
+        let data = await GetFiles(result.rows,con);
+        data = AggregateQuestionsAnswers(data);
+        res.status(200).json({data});
+    }catch(err){
+        console.log(err);
+    }
+    finally{
+        con.release();
+    }
+})
 post.post('/createQuestion',/*CheckAuth,*/uploader.single('image'),async(req,res)=>{
     // this api need to check the the auth of the user.
     const {course_id,student_id,username,question} = req.body;
@@ -198,22 +222,37 @@ post.put('/verifyQuestion/:q_id', async(req, res)=>{
 post.get('/getQuestion/',async(req,res)=>{
     // this might not needs auth -> like face when you dont have an account, but you still can see the post.
     const {question_id,student_id} = req.query; // I set  question_id = 1 from Postman.
-    
+    console.log(student_id)
     try{
         const con = await client.connect();
-        const sqlCommand = `SELECT * FROM questions  as q
-                            LEFT JOIN answers as ans
-                            ON q.question_id = ans.q_id
-                            LEFT JOIN (SELECT course_id,course_name 
-                                FROM courses) AS c 
-                                ON c.course_id = q.course_id 
-                            LEFT JOIN activity_log AS al 
-                            ON al.question_id = q.question_id
-                            WHERE q.question_id = ${question_id} 
-                            AND al.student_id = ${student_id? `'${student_id}'`: null }
-                            ORDER BY ans.ans_verified DESC , ans.ans_upvotes DESC,
-                            ans.ans_time DESC;`;
+        let sqlCommand;
+        
+        if(student_id!=='undefined'){
+            sqlCommand = `SELECT * FROM questions  as q
+                                LEFT JOIN answers as ans
+                                ON q.question_id = ans.q_id
+                                LEFT JOIN (SELECT course_id,course_name 
+                                    FROM courses) AS c 
+                                    ON c.course_id = q.course_id 
+                                LEFT JOIN activity_log AS al 
+                                ON al.question_id = q.question_id
+                                WHERE q.question_id = ${question_id} 
+                                AND al.student_id = ${student_id? `'${student_id}'`: null }
+                                ORDER BY ans.ans_verified DESC , ans.ans_upvotes DESC,
+                                ans.ans_time DESC;`;
+        }else{
+            sqlCommand = `SELECT * FROM questions  as q
+            LEFT JOIN answers as ans
+            ON q.question_id = ans.q_id
+            LEFT JOIN (SELECT course_id,course_name 
+                FROM courses) AS c 
+                ON c.course_id = q.course_id 
+            WHERE q.question_id = ${question_id} 
+            ORDER BY ans.ans_verified DESC , ans.ans_upvotes DESC,
+            ans.ans_time DESC;`;
+        }
         const result = await con.query(sqlCommand);
+        console.log(result.rows)
         const data = AggregateQuestionsAnswers(result.rows)
         res.status(200).json(data);
         con.release()

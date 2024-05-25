@@ -5,7 +5,7 @@ import Login from "./pages/login/Login";
 import Loading from "./pages/Loading/Loading";
 import NotFound from "./pages/NotFound/NotFound";
 
-import { createContext, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 import SignUP from "./pages/SignUp/SignUP";
 import MainPage from "./pages/MainPage/MainPage";
 import FeedPage from "./pages/FeedPage/FeedPage";
@@ -26,12 +26,15 @@ const queryClient = new QueryClient();
 
 function App() {
   const [dark, setDark] = useState(false);
-  const [studentCourses, setStuCourses] = useState([]);
+  const [user_courses, setUserCourses] = useState([]);
   const [stundetInfo,setStudentInfo] = useState(null); 
   const [sidebarSelected,setSideBarSelected] = useState(null);
   const [auth,setAuth]=useState(false);
   const [showNotification,setShowNotification] = useState(false);
   const [isTeacher,setIsTeacher] = useState(false);
+
+
+  
   return (
     <Router>
       <div className="App">
@@ -41,7 +44,7 @@ function App() {
             dark,setDark,
             auth,setAuth,
             stundetInfo,setStudentInfo,
-            studentCourses,setStuCourses,
+            user_courses, setUserCourses,
             sidebarSelected,setSideBarSelected,
             showNotification,setShowNotification,
             isTeacher,setIsTeacher
@@ -55,7 +58,7 @@ function App() {
             <Route path="/signup" element={<SignUP />} />
             {/*Nesting Routes*/}
             <Route path="/main" element={<MainPage/>}>
-              <Route path="teacherprofile" element={<TeacherProfile />} />
+              <Route path="teacherprofile/:teacher_id" element={<TeacherProfile />} />
               <Route path="feedpage" element={<FeedPage/>} />
               <Route path="leaderboard" element={<LeaderBoard/>} />
               <Route path="profile/:user_id" element={<Profile />} />

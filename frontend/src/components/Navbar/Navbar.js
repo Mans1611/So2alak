@@ -12,8 +12,8 @@ const Navbar = () => {
   // states
   const {dark,setDark,
     stundetInfo,setStudentInfo,
-    sidebarSelected,setSideBarSelected,
-    setAuth,
+    setUserCourses,setSideBarSelected,
+    setAuth,isTeacher,setIsTeacher
   } = useContext(AppState);
   const nav = useNavigate();
   const [showToggleList,setShowToggleList] = useState(false);
@@ -22,7 +22,9 @@ const Navbar = () => {
   const showAvatar = ()=>setShowToggleList(show=>!show); 
   const logout = ()=>{
     setAuth(false);
+    setIsTeacher(false);
     setStudentInfo({});
+    setUserCourses([])
     nav('/signin')
   };
   const handleActive=(param)=>{
@@ -47,7 +49,9 @@ const Navbar = () => {
           <img onClick = {showAvatar} src={avatar} alt="" srcSet="" />
             {showToggleList && 
               <ul className='toggle-list'>
-                <li><Link to={`/main/profile/${stundetInfo.username.replace(" ","")}`}>My profile</Link></li>
+                <li><Link to={isTeacher?
+                  `/main/teacherprofile/${stundetInfo.user_id.replace(" ","")}`
+                  :`/main/profile/${stundetInfo.username.replace(" ","")}`}>My profile</Link></li>
                 <li onClick={logout}>Log Out</li>
               </ul>
             }

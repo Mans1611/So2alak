@@ -5,17 +5,13 @@ import {AppState} from "../../App";
 import Calander from '../../components/Calander/Calander';
 import { useParams } from 'react-router-dom'
 import Badges from '../../components/Badges/Badges';
+import PersonalData from '../../components/PersonalData/PersonalData';
 const Profile = () => {
     const {user_id} = useParams();// get the user id or name for the link as a params.
     const {dark,username} = useContext(AppState);
     const [description, setDescription] = useState("Senior CSE Student @ ASU");
    
-    const [points, setPoints] = useState(0);
-    const [questions, setQuestions] = useState(0);
-    const [answers, setAnswers] = useState(0);
-
-    const currentDate = new Date().toDateString().split(" ").slice(0, 4)[1].toLowerCase();
-
+ 
 
     return (
         <div className={`profile_container ${dark? "dark" : ""}`}>
@@ -29,13 +25,7 @@ const Profile = () => {
                         </div>
                     </div>
                     <div className='upper'>
-                        <div className='score'>
-                            <div className='score_in'>
-                                <div className='achieved'><p>{points}</p> <p>Points</p></div>
-                                <div className='achieved'><p>{questions}</p> <p>Questions</p></div>
-                                <div className='achieved'><p>{answers}</p> <p>Answers</p></div>
-                            </div>
-                        </div>
+                        <PersonalData/>
                         {/* Badges Comp */}
                         <Badges/>
                     </div>

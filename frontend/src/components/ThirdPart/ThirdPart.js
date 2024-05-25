@@ -3,6 +3,9 @@ import './thirdpart.scss';
 import { AppState } from '../../App';
 import CourseDetails from '../CourseDetails/CourseDetails';
 import Trending from '../Trending/Trending';
+// Create styles
+
+
 const ThirdPart = () => {
   const {sidebarSelected} = useContext(AppState);
   
@@ -14,7 +17,10 @@ const ThirdPart = () => {
         sidebarSelected && 
         <CourseDetails setTop = {setTop}/>
       }
+      
+      
       <Trending top={top}/>
+      
     </div>
   )
 }

@@ -10,7 +10,7 @@ import axios from "axios";
 const Login = () => {
   document.title = "Sign In"; // Making the title for the page.
   const navigate = useNavigate();
-  const { dark, setDark,setAuth,stundetInfo,setStudentInfo } = useContext(AppState); // this is how to import any state and its handler from app without props drilling
+  const { dark, setDark,setAuth,setIsTeacher,setStudentInfo,setUserCourses } = useContext(AppState); // this is how to import any state and its handler from app without props drilling
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -101,16 +101,41 @@ const Login = () => {
     let res;
     try {
       // sending a request to sign in api, {id,password}
-      res = await axios.post(`${process.env.REACT_APP_API_URL}/person/signin`, {
-        student_id: form.email,
-        password: form.password,
-      });
-      if (res.request.status === 200)
-        // this means that the user is signed in
-        navigate("/main/feedpage");
-        setAuth(true);
-        setStudentInfo(res.data.student)
-        console.log(res.data)
+     
+      if(form.email.match(/[a-zA-Z]/g)){
+        res = await axios.post(`${process.env.REACT_APP_API_URL}/teacher/signin`, {
+          teacher_id: form.email,
+          password: form.password,
+        });
+        if (res.request.status === 200){
+          // this means that the user is signed in
+          navigate("/main/feedpage");
+          setAuth(true);
+          setIsTeacher(true);
+          setStudentInfo(res.data.data);
+          setUserCourses(res.data.courses);
+        }
+        console.log("passed")
+      }
+      else{
+
+        res = await axios.post(`${process.env.REACT_APP_API_URL}/person/signin`, {
+          student_id: form.email,
+          password: form.password,
+        });
+        if (res.request.status === 200){
+          // this means that the user is signed in
+          navigate("/main/feedpage");
+          setAuth(true);
+          setIsTeacher(false);
+          setStudentInfo(res.data.student)
+          console.log(res.data.student)
+        }
+      }
+
+      // sign in complete.
+      
+
     } catch (error) {
       console.log(res)
       if (error.isAxiosError)

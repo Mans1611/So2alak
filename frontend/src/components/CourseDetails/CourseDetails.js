@@ -8,14 +8,14 @@ import TopStudents from '../TopStudents/TopStudents'
 
 const CourseDetails = ({setTop}) => {
 
-  const {studentCourses,setStuCourses,stundetInfo} = useContext(AppState);
+  const {user_courses,setUserCourses,stundetInfo} = useContext(AppState);
   const {course_code} = useParams();
   const course_details_div = useRef(null);
   const [courseDetails,setCourseDetails] = useState({});
   
   // this variable to give me if the course is register for the student or not.
 
-  let isRegistered = studentCourses.some(course=>course.course_id === course_code)
+  let isRegistered = user_courses.some(course=>course.course_id === course_code)
 
   useEffect(()=>{
     const FetchCourseDetails = async()=>{
@@ -36,11 +36,11 @@ const CourseDetails = ({setTop}) => {
     const res = await axios.post(`${process.env.REACT_APP_API_URL}/person/registercourse`,{
       username:stundetInfo.username,
       student_id:stundetInfo.student_id,
-      studentCourses:[{course_id:course_code?course_code.toUpperCase():courseDetails.course_id?.toUpperCase()}]
+      user_courses:[{course_id:course_code?course_code.toUpperCase():courseDetails.course_id?.toUpperCase()}]
     })
     if (res.status === 201){ // this means the the studet register and now i will add it to the sidebar
       isRegistered = true
-      setStuCourses(courses=>[...courses,res.data.course])
+      setUserCourses(courses=>[...courses,res.data.course])
     }
   }
   return (

@@ -2,6 +2,7 @@
 @import './../../.mainStyle.scss';
 .answer{
     margin-left: 100px;
+
     .help-counts{
         font-size: 20px !important;
     }
@@ -11,6 +12,16 @@
     .verified_ans{
         width: 40px !important;
         height: 40px !important;
+        .verify_btn{
+            margin: auto;
+            svg{
+                width: 20px;
+                height: 30px;
+                &:hover{
+                    color: #000  !important;
+                }
+            }
+        }
     }
     .circle{
         width: 40px !important;
@@ -21,4 +32,5 @@
             font-weight: 600;
         }
     }
+   
 }

@@ -28,7 +28,6 @@ person.post('/signup',async(req,res)=>{
             conn.release()
             return res.status(400).json({msg:"Your Username or id may be exist"});
         }
-
         const salt = await bcrypt.genSalt(parseInt(process.env.Salt));
         const hashedPass =  await bcrypt.hash(password,salt) // encrypting the password 
        if(student_department){
@@ -97,8 +96,7 @@ person.post('/registercourse',async(req,res)=>{
         let sqlCommand = 
         `INSERT INTO students_courses (student_name,course_id)
          VALUES
-            ${studentCourses.map(course=> `('${username}','${course.course_id}')`)};
-        `
+            ${studentCourses.map(course=> `('${username}','${course.course_id}')`)};`;
         const con = await client.connect();
         await con.query(sqlCommand);
         if (studentCourses.length === 1 ){
@@ -111,6 +109,7 @@ person.post('/registercourse',async(req,res)=>{
         return res.status(201).json({msg:"Done"})
     }catch(err){
         console.log(err)
+        
     }
 
 })
@@ -171,6 +170,7 @@ person.get('/getStudentCourses/:s_name',async(req,res)=>{
 person.get('/personalInfo/:student_name',async(req,res)=>{
     // don't forget to add badges count and auth for that.
     const {student_name} = req.params;
+   
     try{
         const con = await client.connect();
         let sqlCommand = 
@@ -187,8 +187,9 @@ person.get('/personalInfo/:student_name',async(req,res)=>{
 
         result = await con.query(sqlCommand)
         
-        data = {...data,...result.rows[0]}
+        data = {...data.data,...result.rows[0]}
         con.release()
+        console.log(data)
         return res.status(200).json({...data})
     }catch(err){
 

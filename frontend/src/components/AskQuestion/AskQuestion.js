@@ -9,7 +9,7 @@ import SendIcon from '@mui/icons-material/Send';
 const AskQuestion = ({isAnswer,questionDetails,setQuestions}) => {
     
     // called states from context.
-    const {sidebarSelected,studentCourses,stundetInfo,setShowNotification} = useContext(AppState);
+    const {sidebarSelected,user_courses,stundetInfo,setShowNotification} = useContext(AppState);
     
     // states:
     const [question,setQuestion]=useState('');
@@ -124,7 +124,7 @@ const AskQuestion = ({isAnswer,questionDetails,setQuestions}) => {
                     !isAnswer && 
                     <div className="course-selection">
                         <select defaultValue={course_code}>
-                            {studentCourses.map(course=><option key={course.course_id} value={course.course_id}>{course.course_name}</option>)}
+                            {user_courses.map(course=><option key={course.course_id} value={course.course_id}>{course.course_name}</option>)}
                         </select>
                     </div>
                 }

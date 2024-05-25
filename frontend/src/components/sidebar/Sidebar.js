@@ -9,33 +9,38 @@ import Portal from '../../Portal/Portal';
 import ImagePreview from '../../Portal/ImagePreview/ImagePreview';
 import PersonalDetail from '../PersonalDetail/PersonalDetail';
 
+
 const SideBar = React.memo(() => {
-  const [loading,setLoading]=useState(true);
+  const [loading,setLoading]=useState(false);
   const nav = useNavigate()
   const {dark,
     sidebarSelected,setSideBarSelected,
-  stundetInfo,
-    studentCourses,setStuCourses} = useContext(AppState);
-    const {course_code} = useParams();
-    const {user_id} = useParams();
+    stundetInfo,
+    user_courses, setUserCourses} = useContext(AppState);
 
   const link = window.location.href;
-  
+  const {user_id} = useParams();
   const [profilePage,setProfilePage] = useState(false);
   
   useEffect(()=>{
     const fetchCourses = async ()=>{
-      const result = await axios.get(`${process.env.REACT_APP_API_URL}/person/getStudentCourses/${stundetInfo.username?stundetInfo.username:'Ahmed'}`)
-      setStuCourses(result.data.data)
-      setLoading(false);
+      setLoading(true);
+      try{
+        const result = await axios.get(`${process.env.REACT_APP_API_URL}/person/getStudentCourses/${stundetInfo.username?stundetInfo.username:'Ahmed'}`)
+        setUserCourses(result?.data?.data)
+      }catch(err){
+        console.log(err)
+      }finally{
+        setLoading(false);
+      }
     }
     if (link.includes('profile')){
       setProfilePage(true);
     }
     else{
-      
       setProfilePage(false);
-      fetchCourses();
+      if(user_courses.length===0)
+        fetchCourses();
     }
   },[link]);
 
@@ -77,9 +82,7 @@ const SideBar = React.memo(() => {
       };
         img.src = event.target.result;
         setImgProfile(event.target.result)
-
     }
-    
     if(file)
       reader.readAsDataURL(file);
     
@@ -134,13 +137,13 @@ const SideBar = React.memo(() => {
           <LoadingCourses/>
           :
           <>
-          {studentCourses.length === 0 && 
+          {user_courses.length === 0 && 
             <div className='NoCourses'>
               <p>You have Not Register any course yet</p>
               <button className='nav-register' onClick={NavToRegister}>Register Now</button>
             </div>
           }
-             {studentCourses.map((course,id)=>
+             {user_courses.map((course,id)=>
              <Link key={id} to={`${course.course_id}`}>
                 <li key={course.course_id} onClick={()=>handleActive(course.course_id)} className={`items ${
                   ( sidebarSelected === course.course_id)?'active':''}`}>{course.course_name}
@@ -151,6 +154,10 @@ const SideBar = React.memo(() => {
             }
             </ul>
         </div>
+        <h1>Mans</h1>
+        <h1>Mans</h1>
+        <h1>Mans</h1>
+        <h1>Mans</h1>
         {
           profileImg &&
           <Portal children={<ImagePreview setImgProfile={setImgProfile} imgFile={imgFile} setProfileImage={setImgProfile} img={profileImg}/>}/>

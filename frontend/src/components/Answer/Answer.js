@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react'
+import React, { useContext, useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react'
 import '../Question/question.scss';
 import './answer.scss';
 import { Link } from 'react-router-dom';
@@ -8,6 +8,9 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import verified from '../../assets/badges/verified_ans.png';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ThumbDownOffAltOutlinedIcon from '@mui/icons-material/ThumbDownOffAltOutlined';
+import { AppState } from '../../App';
+
+import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 const intialState = {
     upvote:false,
     downvote:false,
@@ -39,10 +42,9 @@ const reducer = (state,{type})=>{
 }
 
 const Answer = ({answer}) => {
-    const [helped,setHelped] = useState(false);
-    const [count,setCount]=useState(0)
+    const [,setCount]=useState(0)
     const [answerState,dispatch] = useReducer(reducer,intialState);
-
+    const {isTeacher} = useContext(AppState); 
     const handleUpVotes = (e)=>{
         e.stopPropagation();
         dispatch({type:'upvote'})
@@ -51,57 +53,53 @@ const Answer = ({answer}) => {
         e.stopPropagation();
         dispatch({type:'downvote'})
     }
-    const handleHelper = (e)=>{
-        e.stopPropagation();
-        setHelped(help=>!help);
-        if(helped){
-            setCount(count=>count-1);
-            return
-        }
-        setCount(count=>count+1);
-    }
     const navToProfile = (e)=> e.stopPropagation(); 
     const answerText = useRef(null)
-    useEffect(()=>{
-        answerText.current.innerHTML = answer.answer
-        
-    },[answer])
-  return (
-    <div className='answer question'>
-         <div className="question-details">
-            by <Link onClick={navToProfile} to={`/main/profile/${answer?.ans_username?.replace(" ","")}`}>{answer?.ans_username? answer.ans_username:'idiot' }</Link> 
-        </div>
-        <div className="flex">
-            <div className="verified">
-                {answer.ans_verified && <img className='verified_ans' src={verified}/>}
-            </div>
-            <div className='question-wrapper'>
-                <div className="question-content">
-                    <p ref={answerText}></p>
-                    <div className="time">answered {getTime(answer.ans_time)}</div>
+    if(answer.answer_id){
+        setTimeout(()=>{
+            answerText.current.innerHTML = answer.answer
+        },0)
+        return (
+            <div className='answer question'>
+                <div className="question-details">
+                    by <Link onClick={navToProfile} to={`/main/profile/${answer?.ans_username?.replace(" ","")}`}>{answer?.ans_username? answer.ans_username:'' }</Link> 
                 </div>
-                <div className='downQuestion'>
-                    <div className="icon-wrapper">
-                        {
-                            answerState.upvote?
-                            <ThumbUpIcon onClick={handleUpVotes} className='post-icons'/>:    
-                            <ThumbUpOutlinedIcon onClick={handleUpVotes} className='post-icons'/>
-                        }
-                        {answerState.upvote_count}
+                <div className="flex">
+                    <div className="verified">
+                        {answer.ans_verified && <img className='verified_ans' src={verified}/>}
+                        {isTeacher&&
+                        <div className='verify_btn'>
+                            <DoneOutlineIcon/>
+                        </div>}
                     </div>
-                    <div className="icon-wrapper">
-                        {
-                            answerState.downvote? 
-                            <ThumbDownIcon onClick={handleDownVotes} className='post-icons'/>:
-                            <ThumbDownOffAltOutlinedIcon onClick={handleDownVotes} className='post-icons'/>
-                        }
-                        {answerState.downvote_count}
+                    <div className='question-wrapper'>
+                        <div className="question-content">
+                            <p ref={answerText}></p>
+                            <div className="time">answered {getTime(answer.ans_time)}</div>
+                        </div>
+                        <div className='downQuestion'>
+                            <div className="icon-wrapper">
+                                {
+                                    answerState.upvote?
+                                    <ThumbUpIcon onClick={handleUpVotes} className='post-icons'/>:    
+                                    <ThumbUpOutlinedIcon onClick={handleUpVotes} className='post-icons'/>
+                                }
+                                {answerState.upvote_count}
+                            </div>
+                            <div className="icon-wrapper">
+                                {
+                                    answerState.downvote? 
+                                    <ThumbDownIcon onClick={handleDownVotes} className='post-icons'/>:
+                                    <ThumbDownOffAltOutlinedIcon onClick={handleDownVotes} className='post-icons'/>
+                                }
+                                {answerState.downvote_count}
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    </div>
             </div>
-            </div>
-    </div>
-  )
+        )
+}
 }
 
 export default Answer

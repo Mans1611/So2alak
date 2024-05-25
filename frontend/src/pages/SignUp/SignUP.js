@@ -26,7 +26,7 @@ const SignUP = () => {
     const bttnRef = useRef(null); //button ref
 
     //states
-    const {setStuCourses,setIsTeacher,setStudentInfo} = useContext(AppState);
+    const {setStuCourses,setIsTeacher,setStudentInfo,setAuth} = useContext(AppState);
     const levels = ['Freshmen', 'Somophore', 'Junior', 'Senior1', 'Senior2'];
     const departments = levDeps;
     
@@ -189,7 +189,7 @@ const SignUP = () => {
                     if(result.status === 201){
                         setIsTeacher(true);
                         setStudentInfo(result.data.data);
-                        console.log(result.data)
+                        setAuth(true)
                         navigate('/welcome'); // then navigate to welcome page. 
                     }
                 }

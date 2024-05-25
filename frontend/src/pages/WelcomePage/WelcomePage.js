@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import axios from 'axios'
 import {debounce} from 'lodash';
-import { useCourseRegister } from "../../hooks/useCourseRegister";
+import { CourseRegister, useCourseRegister } from "../../hooks/CourseRegister";
 
 const WelcomePage = () => {
   document.title = "Welcome";
@@ -21,17 +21,17 @@ const WelcomePage = () => {
     dark,
     isTeacher,
     stundetInfo,setStudentInfo,
-    studentCourses,setStuCourses,
+    user_courses, setUserCourses,
     id: student_id,
   } = useContext(AppState);
-
+  console.log(stundetInfo);
   const [searchedCourses, setSearchedCourses] = useState([]);
   const search = useRef(""); // here i used useRef, as i don't want the comp to be updated when the input changes. 
   const [Lodaing, setLoading] = useState(false);
 
 
   const debouncedFunction = debounce(async()=>{
-      console.log("invoked")
+     
       if (search.current.trim() === "") return setLoading(false);
       try{
         const { data } = await axios.get(
@@ -45,43 +45,43 @@ const WelcomePage = () => {
   },500);
   
   const searchForCourse = (e) => {
-    /*
-            1 - Check if string is empty. (Done)
-            2 - multiple requests will be sent if the function is invoked onChange.(Done)
-            3 - check if the request returned with an empty array. 
-        */
-    
     setLoading(true);
     // if the value in search for courses is empty it will not send a request.
     search.current  = e.target.value;
-    debouncedFunction()
-    
-   
+    debouncedFunction() // debouncing for thaking the input each 500 ms.
   };
-
-  const RegisterCourses = () => {
-    useCourseRegister(stundetInfo,studentCourses);
-  };
+  
   useEffect(()=>{
-    if(studentCourses.length == 0 ){
-      let subscrbe = true
+    if(user_courses.length === 0 ){
       const fetchCourses = async()=>{
         const {data} = await axios.put(`${process.env.REACT_APP_API_URL}/person/defualtCourses`,{
           level: stundetInfo?.student_level,
           department:stundetInfo?.student_department,
           sub_department: stundetInfo?.student_subdepartment
         })
-        setStuCourses(data)
+        setUserCourses(data);
       }
-      fetchCourses()
-
+      fetchCourses();
     }
   },[])
+  const RegisterCourses = async()=>{
+    try{
+      if (user_courses?.length>0) {
+        const status = await CourseRegister(stundetInfo,user_courses,isTeacher);
+        if (status === 201){
+          navigate('/main/feedpage');
+        }
+      }
+    }catch(err){
+      console.log(err)
+    }
+
+  }
   return (
     <div className={`welcome-page ${dark ? "dark" : ""}`}>
       <SimpleNavBar />
       <h1 className="welcome-sentance">
-        Welcome <span>{ isTeacher? 'Dr' + stundetInfo?.username?.split(" ")[0] :  stundetInfo?.username?.split(" ")[0]},</span>
+        Welcome <span>{ isTeacher? 'Dr ' + stundetInfo?.username?.split(" ")[0] :  stundetInfo?.username?.split(" ")[0]},</span>
       </h1>
       <div className="search-wrapper">
         <input
@@ -107,7 +107,7 @@ const WelcomePage = () => {
             <CourseCard
               key={id}
               course={course}
-              setStuCourses={setStuCourses}
+              setUserCourses={setUserCourses}
             />
           ))
         )}
@@ -117,16 +117,16 @@ const WelcomePage = () => {
 
         <div
           className={`grid-courses ${
-            studentCourses.length === 0 ? "no-grid" : ""
+            user_courses.length === 0 ? "no-grid" : ""
           }`}
         >
-          {studentCourses.length === 0 ? (
+          {user_courses.length === 0 ? (
             <div className="not-found">You have no courses yet.</div>
           ) : (
-            studentCourses?.map((course, id) => (
+            user_courses?.map((course, id) => (
               <DefaultCourse
                 key={id}
-                setStuCourses={setStuCourses}
+                setUserCourses={setUserCourses}
                 course={course}
               />
             ))

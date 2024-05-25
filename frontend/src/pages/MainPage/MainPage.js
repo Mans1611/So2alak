@@ -8,16 +8,16 @@ import Portal from '../../Portal/Portal.js';
 import NotificationPortal from '../../Portal/NotificationPortal/NotificationPortal.js';
 
 const MainPage = () => {
-  const ques_container = useRef(null);
-  
   const {dark,auth,showNotification} = useContext(AppState);
   const nav = useNavigate();
   
+
   useEffect(()=>{
     if (!auth){
       nav('/signin');
     }
   },[])
+  
   if (auth){
       return (
         <div className="main-page">

@@ -8,14 +8,13 @@ const LeaderBoard = () => {
     document.title = 'LeaderBoard';
     const [active,setActive] = useState('general')
     const [standing,setStanding]=useState([])
-    const {stundetInfo,studentCourses} = useContext(AppState);
+    const {stundetInfo,user_courses} = useContext(AppState);
     useEffect(()=>{
         const fetchLeaders = async()=>{
             try{
-                const res = await axios.get(`${process.env.REACT_APP_API_URL}/person/leaderboard?course_id=${studentCourses.find(course=>active===course.course_name).course_id}&level=${stundetInfo.student_level}`)
+                const res = await axios.get(`${process.env.REACT_APP_API_URL}/person/leaderboard?course_id=${user_courses?.find(course=>active===course.course_name).course_id}&level=${stundetInfo.student_level}`)
                 if (res.status===200){
                     setStanding(res.data.data);
-                    console.log(res.data)
                 }
             }catch(err){
                 console.log(err)

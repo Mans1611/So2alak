@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import './feedpage.scss';
 import HeartComponent from '../../components/HeartComponent/HeartComponent';
 import ThirdPart from '../../components/ThirdPart/ThirdPart';
@@ -7,10 +7,8 @@ import QuestionContainer from '../../components/QuestionContainer/QuestionContai
 
 
 const FeedPage = () => {
-  const ques_container = useRef(null);
-  const detectBottom = ()=>{}
   return (
-    <div ref={ques_container} onScroll={detectBottom} className='feedpage'>
+    <div  className='feedpage'>
         <HeartComponent>
           <AskQuestion/>
           <QuestionContainer/>

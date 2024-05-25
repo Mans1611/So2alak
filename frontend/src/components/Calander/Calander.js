@@ -13,7 +13,7 @@ const Calander = ({user_id}) => {
                 const {data} = await axios.get(`${process.env.REACT_APP_API_URL}/person/get_activity_log/${stundetInfo.student_id}`);
                 
                 const dates = data.dates?.map(date=>new Date(`${date.slice(3,5)}-${date.slice(0,2)}-${date.slice(6,10)}`).toDateString());
-                console.log(dates)
+                
                 
                 const redecued = dates.reduce((prev,cur)=>{
                     const key = cur.split(' '); 
@@ -26,8 +26,6 @@ const Calander = ({user_id}) => {
                 },{});
 
                 setActiveDates(redecued)
-                console.log(redecued)
-                console.log(calander)
 
                 
             }catch(err){

@@ -2,14 +2,17 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import avatar from "../../assets/user-tie-solid.svg";
 import {AppState} from "../../App";
 import './TeacherProfile.scss'
+import { useParams } from 'react-router-dom';
+import Calander from '../../components/Calander/Calander';
+import PiChartData from '../../components/PiChartData/PiChartData';
 
 
 const TeacherProfile = () => {
     const {dark} = useContext(AppState);
-
+    const {teacher_id} = useParams();
     const [username, setUserame] = useState("Mans116");
     const [description, setDescription] = useState("Senior CSE Student @ ASU");
-
+    const {stundetInfo} = useContext(AppState);
     const months = Array(12).fill(Array(30).fill(0));
     const months_refs  = Array(12).fill(useRef(null));
     const months_names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -23,16 +26,15 @@ const TeacherProfile = () => {
                                             {name: "OS", students: 123, verified: 4, unVerified: 3, unAnswered: 5},
                                             {name: "RTOS", students: 56, verified: 3, unVerified: 3, unAnswered: 5}]);
 
-    const currentDate = new Date().toDateString().split(" ").slice(0, 4)[1].toLowerCase();
-
+    
     return (
-        <div className={`tprofile_container ${dark? "dark" : ""}`}>
+        <div className={`profile_container ${dark? "dark" : ""}`}>
             <div className='content'>
                 <div className='info'>
                     <div className="preUpper">
                         <img src={avatar} alt="" />
                         <div className="discription">
-                            <p>{username}</p>
+                            <p>{stundetInfo.username}</p>
                             <p>{description}</p>
                         </div>
                     </div>
@@ -73,20 +75,11 @@ const TeacherProfile = () => {
                             </tbody>
                         </table>
                     </div>
-
+                    <div className="chart-container">
+                        <PiChartData/>
+                    </div>
                     <div className='lower'>
-                        <div className='lower_in'>
-                            <h1>Activity Calendar</h1>
-                            <div className='calendar'>
-                                {months.map((month, index) =>
-                                    <div ref={months_refs[index]} className='month'>
-                                        <div className='cells'>
-                                            {month.map((cell) => <div className={`cell ${cell? "active":"passive"}`}></div>)}
-                                        </div>
-                                        <div className='month_name'>{months_names[index]}</div>
-                                    </div>)}
-                            </div>
-                        </div>
+                        <Calander user_id={teacher_id}/>
                     </div>
                 </div>
             </div>

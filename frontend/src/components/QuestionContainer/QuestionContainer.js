@@ -5,7 +5,6 @@ import LoadingQuestion from '../Question/LoadingQuestion';
 import { AppState } from '../../App';
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
-import io from 'socket.io-client';
 import QuestionFilter from '../QuestionFilter/QuestionFilter';
 
 const reducer = (state,{type})=>{
@@ -43,11 +42,12 @@ const reducer = (state,{type})=>{
     }
 }
 const QuestionContainer = React.memo(()=>{
-  const [loading,setLoading] = useState(true);
+  const [loading,setLoading] = useState(false);
   
   const [questions,setQuestions] = useState([]);
   const {course_code} = useParams();
-  const {studentCourses,sidebarSelected,setSideBarSelected,stundetInfo} = useContext(AppState);
+  const {user_courses,isTeacher,sidebarSelected,setSideBarSelected,stundetInfo} = useContext(AppState);
+  
   const intialState = {
     API : `/post/allquestions/?student_id=${stundetInfo.student_id}&student_name=${stundetInfo.username}&filter=all`,
     filter:"ALL",
@@ -56,8 +56,10 @@ const QuestionContainer = React.memo(()=>{
   }
   const [filter,dispatchFilter] = useReducer(reducer,intialState);
   
+  
+
   useEffect(()=>{
-    let course_id = studentCourses.filter(course=>course.course_id === course_code?.toUpperCase());
+    let course_id = user_courses.filter(course=>course.course_id === course_code?.toUpperCase());
 
     if (course_id.length > 0){
       setSideBarSelected(course_id[0].course_id?.toUpperCase())
@@ -67,18 +69,19 @@ const QuestionContainer = React.memo(()=>{
     }
     if (!course_code) document.title = 'FeedPage'
   },[course_code])
-  
   useEffect(()=>{
     setLoading(true)
     const data= async()=> {
       let response = null;
-      if(sidebarSelected || course_code){
+      if(isTeacher){
+        response = await axios.get(`${process.env.REACT_APP_API_URL}/post/allTeacherQuestions/${stundetInfo.user_id}`);
+      }
+      else if(sidebarSelected || course_code){
         response = await axios.get(`${process.env.REACT_APP_API_URL}/post/${sidebarSelected?sidebarSelected:course_code}`)
       }else{
         response = await axios.get(`${process.env.REACT_APP_API_URL}${filter.API}`)
       }
-      setQuestions(response.data?.data ? response.data?.data :[])
-      console.log(response.data.data)
+      setQuestions(response.data?.data ? response.data.data :[]);
       setLoading(false)
     };
     data();
