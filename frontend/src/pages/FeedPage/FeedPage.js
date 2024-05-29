@@ -8,9 +8,8 @@ import { AppState } from '../../App';
 
 
 const FeedPage = () => {
-  const {isTeacher} = useContext(AppState);
-  console.log(isTeacher);
   
+
   return (
     <div  className='feedpage'>
         <HeartComponent>

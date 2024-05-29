@@ -66,7 +66,15 @@ const AskQuestion = ({isAnswer,questionDetails,setQuestions}) => {
                 'question_id' : questionDetails.question_id
             }
             res = await axios.post(`${process.env.REACT_APP_API_URL}/post/createAnswer`,form)
-        }else{
+        }else if(isTeacher && !isAnswer){
+            // in this case this is a bouns question.
+            form = {
+                teacher_id:stundetInfo.user_id,
+                question,
+                course_id,
+            }
+        }
+        else{
             res = await axios.post(`${process.env.REACT_APP_API_URL}/post/createQuestion`,form,{
                "headers":{
                    'Content-Type': 'multipart/form-data'
