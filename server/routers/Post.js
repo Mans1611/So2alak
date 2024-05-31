@@ -5,7 +5,7 @@ import { AggregateQuestionsAnswers } from "../utilis/AggregateQuestionsAnswers.j
 import { MakeActivity } from "../utilis/MakeActivitylog.js";
 import multer from "multer";
 import { GetFiles } from "../utilis/GetFiles.js";
-import b2 from "../Bucket/Bucket.js";
+// import cloudinary  from "../Bucket/Bucket.js";
 import { io } from "../index.js";
 import { GiveSimpleBadge } from "../utilis/GiveSimpleBadge.js";
 import {FilterSQLQuery} from '../utilis/FilterSQLQuery.js';
@@ -18,6 +18,16 @@ const post = Router();
 1 - middleware for authntication 
 */
 
+import {v2 as cloudinary} from 'cloudinary';
+import { AfterQuestion } from "../utilis/checkActivity.js";
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUDNAME,
+    api_key: process.env.CLOUDINARY_APIKEY,
+    api_secret:process.env.CLOUDINARY_APISECRET
+})
+
+
 post.get('/allquestions/',async(req,res)=>{
     const {student_name,student_id,filter} = req.query;
     let length = 5;
@@ -26,8 +36,7 @@ post.get('/allquestions/',async(req,res)=>{
          //LIMIT ${length} OFFSET ${page * 5} this for pagination.
         let sqlCommand = FilterSQLQuery(filter,student_id,student_name); 
         const result = await con.query(sqlCommand);
-        let data = await GetFiles(result.rows,con);
-        data = AggregateQuestionsAnswers(data);
+        const data = AggregateQuestionsAnswers(result.rows);
         con.release();
         return res
         .status(200)
@@ -62,50 +71,48 @@ post.get('/allTeacherQuestions/:teacher_id',async(req,res)=>{
         con.release();
     }
 })
-post.post('/createQuestion',/*CheckAuth,*/uploader.single('image'),async(req,res)=>{
+post.post('/createQuestion',uploader.single('image'),async(req,res,next)=>{
     // this api need to check the the auth of the user.
     const {course_id,student_id,username,question} = req.body;
     let con = null;
     try{
         con = await client.connect(); 
-        let sqlCommand = null;
-        let result = null;
         // to check if the student exist or not
         if (! await CheckValueExisit('students','username',username,client))
-            return res.status(400).json({msg:"this user is not exist"})
-        
-        // to check if the course exist or not
-        if (! await CheckValueExisit('courses','course_id',course_id,client))
-            return res.status(400).json({msg:"this course is not exist"})
-        
-        sqlCommand = `INSERT INTO questions (course_id,q_username,question) 
+        return res.status(400).json({msg:"this user is not exist"})
+    
+    // to check if the course exist or not
+    if (! await CheckValueExisit('courses','course_id',course_id,client))
+    return res.status(400).json({msg:"this course is not exist"})
+        let resResult;
+        let sqlCommand;
+        if (req.file){
+            const imgCloud = await cloudinary.uploader.upload_stream({
+                folder: 'questions' // Optional: specify the folder
+            },async(err,result)=>{
+                if(err){
+                    console.log("faild to upload image"); 
+                }
+                
+                globalThis.img_url = result.secure_url;
+                sqlCommand = `INSERT INTO questions (course_id,q_username,question,img_url) 
+                VALUES ('${course_id}','${username}','${question}','${result.secure_url}')
+                RETURNING *;`;
+                resResult = await con.query(sqlCommand);
+                const badge = await AfterQuestion(student_id,resResult,course_id,con)
+                res.status(201).json({'msg':'Your question is posted',data:resResult?.rows[0],badge});
+            })
+            imgCloud.end(req.file.buffer);
+        }else{
+            sqlCommand = `INSERT INTO questions (course_id,q_username,question) 
             VALUES ('${course_id}','${username}','${question}')
             RETURNING question_id;`;
-        const {rows} = await con.query(sqlCommand);
-        if (req.file){
-            sqlCommand = `INSERT INTO files (filename,mimtype,data) 
-            VALUES ($1,$2,$3) RETURNING id;`
-            const { originalname, mimetype, buffer} = req.file;
-            result = await con.query(sqlCommand,[originalname,mimetype,buffer])
-            const url = await b2.getUploadUrl({
-                bucketId: process.env.BUCKET_ID
-            });
-            const uploadedFile = await b2.uploadFile({
-                uploadAuthToken: url.data.authorizationToken,
-                fileName: `question_${rows[0].question_id}`,
-                uploadUrl:url.data.uploadUrl,
-                data:buffer,
-                fileInfo:{
-                    mimetype,
-                    originalname,  
-                }
-            })
+            resResult = await con.query(sqlCommand);
+            const badge = await AfterQuestion(student_id,resResult,course_id,con)
+            res.status(201).json({'msg':'Your question is posted',data:resResult?.rows[0],badge});
         }
-        const badge = await GiveSimpleBadge(student_id,'First Question',course_id,con)
-        res.status(201).json({'msg':'Your question is posted',badge});
-        await MakeActivity(student_id,'ask',rows[0].question_id,4,con,null);
+       
         con.release();
-        
     }catch(error){
         con.release();
         console.log(error)
@@ -222,8 +229,7 @@ post.put('/verifyQuestion/:q_id', async(req, res)=>{
 post.get('/getQuestion/',async(req,res)=>{
     // this might not needs auth -> like face when you dont have an account, but you still can see the post.
     const {question_id,student_id} = req.query; // I set  question_id = 1 from Postman.
-    console.log(student_id)
-    try{
+   try{
         const con = await client.connect();
         let sqlCommand;
         
@@ -252,7 +258,6 @@ post.get('/getQuestion/',async(req,res)=>{
             ans.ans_time DESC;`;
         }
         const result = await con.query(sqlCommand);
-        console.log(result.rows)
         const data = AggregateQuestionsAnswers(result.rows)
         res.status(200).json(data);
         con.release()
@@ -280,17 +285,33 @@ post.get('/getUnverifiedQuestions', async(req, res)=>{
         res.send(err);
     }
 });
-
+globalThis.name = 'mans'
 // Answers
-post.post("/createAnswer", async(req, res)=>{
+post.post("/createAnswer",uploader.single('image'),async(req, res)=>{
     // this api need to check the the auth of the user.
     const {answer, ans_username, student_id, question_id} = req.body;
+    let sqlCommand;
     try {
         const con = await client.connect();
-        const sqlCommand = `
+        if (req.file){
+            const cloudinary_result = await cloudinary.uploader.upload_stream({
+                folder:'answers',
+            },(err,result)=>{
+                globalThis.img_url = result.secure_url;
+            })
+            sqlCommand = `
+            INSERT INTO answers (answer, ans_username, q_id,ans_img_url) 
+            VALUES ('${answer}', '${ans_username}', ${question_id},'${globalThis.img_url}')
+            RETURNING *;`;
+            cloudinary_result.end(req.file.buffer)
+        }
+        else{
+            sqlCommand = `
             INSERT INTO answers (answer, ans_username, q_id) 
             VALUES ('${answer}', '${ans_username}', ${question_id})
             RETURNING *;`;
+        }
+
         const {rows} = await con.query(sqlCommand);
         const badge = await GiveSimpleBadge(student_id,'First Answer',null,con)
         if (badge){
@@ -532,8 +553,9 @@ post.get('/:course_code',async(req,res,next)=>{
 
 post.get('/search/:search',async(req,res)=>{
     const {search} = req.params;
+    let con;
     try{
-        const con = await client.connect();
+        con = await client.connect();
         const {rows:students} = await con.query(`SELECT * FROM students WHERE username ILIKE '%${search}%';`);
         const {rows:courses} = await con.query(`SELECT * FROM courses WHERE course_name ILIKE '%${search}%';`);
         const {rows:questions} = await con.query(`SELECT * FROM questions WHERE question ILIKE '%${search}%';`);

@@ -5,8 +5,9 @@ import ImageIcon from '@mui/icons-material/Image';
 import { AppState } from '../../App';
 import { useParams } from 'react-router-dom';
 import SendIcon from '@mui/icons-material/Send';
+import { FeedPageContext } from '../../pages/FeedPage/FeedPage';
 
-const AskQuestion = ({isAnswer,questionDetails,setQuestions}) => {
+const AskQuestion = ({isAnswer,questionDetails}) => {
     
     // called states from context.
     const {isTeacher,user_courses,stundetInfo,setShowNotification} = useContext(AppState);
@@ -41,11 +42,15 @@ const AskQuestion = ({isAnswer,questionDetails,setQuestions}) => {
             questionInput.current.style.borderTopRightRadius = '0px'
         }
         const reader = new FileReader()
-        reader.onload = (e)=>{
-            setImgPrev(e.target.result);
-        }
-        reader.readAsDataURL(file)
+        setTimeout(()=>{
+            reader.onload = (e)=>{
+                    setImgPrev(e.target.result);
+                }
+            reader.readAsDataURL(file)
+        },0)
     }}
+    
+    const {setQuestions} = useContext(FeedPageContext);
 
    const handlePost = async()=>{
     setPost(questionInput.current.innerHTML.replace(/'/g, "\''"))
@@ -63,28 +68,38 @@ const AskQuestion = ({isAnswer,questionDetails,setQuestions}) => {
                 'ans_username':stundetInfo.username,
                 'answer': post,
                 'student_id' : stundetInfo.student_id,
-                'question_id' : questionDetails.question_id
+                'question_id' : questionDetails.question_id,
+                'image' : file
             }
-            res = await axios.post(`${process.env.REACT_APP_API_URL}/post/createAnswer`,form)
+            res = await axios.post(`${process.env.REACT_APP_API_URL}/post/createAnswer`,form,{
+                "headers":{
+                    'Content-Type': 'multipart/form-data',
+                }
+            })
         }else if(isTeacher && !isAnswer){
             // in this case this is a bouns question.
             form = {
                 teacher_id:stundetInfo.user_id,
                 question,
-                course_id,
+                course_code
             }
         }
         else{
             res = await axios.post(`${process.env.REACT_APP_API_URL}/post/createQuestion`,form,{
                "headers":{
-                   'Content-Type': 'multipart/form-data'
+                   'Content-Type': 'multipart/form-data',
+                   
                 }
             })
         }
         if (res?.status ===201){
             questionInput.current.innerHTML = '';
             questionInput.current.innerText = 'Answer to Question';
-            setPost(null)
+            setPost(null);
+            setImgPrev(false);
+            if(!isAnswer)
+                setQuestions(questions=>[res.data.data,...questions]);
+
             if (res.data.badge){
                 setShowNotification(true)
                 setTimeout(()=>{

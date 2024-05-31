@@ -12,7 +12,7 @@ const LeaderBoard = () => {
     useEffect(()=>{
         const fetchLeaders = async()=>{
             try{
-                const res = await axios.get(`${process.env.REACT_APP_API_URL}/person/leaderboard?course_id=${user_courses?.find(course=>active===course.course_name).course_id}&level=${stundetInfo.student_level}`)
+                const res = await axios.get(`${process.env.REACT_APP_API_URL}/person/leaderboard?course_id=${user_courses?.find(course=>active===course.course_name)?.course_id}&level=${stundetInfo.student_level}`)
                 if (res.status===200){
                     setStanding(res.data.data);
                 }

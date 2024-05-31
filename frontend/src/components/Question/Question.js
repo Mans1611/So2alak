@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import './question.scss'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import audio from '../../assets/soundeffects/pop.wav';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -24,7 +24,6 @@ import QuestionModal from '../../Portal/QuestionModal/QuestionModal';
 const socket = io(process.env.REACT_APP_API_URL);
 
 const Question = ({singleQuestion,question,setQuestion}) => {
-    
     // states:
     const [helped,setHelp] = useState(question?.helped? question.helped:false);
     const [helpCount,setHelpCount] = useState(question.q_upvotes)
@@ -35,7 +34,7 @@ const Question = ({singleQuestion,question,setQuestion}) => {
     const {dark,setSideBarSelected,stundetInfo,isTeacher} = useContext(AppState);
     const [showQuestionModal,setShowQuestionModal] = useState(false);
     const nav = useNavigate();
-    
+    const {question_id} = useParams();
     
     const handleHelp = async (e)=>{
         e.stopPropagation();
@@ -65,24 +64,18 @@ const Question = ({singleQuestion,question,setQuestion}) => {
     const stoplimit = useRef(null);
     const stoplimit2 = useRef(null);
     const questionText = useRef(null);
-
     setTimeout(()=>{
         if (stoplimit.current && stoplimit2.current){
             stoplimit.current.style.height = questionContent.current.offsetHeight + 'px'
             stoplimit2.current.style.height = questionContent.current.offsetHeight + 'px'
         }
     },0)
-
-    let img = null;
-    if (question.data){
-        img = `data:${question.mimtype};base64,${question.data}`;
-    }
     const handleProfile = (show)=>{
         if (show) setShowProfie(true);
         else{setShowProfie(false)}
     }
     const showFullQuestion = ()=>{
-        if (!img)
+        if (!question.img_url)
             nav(`/main/question/${question.question_id}`)
         else{
             setShowQuestionModal(true);
@@ -165,7 +158,7 @@ const Question = ({singleQuestion,question,setQuestion}) => {
                 </div>
                 <div className='question-wrapper'>
                     <div ref={questionContent} className="question-content">
-                        {question.data && <img src={img} className='ques_img' />}
+                        {question.img_url && <img src={question.img_url} className='ques_img' />}
                         <p ref={questionText}></p>
                         <div className="time">asked {getTime(question.q_time)}</div>
                     </div>
@@ -193,13 +186,12 @@ const Question = ({singleQuestion,question,setQuestion}) => {
                 - FeedPage or coursePage*/}
             {!singleQuestion&&question?.answers?.length>0 &&<Answer answer = {question.answers[0]}/>}
             
+            
             {/* for a the list page questions */}
             
             {singleQuestion && <AskQuestion questionDetails={question} isAnswer={true}/>}
             {/*  While if i was in the question page, i need to show all answers of the question*/}
-            {singleQuestion&&
-            question.answers?.map((ans,key)=>
-                <Answer answer = {ans} key={key}/>) }
+            {question.answers.map((ans,key)=> <Answer answer = {ans} key={key}/>) }
         </div>
         {showQuestionModal&&<Portal children={<QuestionModal question={question}/>}/>}
     </>

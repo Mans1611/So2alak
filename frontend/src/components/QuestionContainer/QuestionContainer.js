@@ -6,6 +6,7 @@ import { AppState } from '../../App';
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
 import QuestionFilter from '../QuestionFilter/QuestionFilter';
+import { FeedPageContext } from '../../pages/FeedPage/FeedPage';
 
 const reducer = (state,{type})=>{
     switch(type){
@@ -44,7 +45,7 @@ const reducer = (state,{type})=>{
 const QuestionContainer = React.memo(()=>{
   const [loading,setLoading] = useState(false);
   
-  const [questions,setQuestions] = useState([]);
+  const {questions,setQuestions} = useContext(FeedPageContext);
   const {course_code} = useParams();
   const {user_courses,isTeacher,sidebarSelected,setSideBarSelected,stundetInfo} = useContext(AppState);
   

@@ -218,7 +218,7 @@ person.get('/leaderboard',async(req,res)=>{
     const {level,course_id} = req.query;
     const con = await client.connect();
     try{
-        if (course_id == 'undefined' || course_id === 'general'){
+        if (course_id == 'undefined' || course_id === 'General'){
             console.log(course_id)
             let sqlCommand = `SELECT * FROM students WHERE student_level = '${level}' ORDER BY points DESC LIMIT 10`
             const {rows} = await con.query(sqlCommand);
@@ -233,11 +233,11 @@ person.get('/leaderboard',async(req,res)=>{
             const {rows} = await con.query(sqlCommand);
             res.status(200).json({data:rows})
         }
-        con.release();
     }catch(err){
+        console.log(err);
+    }
+    finally{
         con.release()
-        console.log(err)
-
     }
 })
 

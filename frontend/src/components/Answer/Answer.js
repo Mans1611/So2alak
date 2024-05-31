@@ -42,7 +42,8 @@ const reducer = (state,{type})=>{
 }
 
 const Answer = ({answer}) => {
-    const [,setCount]=useState(0)
+    const [,setCount]=useState(0);
+
     const [answerState,dispatch] = useReducer(reducer,intialState);
     const {isTeacher} = useContext(AppState); 
     const handleUpVotes = (e)=>{
@@ -74,6 +75,7 @@ const Answer = ({answer}) => {
                     </div>
                     <div className='question-wrapper'>
                         <div className="question-content">
+                        {answer.ans_img_url && <img src={answer.img_url} className='ques_img' />}
                             <p ref={answerText}></p>
                             <div className="time">answered {getTime(answer.ans_time)}</div>
                         </div>

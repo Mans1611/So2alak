@@ -111,7 +111,8 @@ CREATE TABLE IF NOT EXISTS questions(
 	q_upvotes INTEGER DEFAULT 0,
  	q_verified BOOLEAN default false,
     q_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	q_files INTEGER REFERENCES files(id)
+	img_url VARCHAR(255) DEFAULT NULL
+	
 );
 
 CREATE TABLE IF NOT EXISTS fav_questions (
@@ -142,6 +143,7 @@ CREATE TABLE IF NOT EXISTS answers(
 	ans_downvotes INTEGER DEFAULT 0,
  	ans_verified BOOLEAN default false,
     ans_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+	ans_img_url VARCHAR(255) DEFAULT NULL
 );
 
 CREATE TABLE activity_log (

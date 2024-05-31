@@ -10,7 +10,7 @@ const StudentsStanding = ({user_standing}) => {
             LeaderBoard
         </div>
         {
-            user_standing.map((student,key)=><StudentRow student={student} rank={key+1} key={key}/>)
+            user_standing?.map((student,key)=><StudentRow student={student} rank={key+1} key={key}/>)
         }
 
     </div>

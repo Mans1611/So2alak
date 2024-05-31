@@ -7,9 +7,13 @@ import bodyParser from 'body-parser';
 import post from './routers/Post.js';
 import {Server} from 'socket.io';
 import teacher from './routers/Teachers.js';
-import b2 from './Bucket/Bucket.js';
+import compression from 'compression';
 import http from 'http'
 import lists from './routers/Lists.js';
+import { intializeRedis } from './redis.js';
+import rabbit from 'amqplib';
+
+
 dotenv.config();    // configure environement varables
 
 const app = express();
@@ -24,6 +28,19 @@ export const io = new Server(server,{
     }
 });
 
+app.use(compression({
+        level: 1, 
+        threshold: 0, 
+        filter: (req, res) => {
+          // Custom filter function to decide whether to compress a response
+          if (req.headers['x-no-compression']) {
+            // Don't compress responses with this request header
+            return false;
+          }
+          return compression.filter(req, res);
+        }
+      
+}))
 
 app.use(cors());
 app.use(bodyParser.urlencoded());
@@ -39,13 +56,18 @@ app.use('/lists',lists);
 
 const port =  process.env.PORT || 6000;
 io.on('connection',(socket)=>{
-socket.on('idiot',(data)=>{
-    })
+    
 })
+
+
 server.listen(port,async ()=>{
     console.log(`http://localhost:${port}`);
     try{
-       
+        await intializeRedis(); // intiating the redis instance with the cloud.
+        const connection = await rabbit.connect('amqp://localhost');
+        const channel = await connection.createChannel();
+        await channel.assertQueue('mansQueue',{durable:false});
+        channel.sendToQueue('mansQueue',Buffer.from('mansour ql'));
     }catch(err){
         console.log(err)
     }
