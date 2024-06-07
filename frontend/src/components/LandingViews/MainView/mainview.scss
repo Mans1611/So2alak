@@ -1,93 +1,45 @@
-$color_1: black;
-$color_2: white;
+$main_color_1: black;
+$main_color_2: white;
 $font-family_1: "Times New Roman", Times, serif;
-$background-color_1: #2992aa;
-$background-color_2: #028064;
+$main_background-color1: #2992aa;
+$main_background-color2: #028064;
 
 /* =========================== Phone =========================== */
+
+
 .mainview-container {
-	background-image: linear-gradient(to bottom, #1E554E, #091233);
 	height: 100vh;
 	width: 100%;
 	display: flex;
 	align-items: center;
 	font-size: 16px;
+	padding-top: 15vh;
+
 
 	.mianimg-container {
 		width: 50%;
-		height: 100%;
-		flex: 0 0 50%;
+		height: 85vh;
 		position: relative;
-		display: grid;
-		grid-template-columns: repeat(9, 1f);
-		grid-template-rows: repeat(7, auto);
+		display: flex;
+		align-items: center;
+		justify-content: center;
 
-		.phone {
-			grid-column: 4/7;
-			grid-row-start: 5;
-			display: flex;
-			position: relative;
-			justify-content: center;
-			align-items: center;
-
-			.phone-bg,
-			.phone-img {
-				animation: fade-left linear both;
-				animation-timeline: scroll();
-				animation-range: exit 10% 25%;
-			}
-
-			.phone-img {
-				width: 50%;
-				position: absolute;
-			}
-
-			.phone-bg {
-				width: 100%;
-				position: absolute;
-				clip-path: polygon(36% 26%, 65% 26%, 67% 29%, 67% 68%, 64% 73%, 36% 73%, 33% 68%, 33% 31%);
-			}
+		.main-img {
+			width: 80%;
 		}
 
-		.laptop {
-			grid-column: 1/7;
-			grid-row-start: 4;
-			display: flex;
-			position: relative;
-			justify-content: center;
-			align-items: center;
-
-			.laptop-bg,
-			.laptop-img {
-				animation: fade-right linear both;
-				animation-timeline: scroll();
-				animation-range: exit 5% 25%;
-			}
-
-			.laptop-img {
-				width: 100%;
-				position: absolute;
-			}
-
-			.laptop-bg {
-				width: 100%;
-				position: absolute;
-				clip-path: polygon(23.5% 17%, 77% 17%, 77% 79%, 23.5% 79%);
-			}
-		}
 	}
 
 	.mainview-description {
 		display: flex;
 		flex-flow: column;
 		align-items: center;
-		justify-content: space-evenly;
-		height: 100vh;
+		justify-content: center;
+		height: 85vh;
 		width: 50%;
-		flex: 0 0 50%;
 
 		.mainlogo {
-			width: 70%;
+			width: 50%;
 
 			animation: zoom linear both;
 				animation-timeline: scroll();
@@ -95,7 +47,8 @@ $background-color_2: #028064;
 		}
 
 		.description {
-			color: $color_2;
+			width: 75%;
+			color: $main_color_1;
 			font-size: 130%;
 			padding: 5%;
 			text-align: center;
@@ -108,69 +61,32 @@ $background-color_2: #028064;
 			animation-range: exit 10% 25%;
 		}
 
-		.signin-signup {
-			display: flex;
-			width: 100%;
-			justify-content: space-evenly;
-
-			.signin {
-				width: 40%;
-				padding: 5px;
-				text-align: center;
-				color: $color_2;
-				text-decoration: none;
-				border-radius: 5px;
-				box-shadow: 0 1px 3px #000;
-				background-color: $background-color_1;
-				cursor: pointer;
-
-				&:hover {
-					box-shadow: 0 2px 5px #000;
-				}
-
-				&:active {
-					box-shadow: 0 0 1px #000;
-				}
-			}
-
-			.signup {
-				width: 40%;
-				padding: 5px;
-				text-align: center;
-				color: $color_2;
-				text-decoration: none;
-				border-radius: 5px;
-				box-shadow: 0 1px 3px #000;
-				background-color: $background-color_1;
-				cursor: pointer;
-				background-color: $background-color_2;
-
-				&:hover {
-					box-shadow: 0 2px 5px #000;
-				}
-
-				&:active {
-					box-shadow: 0 0 1px #000;
-				}
-			}
-		}
 	}
 }
 
 @media screen and (max-width: 600px) {
 	.mainview-container {
 		flex-flow: column;
+		justify-content: center;
+		height: 80vh;
+		margin-bottom: 10vh;
+		padding-top: 0vh;
 
 		.mianimg-container {
-			width: 100%;
+			z-index: -1;
+			position: relative;
+			order: 1;
+			width: 80%;
+			margin-top: 0vh;
 
-			.phone {
-				grid-row-start: 6;
-			}
+			height: 40vh;
 		}
 
 		.mainview-description {
+			order: 2;
 			width: 100%;
+			height: 30vh;
+			margin-top: 0vh;
 
 			.description {
 				font-size: 110%;
@@ -187,7 +103,7 @@ $background-color_2: #028064;
 
 
 /* Animations */
-
+/*
 @keyframes fade-right {
 	from {
 		transform: translateX(0px);
@@ -232,4 +148,4 @@ $background-color_2: #028064;
 	to {
 		opacity: 0;
 	}
-}
+}*/
