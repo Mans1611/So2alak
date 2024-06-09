@@ -1,3 +1,4 @@
+import { isValidJSON } from "../../trending_serviece/utilis/isVailidJSON.js";
 import client from "../databse.js";
 import redisClient  from "../redis.js";
 
@@ -6,17 +7,23 @@ export class Lists{
     getAllLists = async(req,res)=>{
         const {student_id} = req.params;
         const con = await client.connect();
+       
         try{
             let sqlCommand = `SELECT * FROM lists WHERE student_id = '${student_id}';`;
             if (student_id){
                 let cachedValue = undefined;
-                cachedValue = JSON.parse(await redisClient.get(`lists:${student_id}`))
+                cachedValue = await redisClient.get(`lists:${student_id}`)
+                if(isValidJSON(cachedValue)){
+                    cachedValue = JSON.parse(cachedValue)
+                }
+
                 if(cachedValue && cachedValue.length !== 0){
-                    return res.status(201).json({data:cachedValue})
+
+                    return res.status(200).json({data:cachedValue})
                 }
                 const {rows} = await con.query(sqlCommand); // sending the query above to the database instance 
                 await redisClient.set(`lists:${student_id}`,JSON.stringify(rows),{ // setting the values in the cache for 12 Hrs
-                    EX:43200// in seconds, this means 12H
+                EX:43200// in seconds, this means 12H
                 })
                 res.status(200).json({data:rows});
             }else{

@@ -5,8 +5,7 @@ import { AggregateQuestionsAnswers } from "../utilis/AggregateQuestionsAnswers.j
 import { MakeActivity } from "../utilis/MakeActivitylog.js";
 import multer from "multer";
 import { GetFiles } from "../utilis/GetFiles.js";
-// import cloudinary  from "../Bucket/Bucket.js";
-import { io } from "../index.js";
+import { channel, io } from "../index.js";
 import { GiveSimpleBadge } from "../utilis/GiveSimpleBadge.js";
 import {FilterSQLQuery} from '../utilis/FilterSQLQuery.js';
 
@@ -20,6 +19,8 @@ const post = Router();
 
 import {v2 as cloudinary} from 'cloudinary';
 import { AfterQuestion } from "../utilis/checkActivity.js";
+import { TrendingQueue } from "../RabbitMQ/Queues/TrendingQueue.js";
+import { Answers } from "../Controllers/Answers.js";
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUDNAME,
@@ -30,17 +31,18 @@ cloudinary.config({
 
 post.get('/allquestions/',async(req,res)=>{
     const {student_name,student_id,filter} = req.query;
-    let length = 5;
     try {
         const con = await client.connect();
          //LIMIT ${length} OFFSET ${page * 5} this for pagination.
-        let sqlCommand = FilterSQLQuery(filter,student_id,student_name); 
+        let sqlCommand = FilterSQLQuery(filter,student_id,student_name); // this will return the appropirate sql query. based on filter which is send
         const result = await con.query(sqlCommand);
         const data = AggregateQuestionsAnswers(result.rows);
+        await TrendingQueue(channel,'ProcessTrending',{data:data.map(ques=>ques.question)});
         con.release();
+        
         return res
-        .status(200)
-        .json({data});
+            .status(200)
+            .json({data});
     } catch (error) {
         console.log(error)
     }
@@ -111,7 +113,7 @@ post.post('/createQuestion',uploader.single('image'),async(req,res,next)=>{
             const badge = await AfterQuestion(student_id,resResult,course_id,con)
             res.status(201).json({'msg':'Your question is posted',data:resResult?.rows[0],badge});
         }
-       
+        
         con.release();
     }catch(error){
         con.release();
@@ -257,6 +259,7 @@ post.get('/getQuestion/',async(req,res)=>{
             ORDER BY ans.ans_verified DESC , ans.ans_upvotes DESC,
             ans.ans_time DESC;`;
         }
+        console.log("first")
         const result = await con.query(sqlCommand);
         const data = AggregateQuestionsAnswers(result.rows)
         res.status(200).json(data);
@@ -265,6 +268,8 @@ post.get('/getQuestion/',async(req,res)=>{
         console.log(error)
     }
 })
+const answers = new Answers();
+post.get('/getQuestionsAnswers',answers.getQuestionAnswers);
 
 post.get('/getUnverifiedQuestions', async(req, res)=>{
     try {
@@ -499,6 +504,7 @@ post.post('/addToFavQues',async(req,res)=>{
         }
         await con.query(sqlCommand);
         con.release();
+        
         return res.status(201).json({msg:'Questions is added to your list'})
         
     }catch(err){

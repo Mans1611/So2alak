@@ -1,0 +1,15 @@
+{
+    "dev":{
+        "driver":"pg",
+        "host" : {"ENV":"DATABASE_HOST"},
+        "port" : {"ENV":"DATABASE_PORT"},
+        "database" : {"ENV":"DATABASE_NAME"},
+        "password" : {"ENV":"DATABASE_PASS"},
+        "user" : {"ENV":"DATABASE_USER"}
+    },
+    "prod":{
+        "user" : {"ENV":"DATABASE_USER"},
+        "password" : {"ENV":"DATABASE_PASS"},
+        "database" : {"ENV":"DATABASE_NAME"}
+    }
+}

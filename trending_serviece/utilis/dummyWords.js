@@ -1,0 +1,28 @@
+
+export const dummySet = new Set([
+    'a','an','the',
+    'and', 'also',
+    'are','is', 'was','were',
+    'them','this',
+    'you', 'be', 'which',
+    'he','she','it','i', 'we', 'they',
+    'from','with','or',
+    'on','to','at','in','of','by','for','out',
+    'my','his','its','their',
+    'has','have',
+    'do' , 'dose', 'but','doing','don’t','dosen’t','any',
+    'there','there\'s','about', 'what\'s',
+    'becaues', 'as','as a result','since',
+    'not','only','been',
+    'if','whereas','whether',
+    'can','would', 'could',
+    'that','just','using','especially','that\'s','you\'ll','we\'ll',
+    'once','very','many','used','both','more','than','well','highly','where','each',
+    'when','who','some','such','over','globally',
+    'me','us','mine', 'among','told','no','yes','i’m','back','inside',
+    'after','before','will','all','difference',
+    'don\'t', 'you\'re','every','like',
+    'isn\'t','what','your','you\'ve','towards','holds','it\'s','into','how',
+    'lies','up','down','then','these','beyond','behind','being','across','able','upon','still','overall','usually','so','might','together','other','between','may',
+    'اللي'
+  ])

@@ -1,7 +1,6 @@
 import pkg from 'pg';
 const { Pool } = pkg;
 import dotenv from 'dotenv'
-import { exec } from 'child_process';
 import fs from 'fs'
 
 dotenv.config();

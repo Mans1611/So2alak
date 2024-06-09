@@ -2,14 +2,14 @@ import {createClient} from 'redis'
 
 let redisClient;
 
-if(process.env.REDIS_ENV === 'DEV'){
+if(process.env.REDIS_ENV === 'DEV'){ // this if i was in development mode
 
     redisClient = createClient({
         host: 'localhost',
         port: 6379,
     })
 }else{
-    redisClient = createClient({
+    redisClient = createClient({ // here is the cloud version of redis hoisted on the cloud
         password: process.env.REDIS_PASSWORD,
         socket: {
             host: process.env.REDIS_ENDPOINT,

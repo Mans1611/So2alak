@@ -8,7 +8,6 @@
         "user" : {"ENV":"User"}
     },
     "prod":{
-       
         "user" : {"ENV":"PGUSER"},
         "password" : {"ENV":"Prod_Pass"},
         "database" : {"ENV":"PGDATABASE"}

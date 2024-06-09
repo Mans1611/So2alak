@@ -42,8 +42,7 @@ const reducer = (state,{type})=>{
 }
 
 const Answer = ({answer}) => {
-    const [,setCount]=useState(0);
-
+    
     const [answerState,dispatch] = useReducer(reducer,intialState);
     const {isTeacher} = useContext(AppState); 
     const handleUpVotes = (e)=>{
@@ -56,7 +55,7 @@ const Answer = ({answer}) => {
     }
     const navToProfile = (e)=> e.stopPropagation(); 
     const answerText = useRef(null)
-    if(answer.answer_id){
+    if(answer.answer){
         setTimeout(()=>{
             answerText.current.innerHTML = answer.answer
         },0)
@@ -101,7 +100,7 @@ const Answer = ({answer}) => {
                     </div>
             </div>
         )
-}
+    }
 }
 
 export default Answer

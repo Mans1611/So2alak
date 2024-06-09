@@ -1,7 +1,7 @@
-export const FilterSQLQuery = (filter,student_id,student_name)=>{
+export const FilterSQLQuery = (filter='all',student_id,student_name)=>{
     let sqlCommand;
     switch(filter){
-        case 'all' : 
+        case 'all'  : 
             sqlCommand = `
             SELECT * FROM questions AS q
             LEFT JOIN (

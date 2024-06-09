@@ -11,7 +11,7 @@ import compression from 'compression';
 import http from 'http'
 import lists from './routers/Lists.js';
 import { intializeRedis } from './redis.js';
-import rabbit from 'amqplib';
+import { ConnectToChannel } from './RabbitMQ/ChannelConfig.js';
 
 
 dotenv.config();    // configure environement varables
@@ -60,14 +60,12 @@ io.on('connection',(socket)=>{
 })
 
 
+export const channel = await ConnectToChannel(); // creating channel for message queue and send message to othe microservives.
+await intializeRedis(); // intiating the redis instance with the cloud.
+
 server.listen(port,async ()=>{
     console.log(`http://localhost:${port}`);
     try{
-        await intializeRedis(); // intiating the redis instance with the cloud.
-        const connection = await rabbit.connect('amqp://localhost');
-        const channel = await connection.createChannel();
-        await channel.assertQueue('mansQueue',{durable:false});
-        channel.sendToQueue('mansQueue',Buffer.from('mansour ql'));
     }catch(err){
         console.log(err)
     }
