@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 const Search = () => {
     const [search,setSearchString] = useState('');
     const [searchResult,setSearchResult] = useState([]);
+    const [showSearch,setShowSearch] = useState(false);
+
     useEffect(()=>{
         const fetchSearch = async ()=>{
             try{
@@ -26,6 +28,7 @@ const Search = () => {
     
     const handleKeyUp = (e)=>{
         e.preventDefault();
+        setShowSearch(true);
         const items = document.querySelectorAll('.search-li')
         let index = Array.from(items).indexOf(selectedItem);
         if (selectedItem)  
@@ -42,9 +45,32 @@ const Search = () => {
                 nav(selectedLink.attributes['href'].value)
             }
     }
+    const hideSearchResult = (e)=>{
+        const classes = ['title','search-wrapper','flex']
+        const matchesClass = classes.find((val)=>val === e.target.className)
+        if(!matchesClass){
+            setShowSearch(false);
+        }
+    }
+
+    const divRef = useRef(null);
+    const handleClickOutside = (event) => {
+        if (divRef.current && !divRef.current.contains(event.target)) {
+            setShowSearch(false);
+        }
+    };
+    useEffect(()=>{
+        document.addEventListener('mousedown', handleClickOutside);
+    
+        return () => {
+        // Cleanup the event listener on component unmount
+        document.removeEventListener('mousedown', handleClickOutside);
+        };
+
+    })
     
     return (
-    <div  className="search-wrapper">
+    <div ref={divRef} onClick={hideSearchResult} className="search-wrapper">
         <input 
         onKeyUp={handleKeyUp} 
         ref={searchInput} 
@@ -53,12 +79,12 @@ const Search = () => {
         {(searchResult.students?.length > 0 || 
             searchResult.questions?.length || 
             searchResult.courses?.length) 
-            &&
-            
+            && 
+            showSearch && 
             (<div className="search-result">
-                {searchResult.students?.length > 0 && <SearchItems title={'Students'} items={searchResult.students}/>}
-                {searchResult.questions?.length > 0 && <SearchItems title={'Questions'} items={searchResult.questions}/>}
-                {searchResult.courses?.length > 0 && <SearchItems title={'Courses'} items={searchResult.courses}/>}
+                {searchResult.students?.length > 0 && <SearchItems setShowSearch={setShowSearch} title={'Students'} items={searchResult.students}/>}
+                {searchResult.questions?.length > 0 && <SearchItems setShowSearch={setShowSearch}  title={'Questions'} items={searchResult.questions}/>}
+                {searchResult.courses?.length > 0 && <SearchItems setShowSearch={setShowSearch} title={'Courses'} items={searchResult.courses}/>}
             </div>)
         }
     </div>

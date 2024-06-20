@@ -26,7 +26,7 @@ const SignUP = () => {
     const bttnRef = useRef(null); //button ref
 
     //states
-    const {setStuCourses,setIsTeacher,setStudentInfo,setAuth} = useContext(AppState);
+    const {setUserCourses,setIsTeacher,setStudentInfo,setAuth} = useContext(AppState);
     const levels = ['Freshmen', 'Somophore', 'Junior', 'Senior1', 'Senior2'];
     const departments = levDeps;
     
@@ -171,9 +171,12 @@ const SignUP = () => {
                         student_department: department,
                         student_subdepartment: subdepartment
                     })
+                    console.log(result)
                     if(result.status === 201){
-                        setStuCourses(result.data.sugesstedCourses); // here I set the default courses for the student, which comes from server
+                        setUserCourses(result.data.sugesstedCourses); // here I set the default courses for the student, which comes from server
+                        console.log(result.data)
                         setStudentInfo(result.data.data);
+                        setAuth(true)
                         navigate('/welcome'); // then navigate to welcome page. 
                     }
                 }

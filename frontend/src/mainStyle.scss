@@ -13,7 +13,14 @@ $navbar-height: 60px;
     justify-content: center;
     align-items: center;
 }
-
+.centerChild{
+    @include centerChild();
+}
+.dark{
+    .centerChild{
+        color: $light-white;
+    }
+}
 @mixin flexParent {
     // this style for the parent div, and the the child will be centered. 
     display: flex;

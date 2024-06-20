@@ -20,12 +20,12 @@ const app = express();
 const server = http.createServer(app)
 export const io = new Server(server,{
     cors:{
-       origin : process.env.FRONTEND_URL,
+      origin : process.env.FRONTEND_URL,
 
-   methods : ["GET","POST","PUT","DELETE"],
-       allowedHeaders: ["my-custom-header"],
-       credentials : true
-    }
+      methods : ["GET","POST","PUT","DELETE"],
+          allowedHeaders: ["my-custom-header"],
+          credentials : true
+        }
 });
 
 app.use(compression({
@@ -55,10 +55,10 @@ app.use('/teacher',teacher);
 app.use('/lists',lists);
 
 const port =  process.env.PORT || 6000;
+
 io.on('connection',(socket)=>{
     
 })
-
 
 export const channel = await ConnectToChannel(); // creating channel for message queue and send message to othe microservives.
 await intializeRedis(); // intiating the redis instance with the cloud.

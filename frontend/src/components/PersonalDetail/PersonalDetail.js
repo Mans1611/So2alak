@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './personaldetails.scss'
 import axios from 'axios'
 
 import { useParams,Link, useNavigate } from 'react-router-dom'
+import { AppState } from '../../App'
 const PersonalDetail = ({user_id}) => {
     const [userDetails,setUserDetails] = useState({});
-    const {user_id:id} = useParams()
+    const {user_id:id} = useParams();
+    const {stundetInfo} = useContext(AppState); 
     useEffect(()=>{
         const fetchPersonalDetails = async()=>{
             try{
@@ -21,6 +23,8 @@ const PersonalDetail = ({user_id}) => {
     },[])
   return (
     <>
+    
+        <div className='username'>Username : {stundetInfo.username}</div>
         <div className='personal_details'>
             <div>Level: {userDetails.student_level}</div>
             <div>Department : {userDetails.student_department?userDetails.student_department:'-'}</div>

@@ -13,9 +13,9 @@ const MainPage = () => {
   
 
   useEffect(()=>{
-    if (!auth){
+    if (!auth)
       nav('/signin');
-    }
+    
   },[])
   
   if (auth){

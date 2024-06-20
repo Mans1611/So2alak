@@ -11,7 +11,6 @@ export const FilterSQLQuery = (filter='all',student_id,student_name)=>{
             LEFT JOIN (SELECT course_name,course_id FROM courses) AS cor ON cor.course_id = q.course_id
             INNER JOIN students_courses AS SC ON SC.student_name = '${student_name}' AND cor.course_id = SC.course_id
             LEFT JOIN activity_log as al ON al.question_id = q.question_id
-            WHERE al.student_id = '${student_id}'
             ORDER BY q.q_time DESC , ans_verified DESC , ans_upvotes DESC; `;
             return sqlCommand
         case 'verified':

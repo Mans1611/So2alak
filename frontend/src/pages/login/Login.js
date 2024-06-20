@@ -115,7 +115,6 @@ const Login = () => {
           setStudentInfo(res.data.data);
           setUserCourses(res.data.courses);
         }
-        console.log("passed")
       }
       else{
 
@@ -129,7 +128,6 @@ const Login = () => {
           setAuth(true);
           setIsTeacher(false);
           setStudentInfo(res.data.student)
-          console.log(res.data.student)
         }
       }
 

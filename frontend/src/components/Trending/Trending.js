@@ -24,7 +24,7 @@ const Trending = ({top}) => {
             {
               trending.length > 0 ? 
               trending.map((trend,key)=><Trend trend={trend} key={key}/>):
-              <h4 style={{textAlign:'center',marginTop:'50px'}}>No Trending Topics</h4>
+              <h4 className='notexist' style={{textAlign:'center',marginTop:'50px'}}>No Trending Topics</h4>
             }
         </div>
     </div>

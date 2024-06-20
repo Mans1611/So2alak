@@ -105,7 +105,6 @@ course.get('/course_details/:course_id',async(req,res,next)=>{
 
         res.status(200).json(result)
         con.release()
-        next()
     }catch(err){
         console.log(err);
     }

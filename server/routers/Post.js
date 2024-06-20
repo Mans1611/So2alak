@@ -37,7 +37,8 @@ post.get('/allquestions/',async(req,res)=>{
         let sqlCommand = FilterSQLQuery(filter,student_id,student_name); // this will return the appropirate sql query. based on filter which is send
         const result = await con.query(sqlCommand);
         const data = AggregateQuestionsAnswers(result.rows);
-        await TrendingQueue(channel,'ProcessTrending',{data:data.map(ques=>ques.question)});
+        //console.log(data);
+        //await TrendingQueue(channel,'ProcessTrending',{data:data.map(ques=>ques.question)});
         con.release();
         
         return res
@@ -108,12 +109,11 @@ post.post('/createQuestion',uploader.single('image'),async(req,res,next)=>{
         }else{
             sqlCommand = `INSERT INTO questions (course_id,q_username,question) 
             VALUES ('${course_id}','${username}','${question}')
-            RETURNING question_id;`;
+            RETURNING *;`;
             resResult = await con.query(sqlCommand);
             const badge = await AfterQuestion(student_id,resResult,course_id,con)
             res.status(201).json({'msg':'Your question is posted',data:resResult?.rows[0],badge});
         }
-        
         con.release();
     }catch(error){
         con.release();
@@ -131,7 +131,6 @@ post.get('/getPicture',async(req,res)=>{
             Authorization: auth.data.authorizationToken,
         }
     })
-    console.log(result)
     return res.send(Buffer.from(result.data).toString('base64'))
 })
 post.delete('/deleteQuestion/:q_id',async(req,res)=>{
@@ -259,7 +258,6 @@ post.get('/getQuestion/',async(req,res)=>{
             ORDER BY ans.ans_verified DESC , ans.ans_upvotes DESC,
             ans.ans_time DESC;`;
         }
-        console.log("first")
         const result = await con.query(sqlCommand);
         const data = AggregateQuestionsAnswers(result.rows)
         res.status(200).json(data);
@@ -277,8 +275,7 @@ post.get('/getUnverifiedQuestions', async(req, res)=>{
         const sqlCommand = `
             SELECT * 
             FROM questions
-            WHERE q_verified = false;
-        `;
+            WHERE q_verified = false;`;
         const {rows} = await con.query(sqlCommand);
         con.release();
         res.status(200).json({
@@ -404,8 +401,7 @@ post.put('/downvoteAnswer/:ans_id',async(req, res)=>{
         let sqlCommand = `
             UPDATE answers 
             SET ans_downvotes = ans_downvotes + 1
-            WHERE answer_id = ${ans_id};
-        `;
+            WHERE answer_id = ${ans_id};`;
         if(cancel_downvote) { // دي عشان لو نفس الطالب حب يلغي الداون فوت اللي عمله
             sqlCommand = `
                 UPDATE answers 
@@ -425,20 +421,23 @@ post.put('/downvoteAnswer/:ans_id',async(req, res)=>{
 
 post.put('/verifyAnswer/:ans_id', async(req, res)=>{
     const {ans_id} = req.params;
+    let con;
     try {
-        const con = await client.connect();
+        con = await client.connect();
         const sqlCommand = `
             UPDATE answers 
             SET ans_verified = true
-            WHERE answer_id = ${ans_id};
-        `;
+            WHERE answer_id = ${ans_id}
+            ;`;
         await con.query(sqlCommand);
-        con.release();
-        res.status(206).send('Answer is verified');
-    } catch(err) {
-        con.release();
+        io.emit('verifyAnswer',{ans_id,verified:true});
+        res.status(201).send('Answer is verified');
+    } 
+    catch(err) {
         console.log(err);
-        res.send(err);
+    }
+    finally{
+        con.release();
     }
 });
 
@@ -485,7 +484,6 @@ post.get('/getVerifiedAnswers', async(req, res)=>{
 // Fav Ques
 post.post('/addToFavQues',async(req,res)=>{
     const {s_id,q_id,username,course_id,bookMarked,list_id} = req.body;
-    console.log(req.body)
     try{
         const con = await client.connect();
         let sqlCommand;
@@ -533,10 +531,11 @@ post.delete('/deleteFromFavQues', async(req, res)=>{
 post.get('/:course_code',async(req,res,next)=>{
     // this get all of the questions related to the course code provided.
     const {course_code} = req.params;
+    let con;
     try{
         if (!CheckValueExisit('courses','course_id',course_code,client))
             return res.status(400).json({msg:"This Course dosn't exist"})
-        const con = await client.connect();
+        con = await client.connect();
         let sqlCommand = `SELECT * FROM questions as q 
                           LEFT JOIN (
                             SELECT course_name,course_id 

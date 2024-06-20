@@ -26,3 +26,28 @@
         }
     }
 }
+
+.dark{
+    .trending{
+        .trend{
+          
+            &:hover{
+                background-color: $semi-dark-blue;
+                border-radius: 15px;
+                color: $full-white;
+                .trend_title{
+                    color: $full-white;
+                }
+            }
+            .trend_title{
+                text-align: left;
+                color: $light-white;
+                font-size: 30px;
+               
+            }
+        }
+    }
+    .notexist{
+        color: $light-white;
+    }
+}

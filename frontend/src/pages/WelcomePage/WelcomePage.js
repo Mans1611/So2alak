@@ -19,12 +19,11 @@ const WelcomePage = () => {
   const navigate = useNavigate();
   const {
     dark,
-    isTeacher,
+    isTeacher,auth,
     stundetInfo,setStudentInfo,
     user_courses, setUserCourses,
     id: student_id,
   } = useContext(AppState);
-  console.log(stundetInfo);
   const [searchedCourses, setSearchedCourses] = useState([]);
   const search = useRef(""); // here i used useRef, as i don't want the comp to be updated when the input changes. 
   const [Lodaing, setLoading] = useState(false);
@@ -68,6 +67,7 @@ const WelcomePage = () => {
     try{
       if (user_courses?.length>0) {
         const status = await CourseRegister(stundetInfo,user_courses,isTeacher);
+        console.log(auth)
         if (status === 201){
           navigate('/main/feedpage');
         }

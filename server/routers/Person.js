@@ -8,6 +8,13 @@ import { sendEmail } from "../mailer/Mailer.js";
 import multer from "multer";
 const storage = multer.memoryStorage();
 const uploader = multer({storage:storage})
+import {v2 as cloudinary} from 'cloudinary';
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUDNAME,
+    api_key: process.env.CLOUDINARY_APIKEY,
+    api_secret:process.env.CLOUDINARY_APISECRET
+})
+
 
 dotenv.config();
 
@@ -32,14 +39,16 @@ person.post('/signup',async(req,res)=>{
         const hashedPass =  await bcrypt.hash(password,salt) // encrypting the password 
        if(student_department){
            sqlCommand = `INSERT INTO students (student_id,username,student_level,password,student_department,student_subDepartment) 
-           VALUES('${student_id}','${username}','${studnet_level}','${hashedPass}','${student_department}',${student_subdepartment?`'${student_subdepartment}'`:null})`;
+           VALUES('${student_id}','${username}','${studnet_level}','${hashedPass}','${student_department}',${student_subdepartment?`'${student_subdepartment}'`:null})
+           RETURNING *;`;
         }
        else{
             sqlCommand = `INSERT INTO students (student_id,username,student_level,password) 
-                        VALUES('${student_id}','${username}','${studnet_level}','${hashedPass}')`;
+                        VALUES('${student_id}','${username}','${studnet_level}','${hashedPass}') 
+                        RETURNING *;`;
         }
                         // I created person in the database.
-        await conn.query(sqlCommand);
+        const person = await conn.query(sqlCommand);
         // creating a token for the user. 
         const token = jwt.sign({
             username,
@@ -52,7 +61,8 @@ person.post('/signup',async(req,res)=>{
         //     [['${username}',username],
         //     ['${verfication_code}',1611254]])
         conn.release(); // release the connection with the database
-        return res.status(201).json({data:{},sugesstedCourses : courses,token});
+        console.log(person)
+        return res.status(201).json({data:person.rows[0],sugesstedCourses : courses,token});
     }   
     catch(err){
         console.log(err);
@@ -88,7 +98,7 @@ person.put('/defualtCourses',async(req,res)=>{
     }
 })
 person.post('/registercourse',async(req,res)=>{
-    const {student_id,username,studentCourses} = req.body // studentCourses is an array of courses that the studnet choose to follow
+    const {student_id,username,user_courses} = req.body // studentCourses is an array of courses that the studnet choose to follow
     if(!username)
         return res.status(400).json({msg : 'No provided id'})
     try{
@@ -96,11 +106,13 @@ person.post('/registercourse',async(req,res)=>{
         let sqlCommand = 
         `INSERT INTO students_courses (student_name,course_id)
          VALUES
-            ${studentCourses.map(course=> `('${username}','${course.course_id}')`)};`;
+            ${user_courses.map(course=> `('${username}','${course.course_id}')`)};`;
+           
+            
         const con = await client.connect();
         await con.query(sqlCommand);
-        if (studentCourses.length === 1 ){
-            sqlCommand = `SELECT * from courses WHERE course_id = '${studentCourses[0].course_id}'`
+        if (user_courses.length === 1 ){
+            sqlCommand = `SELECT * from courses WHERE course_id = '${user_courses[0].course_id}'`
             const {rows} = await con.query(sqlCommand)
             con.release();
             return res.status(201).json({course:rows[0]})
@@ -120,13 +132,22 @@ person.put('/editProfileImg/:student_id',uploader.single('image'),async(req,res)
         if (req.file){
             const con = await client.connect();
             const { originalname, mimetype, buffer} = req.file;
-            sqlCommand = `INSERT INTO files (filename,mimtype,data) 
-            VALUES ($1,$2,$3) RETURNING id;` 
-            const {rows} = await con.query(sqlCommand,[originalname,mimetype,buffer])
             
-            sqlCommand = `UPDATE students SET img_id = ${rows[0].id} WHERE student_id='${student_id}';`
-            await con.query(sqlCommand);
-            return res.status(201).json({msg:"Image Uploaded"})
+                const imgCloud = await cloudinary.uploader.upload_stream({
+                    folder: 'persons' // Optional: specify the folder
+                },async(err,result)=>{
+                    if(err){
+                        console.log("faild to upload image"); 
+                    }
+                    if(result.secure_url){
+                        sqlCommand = `UPDATE  students
+                                    SET img_url = '${result.secure_url}'
+                                    WHERE student_id='${student_id}';`;
+                        await con.query(sqlCommand);
+                    }
+                    res.status(201).json({'data':result.secure_url});
+                })
+                imgCloud.end(req.file.buffer);
             }else{
                 res.status(400).json({msg:"No File uploaded"});
             }

@@ -35,7 +35,12 @@ const ListsPage = () => {
        <button onClick={handleCreateList}>Create a List</button>
       </div>
        <div className="list-container">
-          {lists.map((list,key)=><List setLists={setLists} key = {key} list={list}/>)}
+          {
+            lists.length > 0?lists.map((list,key)=><List setLists={setLists} key = {key} list={list}/>):
+            <div style={{fontSize:'30px'}} className='centerChild'>
+                create a your list now.
+            </div>
+          }
        </div>
        {
         showCreateModal && 

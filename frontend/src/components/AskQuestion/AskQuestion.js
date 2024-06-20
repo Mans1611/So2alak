@@ -21,8 +21,7 @@ const AskQuestion = ({isAnswer,questionDetails}) => {
     const questionInput = useRef(null);
     const questionWrapper = useRef(null);
     
-    const {course_code} = useParams();
-
+    let {course_code} = useParams();
     const detectLang = (post)=>{
     // this to detect the first letetr of the question if its:
     // if it in english the input will be -> left to right (ltr).
@@ -34,6 +33,7 @@ const AskQuestion = ({isAnswer,questionDetails}) => {
             questionInput.current.style.direction = 'ltr'
         }
    }
+   
    const handleImageUpload = (event)=>{
     setFile(event.target.files[0]);
     if (file){
@@ -84,7 +84,7 @@ const AskQuestion = ({isAnswer,questionDetails}) => {
                 course_code
             }
         }
-        else{
+        else{  
             res = await axios.post(`${process.env.REACT_APP_API_URL}/post/createQuestion`,form,{
                "headers":{
                    'Content-Type': 'multipart/form-data',
@@ -97,8 +97,11 @@ const AskQuestion = ({isAnswer,questionDetails}) => {
             questionInput.current.innerText = 'Answer to Question';
             setPost(null);
             setImgPrev(false);
-            if(!isAnswer)
-                setQuestions(questions=>[res.data.data,...questions]);
+            console.log(course_code,res.data.data)
+            if(!isAnswer && course_code === res.data.data.course_id){
+                setQuestions(questions=>{return[res.data.data,...questions]});
+                console.log('first')
+            }
 
             if (res.data.badge){
                 setShowNotification(true)
@@ -145,8 +148,8 @@ const AskQuestion = ({isAnswer,questionDetails}) => {
                 {
                     !isAnswer && 
                     <div className="course-selection">
-                        <select defaultValue={course_code}>
-                            {user_courses.map(course=><option key={course.course_id} value={course.course_id}>{course.course_name}</option>)}
+                        <select defaultValue={'CSE471'} onChange={(e)=>{course_code = e.target.value }} >
+                            {user_courses?.map(course=><option selected = {course_code === course?.course_id}  key={course.course_id} value={course.course_id}>{course.course_name}</option>)}
                         </select>
                     </div>
                 }

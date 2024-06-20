@@ -29,25 +29,23 @@ const ListPage = () => {
     <div className='listpage'>
         <div className="flex-list">
           <h1>{listDetails.list_name}</h1>
-          <button className='pdf-btn'>
-            <PDFDownloadLink document={<QuestionsPDF questions={questions}/>} fileName='mans'
-              download={"dosn"}>
-                {({blob,url,loading,error})=>
-                  loading?'loading':'Download as PDF'
-                }
-            </PDFDownloadLink>
-            <img className='pdf-logo' src={pdf}/>
-          </button>
+            {
+              questions.length > 0 &&
+            <button className='pdf-btn'>
+              
+                    <PDFDownloadLink document={<QuestionsPDF questions={questions}/>} fileName='mans'
+                    download={"dosn"}>
+                        {({blob,url,loading,error})=>
+                          loading?'loading':'Download as PDF'
+                        }
+                    </PDFDownloadLink>
+                    <img className='pdf-logo' src={pdf}/>
+            </button>
+              }
         </div>
-        
-
         <div className="questions-list">
           {questions?.map((question,key)=><Question question={question} key={key}/>)}
         </div>
-       
-       <PDFViewer>
-          <QuestionsPDF questions={questions}/>
-       </PDFViewer>
     </div>
   )
 }

@@ -56,6 +56,7 @@ const Question = ({singleQuestion,question,setQuestion}) => {
     useEffect(()=>{
         questionText.current.innerHTML = question?.question
     },[])
+
     useEffect(()=>{
         if (socket.connected){
             socket.on('question-change',(data)=>{
@@ -125,7 +126,7 @@ const Question = ({singleQuestion,question,setQuestion}) => {
             </div>
             {/* the condition below will just render a single answer if it was in any page like 
                 - FeedPage or coursePage*/}
-            {!singleQuestion&&question?.answers?.length>0 &&<Answer answer = {question.answers[0]}/>}
+            {!singleQuestion&&question?.answers?.length>0 && <Answer answer = {question.answers[0]}/>}
             {/* for a the list page questions */}
             {singleQuestion && <AskQuestion questionDetails={question} isAnswer={true}/>}
             {/*  While if i was in the question page, i need to show all answers of the question*/}

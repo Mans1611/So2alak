@@ -6,9 +6,9 @@ CREATE TABLE IF NOT EXISTS bouns_questions(
     ON UPDATE CASCADE 
     ON DELETE SET NULL,
     teacher_id VARCHAR(90) NOT NULL 
-    REFERENCES teachers(teacher_id)
+    REFERENCES teachers(id)
     ON UPDATE CASCADE
-    ON DELETE SET NULL,
+    ON DELETE SET NULL
 
 
 );

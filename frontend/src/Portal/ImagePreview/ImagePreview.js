@@ -14,7 +14,7 @@ const ImagePreview = ({img,imgFile,setImgProfile,setProfileImage}) => {
     const [imgAfterCrop,setImgAfterCrop] = useState(null);
     
 
-    const {stundetInfo} = useContext(AppState);
+    const {stundetInfo,setStudentInfo} = useContext(AppState);
     const onCropComplete=(croppedAreaPercentage,croppedAreaPixel)=>{
         setCropArea(croppedAreaPixel);
     }
@@ -48,8 +48,9 @@ const ImagePreview = ({img,imgFile,setImgProfile,setProfileImage}) => {
                             'Content-Type': 'multipart/form-data'
                          }
                     })
+                    console.log(res)
                     if(res.status===201){
-                        console.log('uploaded');
+                        setStudentInfo(info=>{return {...info,img_url:res.data.data}})
                         setImgProfile(null);
                     }
                 }catch(err){

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import './navbar.scss';
 import logo from '../../assets/logo.png' 
 import avatar from '../../assets/avatar.png' 
@@ -30,6 +30,21 @@ const Navbar = () => {
   const handleActive=(param)=>{
     setSideBarSelected(param)
   }
+  const divRef = useRef(null);
+    const handleClickOutside = (event) => {
+        if (divRef.current && !divRef.current.contains(event.target)) {
+          setShowToggleList(false);
+        }
+    };
+    useEffect(()=>{
+        document.addEventListener('mousedown', handleClickOutside);
+    
+        return () => {
+        // Cleanup the event listener on component unmount
+        document.removeEventListener('mousedown', handleClickOutside);
+        };
+
+    })
   return (
     <div id='navbar' className={`navbar ${dark ? 'dark':''}`}>
         <div className="logo-wrapper">
@@ -43,10 +58,10 @@ const Navbar = () => {
         </div>
         <div className="avatar-wrapper">
           <h1 className="username">
-            {stundetInfo.username?stundetInfo.username:'Mans1611'}
+            {stundetInfo.username?stundetInfo.username.slice(16):'Mans1611'}
           </h1>
-          <div className="img-wrapper">
-          <img onClick = {showAvatar} src={avatar} alt="" srcSet="" />
+          <div ref={divRef} className="img-wrapper">
+          <img onClick = {showAvatar} src={stundetInfo?.img_url} alt="" srcSet="" />
             {showToggleList && 
               <ul className='toggle-list'>
                 <li><Link to={isTeacher?

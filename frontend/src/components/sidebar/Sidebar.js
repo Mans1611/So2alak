@@ -87,6 +87,7 @@ const SideBar = React.memo(() => {
       reader.readAsDataURL(file);
     
   }
+
   return (
     <div className={`sidebar ${dark?'dark':''}`}>
       <div className="sidebar-logo">
@@ -97,17 +98,15 @@ const SideBar = React.memo(() => {
               <EditIcon className='edit'/>
             </label>
             <input accept='image/*'onChange={handleImageUpload} type="file" name="" id="profile_img" />
-            <PersonIcon className='person'/>
+            {stundetInfo?.img_url ? <img className='profile-img' src={stundetInfo.img_url}/>:<PersonIcon className='person'/>}
+            
           </div>
           :
           <i className="fi fi-sr-home"></i>
         }
       </div>
-        <div className='username'>Username :</div>
       <hr/>
       {profilePage && <PersonalDetail user_id={user_id}/>}
-      
-
         <div className="side-bar-items">
           <h2 className='title'>You</h2>
           <ul className='list'>
@@ -154,10 +153,6 @@ const SideBar = React.memo(() => {
             }
             </ul>
         </div>
-        <h1>Mans</h1>
-        <h1>Mans</h1>
-        <h1>Mans</h1>
-        <h1>Mans</h1>
         {
           profileImg &&
           <Portal children={<ImagePreview setImgProfile={setImgProfile} imgFile={imgFile} setProfileImage={setImgProfile} img={profileImg}/>}/>

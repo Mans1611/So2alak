@@ -2,9 +2,8 @@ export const AggregateQuestionsAnswers = (data)=>{
     let ids =  {} // the id of each question and it corresponding index in the 
     let i = 0;
     let quest = []
-    data.forEach(({question_id,q_time,question,q_username,q_upvotes,q_verified,course_id,course_name,answer,ans_username,ans_upvotes,activity_type,ans_downvotes,ans_time,ans_verified,id,img_url,ans_img_url})=>{
-        
-        if (!ids[question_id]){ 
+    data.forEach(({question_id,q_time,question,q_username,q_upvotes,q_verified,course_id,course_name,answer,ans_username,ans_upvotes,activity_type,ans_downvotes,ans_time,ans_verified,id,img_url,answer_id,ans_img_url})=>{
+        if (ids[question_id] === undefined){ 
             if (answer == null){ // has no answer.
                 ids[question_id] = i++;
                 quest.push({
@@ -35,13 +34,15 @@ export const AggregateQuestionsAnswers = (data)=>{
                     helped : activity_type==='help',
                     id,
                     img_url,
-                    answers: [{answer,ans_img_url,ans_time,ans_username,ans_upvotes,upvoted :activity_type==='upvote',downvoted:activity_type==='downvote',ans_downvotes,ans_verified}]
+                    answers: [{answer,answer_id,ans_img_url,ans_time,ans_username,ans_upvotes,upvoted :activity_type==='upvote',downvoted:activity_type==='downvote',ans_downvotes,ans_verified}]
             })
             }
         }
         else {
-            quest[ids[question_id]]['answers'].push({answer,ans_img_url,ans_time,ans_username,ans_upvotes,upvoted :activity_type==='upvote',downvoted:activity_type==='downvote',ans_downvotes,ans_verified})
-            
+            if(answer){
+                quest[ids[question_id]]['answers'].push({answer,answer_id,ans_img_url,ans_time,ans_username,ans_upvotes,upvoted :activity_type==='upvote',downvoted:activity_type==='downvote',ans_downvotes,ans_verified})
+            }
+                
         }
     })
     return quest;

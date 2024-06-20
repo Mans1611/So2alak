@@ -9,8 +9,9 @@ import verified from '../../assets/badges/verified_ans.png';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ThumbDownOffAltOutlinedIcon from '@mui/icons-material/ThumbDownOffAltOutlined';
 import { AppState } from '../../App';
-
+import { io } from 'socket.io-client';
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
+import axios from 'axios';
 const intialState = {
     upvote:false,
     downvote:false,
@@ -41,10 +42,12 @@ const reducer = (state,{type})=>{
     }
 }
 
+const socket = io(process.env.REACT_APP_API_URL);
 const Answer = ({answer}) => {
     
     const [answerState,dispatch] = useReducer(reducer,intialState);
     const {isTeacher} = useContext(AppState); 
+    
     const handleUpVotes = (e)=>{
         e.stopPropagation();
         dispatch({type:'upvote'})
@@ -54,11 +57,27 @@ const Answer = ({answer}) => {
         dispatch({type:'downvote'})
     }
     const navToProfile = (e)=> e.stopPropagation(); 
-    const answerText = useRef(null)
+    const answerText = useRef(null);
+    const [isVerified,setIsVerified] = useState(answer.ans_verified);
+
+    
+    const handleVerify = async()=>{
+        if(isTeacher){
+            try{
+                const res = await axios.put(`${process.env.REACT_APP_API_URL}/post/verifyAnswer/${answer.answer_id}`)
+                if(res.status === 201){
+                    setIsVerified(true);
+                }
+            }catch(err){
+                console.log(err)
+        }
+        }
+    }
     if(answer.answer){
         setTimeout(()=>{
             answerText.current.innerHTML = answer.answer
         },0)
+
         return (
             <div className='answer question'>
                 <div className="question-details">
@@ -66,10 +85,10 @@ const Answer = ({answer}) => {
                 </div>
                 <div className="flex">
                     <div className="verified">
-                        {answer.ans_verified && <img className='verified_ans' src={verified}/>}
-                        {isTeacher&&
-                        <div className='verify_btn'>
-                            <DoneOutlineIcon/>
+                        { isVerified && <img className='verified_ans' src={verified}/>}
+                        {isTeacher && !isVerified  && 
+                        <div className='verified_ans '>
+                            <DoneOutlineIcon onClick={handleVerify}  className='verify_btn'/>
                         </div>}
                     </div>
                     <div className='question-wrapper'>
