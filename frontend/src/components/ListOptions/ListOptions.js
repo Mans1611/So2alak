@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import './listoptions.scss';
-import axios from 'axios';
 import { AppState } from '../../App';
 import { useFetchLists } from '../../hooks/useFetchLists';
 import { useAddToList } from '../../hooks/useAddToList';
@@ -15,7 +14,7 @@ const ListOptions = ({question}) => {
     }
   return (
     <div className='listoptions'>
-        {lists.map((list,key)=><div onClick={(e)=>{e.stopPropagation();AddToList(list.list_id)}} key={key}>{list.list_name}</div>)}
+        {lists.map((list,key)=><div className='option' onClick={(e)=>{e.stopPropagation();AddToList(list.list_id)}} key={key}>{list.list_name}</div>)}
     </div>
   )
 }

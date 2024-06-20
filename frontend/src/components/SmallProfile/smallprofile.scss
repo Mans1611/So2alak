@@ -3,31 +3,56 @@
 .small-profile{
     position: absolute;
     width: 250px;
-    height: 260px;
+    height: 300px;
     border-radius: 15px;
     background-color: #e1e1e1;
     z-index: 8;
     padding: 10px;
-    .header{
-        display: flex;
-        justify-content: start;
-        align-items: center;
-        
-        .circle{
-            width: 60px;
-            height: 60px;
-            border-radius: 30%;
-            background-color: $fully-dark-blue;
+    .circle{
+        padding: 2px;
+        flex: 3;
+        height: 65px;
+        border-radius: 50%;
+        background-color: $fully-dark-blue;
+        overflow: hidden;
+        &.laoding{
             animation: blinking 1200ms infinite forwards linear alternate;
-            
         }
-        .username{
-            text-align: center;
-            margin-left: 10px;
+        img{
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
         }
     }
+    .header{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .username{
+            flex: 7;
+            text-align: center;
+            margin-left: 10px;
+            font-size: 30px;
+            color: $semi-dark-blue;
+        }
+    }
+    .details-info{
+        margin: 10px 0;
+        display: flex;
+        flex-direction: column;
+    }
+    .badge_icon{
+        margin-top: 20px;
+        width: 50px !important;
+        height: 50px !important;
+    }
+    .badge_title{
+        display: none;
+    }
+    .laoding{
+        
+    }
 }
-
 .dark{
     .small-profile{
         background-color: $semi-dark-blue;

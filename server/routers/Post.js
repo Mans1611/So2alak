@@ -37,7 +37,6 @@ post.get('/allquestions/',async(req,res)=>{
         let sqlCommand = FilterSQLQuery(filter,student_id,student_name); // this will return the appropirate sql query. based on filter which is send
         const result = await con.query(sqlCommand);
         const data = AggregateQuestionsAnswers(result.rows);
-        //console.log(data);
         //await TrendingQueue(channel,'ProcessTrending',{data:data.map(ques=>ques.question)});
         con.release();
         
@@ -143,7 +142,6 @@ post.delete('/deleteQuestion/:q_id',async(req,res)=>{
         await con.query(sqlCommand);
         con.release();
         res.status(200).send("Deleted Question");
-        axios
     }catch(err){
         console.log(err)
         res.send(err);

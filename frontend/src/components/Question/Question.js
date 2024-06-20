@@ -21,15 +21,17 @@ import HelpCircle from './HelpCircle';
 const socket = io(process.env.REACT_APP_API_URL);
 
 const Question = ({singleQuestion,question,setQuestion}) => {
-    // states:
+    const nav = useNavigate();
+    
     const {dark,stundetInfo} = useContext(AppState);
     
+    // states:
     const [showQuesOptions,setShowQuesOptions] = useState(false);
     const [bookMarked,setBookMarked] = useState(false);
     const [showlists,setShowLists] = useState(false) 
     const [showQuestionModal,setShowQuestionModal] = useState(false);
-    const nav = useNavigate();
     
+    const [deletedQuestion,setDeletedQuestion] = useState(false)
     // refs
     const circle = useRef(null);
     const questionContent = useRef(null);
@@ -91,6 +93,15 @@ const Question = ({singleQuestion,question,setQuestion}) => {
             navbar.style.zIndex = 10;
         }
     },[showQuestionModal]);
+    if(deletedQuestion){
+        return (<div className='question'>
+            <div className="flex">
+            <div className='question-wrapper deleted'>
+                This Question os Deleted
+            </div>
+            </div>
+        </div>)
+    }
   return (
     <>
         <div onClick={showFullQuestion} className={`question ${dark && 'dark'}`}>
@@ -113,7 +124,9 @@ const Question = ({singleQuestion,question,setQuestion}) => {
                             <PlaylistAddIcon onClick={showListsModal} style={{fontSize:'30px'}} className='post-icons'/>
                             {
                                 showlists&&
-                                <ListOptions question={question}/>
+                                <ListOptions 
+                                     
+                                    question={question}/>
                             }
                         </div>
                         <ShareIcon className='post-icons'/>
@@ -121,7 +134,9 @@ const Question = ({singleQuestion,question,setQuestion}) => {
                 </div>
                 <div className="options">
                     <MoreVertIcon onClick = {handleQuestionOptions} className='options'/> 
-                    {showQuesOptions &&  <PostOptions/>}
+                    {showQuesOptions &&  <PostOptions 
+                                question= {question}
+                                setDeletedQuestion={setDeletedQuestion}/>}
                 </div>
             </div>
             {/* the condition below will just render a single answer if it was in any page like 

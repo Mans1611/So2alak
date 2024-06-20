@@ -22,7 +22,7 @@ const Badges = () => {
   return (
     <div className='badges'>
         <div className="badges_in">
-        {badges?.map((badge,key)=>{
+        {badges?.map((badge)=>{
             return AllBadges.find(Allbadge=> Allbadge.badge_name === badge.badge_name)
         }).map((badge,key)=><Badge key={key} badge={badge}/>)}
         </div>

@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 import './searchitems.scss'
 import avatar from '../../assets/avatar.png' 
+import Person from '@mui/icons-material/Person';
 const SearchItems = ({setShowSearch,title,items}) => {
   if (title === 'Students')
     return (
@@ -12,7 +13,11 @@ const SearchItems = ({setShowSearch,title,items}) => {
                  <li onClick={()=>setShowSearch(false)} key={key} className='search-li'>
                 <Link to = {`/main/profile/${item.username}`}>
                       <div className="flex">
-                        <img src={avatar} alt="" srcset="" />
+                        {
+                          item.img_url?
+                          <img src={item.img_url} alt={item.username} srcset="" />:
+                          <Person/>
+                        }
                         <div className="main-username">{item.username?.slice(0,20)}</div>
                       </div>
                 </Link>

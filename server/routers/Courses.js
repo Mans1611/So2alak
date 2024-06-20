@@ -71,7 +71,6 @@ course.get('/getimage',async(req,res)=>{
 
 course.get('/course_details/:course_id',async(req,res,next)=>{
     const {course_id} = req.params;
-    console.log(course_id)
     try{
         let sqlCommand = null;
         let result = {}

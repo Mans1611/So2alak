@@ -125,6 +125,29 @@ person.post('/registercourse',async(req,res)=>{
     }
 
 })
+person.get('/smallprofile/:username',async(req,res)=>{
+    const {username} = req.params;
+    let con;
+    let data = {};
+    try{
+        con = await client.connect()
+        let sqlCommand = `SELECT * from students WHERE username='${username}';`;
+        let result = await con.query(sqlCommand);
+        data = result.rows[0];
+        if(result.rows.length == 0 )
+            return res.status(404).json({msg:"Not Found"})
+        delete data.password;
+        sqlCommand = `SELECT * FROM earned_badges
+        WHERE student_id = '${data.student_id}';`
+        result = await con.query(sqlCommand);
+        data = {...data,badges:{...result.rows[0]}};
+        return res.status(200).json(data);
+    }catch(err){
+        console.log(err);
+    }finally{
+        con.release();
+    }
+})
 person.put('/editProfileImg/:student_id',uploader.single('image'),async(req,res)=>{
     const {student_id} = req.params;
     try{
@@ -210,7 +233,6 @@ person.get('/personalInfo/:student_name',async(req,res)=>{
         
         data = {...data.data,...result.rows[0]}
         con.release()
-        console.log(data)
         return res.status(200).json({...data})
     }catch(err){
 
@@ -218,7 +240,6 @@ person.get('/personalInfo/:student_name',async(req,res)=>{
 })
 person.get('/get_activity_log/:student_id',async(req,res)=>{
     const {student_id} = req.params;
-    console.log(student_id)
     try{
         const con = await client.connect();
         let sqlCommand = `SELECT student_id , TO_CHAR(DATE(activity_time),'DD-MM-YYYY') AS date 
@@ -240,7 +261,6 @@ person.get('/leaderboard',async(req,res)=>{
     const con = await client.connect();
     try{
         if (course_id == 'undefined' || course_id === 'General'){
-            console.log(course_id)
             let sqlCommand = `SELECT * FROM students WHERE student_level = '${level}' ORDER BY points DESC LIMIT 10`
             const {rows} = await con.query(sqlCommand);
             res.status(200).json({data:rows})
@@ -275,7 +295,6 @@ person.get('/getStudnetPersonalDetails/:student_id',async(req,res)=>{
          students) AS ranked
          WHERE ranked.student_id = '${student_id}';`
          const {rows} = await con.query(sqlCommand) 
-         console.log(student_id)
          sqlCommand = `
          SELECT * FROM (SELECT
              *,

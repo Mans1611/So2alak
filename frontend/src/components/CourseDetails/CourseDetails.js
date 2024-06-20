@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
-import avatar from '../../assets/avatar.png' 
+import course from '../../assets/course.png' 
 import './course_details.scss'
 import { AppState } from '../../App'
 import { Link, useParams } from 'react-router-dom'
@@ -54,7 +54,7 @@ const CourseDetails = ({setTop}) => {
               }
             <div className="flex">
                 <div className="courselogo">
-                    <img src={avatar} alt="" srcSet="" />
+                    <img src={courseDetails.img_url ? courseDetails.img_url:course} alt="" srcSet="" />
                   <h1 className='title'>{courseDetails?.course_name}</h1>
                 </div>
                 <h2 className='title code'>#{courseDetails?.course_id}</h2>

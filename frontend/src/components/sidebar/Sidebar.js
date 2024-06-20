@@ -21,7 +21,8 @@ const SideBar = React.memo(() => {
   const link = window.location.href;
   const {user_id} = useParams();
   const [profilePage,setProfilePage] = useState(false);
-  
+  const [courseImg,setCourseImg] = useState({show:false,img_url:null});
+  const {course_code} = useParams();
   useEffect(()=>{
     const fetchCourses = async ()=>{
       setLoading(true);
@@ -42,8 +43,14 @@ const SideBar = React.memo(() => {
       if(user_courses.length===0)
         fetchCourses();
     }
+    const selected = user_courses.find((course)=> course.course_id === course_code)
+    if(selected){
+      setCourseImg({show:true,img_url:selected.img_url})
+    }else{
+      setCourseImg({show:false,img_url:null})
+    }
   },[link]);
-
+  //console.log(user_courses)
   const handleActive=(selected)=>{
       setSideBarSelected(selected)
   }
@@ -85,8 +92,8 @@ const SideBar = React.memo(() => {
     }
     if(file)
       reader.readAsDataURL(file);
-    
   }
+  
 
   return (
     <div className={`sidebar ${dark?'dark':''}`}>
@@ -102,7 +109,11 @@ const SideBar = React.memo(() => {
             
           </div>
           :
+          courseImg.show?
+          <img  src={courseImg.img_url}/>
+          :
           <i className="fi fi-sr-home"></i>
+          
         }
       </div>
       <hr/>

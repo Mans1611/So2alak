@@ -7,6 +7,7 @@ import { AppState } from '../../App';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import Search from '../Search/Search';
+import Person from '@mui/icons-material/Person';
 
 const Navbar = () => {
   // states
@@ -58,10 +59,15 @@ const Navbar = () => {
         </div>
         <div className="avatar-wrapper">
           <h1 className="username">
-            {stundetInfo.username?stundetInfo.username.slice(16):'Mans1611'}
+            {stundetInfo.username?stundetInfo.username.slice(0,16):'Mans1611'}
           </h1>
-          <div ref={divRef} className="img-wrapper">
-          <img onClick = {showAvatar} src={stundetInfo?.img_url} alt="" srcSet="" />
+          <div onClick = {showAvatar} ref={divRef} className="img-wrapper">
+            {
+              stundetInfo.img_url?
+              <img  src={stundetInfo?.img_url} alt="" srcSet="" />
+              :
+              <Person style={{width:'40px',cursor:'pointer',height:'40px'}}/>
+            }
             {showToggleList && 
               <ul className='toggle-list'>
                 <li><Link to={isTeacher?

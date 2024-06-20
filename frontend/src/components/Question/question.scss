@@ -70,6 +70,11 @@
     display: flex;
     .question-wrapper{
         flex: 10;
+        &.deleted{
+            background-color: $light-white;
+            border-radius: 10px;
+            padding: 10px;
+        }
             .question-content{
                 padding: 0px 0 20px;
                 background-color: $light-white ;
@@ -92,7 +97,7 @@
                    
                 }
         }
-        div{
+        &>div{
             margin-top: 5px;
             margin-left: 10px;
             &.downQuestion{
@@ -161,6 +166,11 @@
         }
         .flex{
             .question-wrapper{
+                &.deleted{
+                    background-color: $semi-dark-blue;
+                    color: #f0f0f0;
+                    
+                }
                 .question-content{
                     background-color: $semi-dark-blue ;
                     p{
