@@ -59,7 +59,7 @@ function App() {
             </Route>
 
 
-            <Route path="/landing" element={<Landing />} />
+            <Route path="/" element={<Landing />} />
 
             <Route path="/about" element={<About />} />
 
