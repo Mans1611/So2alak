@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
-import MainView from "../../components/LandingViews/MainView/MainView";
+import { Link } from "react-router-dom";
+import { HashLink } from 'react-router-hash-link';
+
 import "./landing.scss";
+
+import MainView from "../../components/LandingViews/MainView/MainView";
+/*
 import BadgesView from "./../../components/LandingViews/BadgesView/BadgesView";
 import QuestionsView from "./../../components/LandingViews/QuestionsView/QuestionsView";
 import StatisticsView from "./../../components/LandingViews/StatisticsView/StatisticsView";
 
 
-import Slideshow from "./../../components/Slideshow/Slideshow";
-import SlideComponent from "../../components/LandingViews/SlideComponent/SlideComponent";
+
 
 import answers from "../../assets/landing/answers.svg";
 import inquiries from "../../assets/landing/inquiries.svg";
@@ -15,22 +19,29 @@ import suggestions from "../../assets/landing/suggestions.svg";
 
 import QandA from "../../assets/landing/QandA.png";
 import courses from "../../assets/landing/courses.png";
-import students from "../../assets/landing/students.png";
+*/
 
-import AOS from "aos";
-import "aos/dist/aos.css";
+
+//import AOS from "aos";
+//import "aos/dist/aos.css";
+
+import logo from "../../assets/logo.png";
+import menu from "../../assets/landing/menu.svg";
+import close from "../../assets/landing/close.svg";
+import StatisticsView from "../../components/LandingViews/StatisticsView/StatisticsView";
+import FeaturesView from "../../components/LandingViews/FeaturesView/FeaturesView";
 
 const Landing = () => {
 
-  useEffect(() => {
-    AOS.init({ duration: 1000 });
-  }, []);
+  /*useEffect(() => {
+    AOS.init({ duration: 1000 }); 
+  }, []);*/
 
   const [device, setDevice] = useState(false);
 
   const detectDevice = () => {
     let deviceType = device;
-    if (window.innerWidth < 480) deviceType = true;
+    if (window.innerWidth < 600) deviceType = true;
     else deviceType = false;
     setDevice(deviceType);
   }
@@ -54,26 +65,61 @@ const Landing = () => {
     });
   }
 
+
+  const [img, setImg] = React.useState("close");
+
   return (
     <div className="landing-container" onLoad={detectDevice}>
-
       <div className="scroll-bar"></div>
+      <nav className="navBar">
+        <div className="phone-nav">
+          <img src={logo} alt="logo" />
+          <img onClick={() => { img === "close" ? setImg("open") : setImg("close") }} src={img === "close" ? menu : close} alt="menu" />
+        </div>
+        <ul className={`ul ulLeft ${img === "close" ? "" : "ulLeft-open"}`}>
+          <li>
+            <HashLink smooth to='/landing/#section1' className="link landing-link">
+              Features
+            </HashLink>
+          </li>
+          <li>
+            <HashLink smooth to='/landing/#section2' className="link landing-link">
+              Statistics
+            </HashLink>
+          </li>
+          <li>
+            <HashLink smooth to='/landing/#section3' className="link landing-link">
+              Badges
+            </HashLink>
+          </li>
+        </ul>
+        <ul className="ul ulRight">
+          <li>
+            <Link className="link sign-link" to="/signin">
+              LOGIN
+            </Link>
+          </li>
+          <li>
+            <Link className="link sign-link" to="/signup">
+              SIGNUP
+            </Link>
+          </li>
+        </ul>
+      </nav>
+      <div className={`go-top ${showTopBtn ? "visable" : ""}`} onClick={goTop}>&uarr;</div>
 
       <MainView />
-      {device ? <Slideshow comps={[
-        <SlideComponent title="Answers" img={answers} description="The students can share a videos or articles’ link to the student, and
-                it will be in the suggestion section for the question."/>,
-        <SlideComponent title="Inquiries" img={inquiries} description="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto
-                quibusdam et expedita placeat. Iusto voluptate quisquam facilis
-                debitis! Sint facilis iste cum soluta optio dolor."/>,
-        <SlideComponent title="Suggestions" img={suggestions} description="The students can share a videos or articles’ link to the student, and
-                it will be in the suggestion section for the question."/>]} /> : <QuestionsView />}
-      <BadgesView />
-      {device ? <Slideshow comps={[
-        <SlideComponent title="" img={students} description={<p>Join more than <p className="statistics-no"> +10000 </p> Students.</p>} />,
-        <SlideComponent title="" img={QandA} description={<p>More than <p className="statistics-no"> +1000 </p> question with <span> verified answers</span>.</p>} />,
-        <SlideComponent title="" img={courses} description={<p>Get trusted information in <p className="statistics-no"> 170 </p> courses.</p>} />]} /> : <StatisticsView />}
-      {showTopBtn && <div className="go-top" onClick={goTop}>&uarr;</div>}
+
+      <div id="section1">
+        <FeaturesView />
+      </div>
+
+      <div id="section2">
+        <StatisticsView />
+      </div>
+
+
+
     </div>
   );
 };

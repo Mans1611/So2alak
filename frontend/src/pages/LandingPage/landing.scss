@@ -1,9 +1,8 @@
-$color_1: #999;
-$color_2: white;
-$background-color_1: #f5f5f5;
+$landing_color_1: #999;
+$landing_color_2: white;
+$landing_background-color: #f5f5f5; 
 
-/*  Scrollbar  */
-/* =========================== Phone =========================== */
+
 .landing-container {
 	width: 100%;
 	height: 100vh;
@@ -14,9 +13,9 @@ $background-color_1: #f5f5f5;
 	.scroll-bar {
 		position: fixed;
 		top: 0;
-		z-index: 999;
+		z-index: 9999;
 		height: 10px;
-		background-color: $color_2;
+		background-color: #082233;
 
 		animation: scrolling linear both;
 		animation-timeline: scroll();
@@ -24,23 +23,91 @@ $background-color_1: #f5f5f5;
 
 	.go-top {
 		position: fixed;
-		bottom: 0px;
-		right: 0px;
 		z-index: 99;
+		bottom: 15px;
+		right: -75px;
 		font-size: 50px;
-		color: $color_1;
+		color: $landing_color_1;
 		cursor: pointer;
-		padding: 15px 25px;
+		padding: 10px 20px;
+		border-radius: 10px;
+
+		transition: right 0.25s ease-in-out;
+
+		&.visable {
+			right: 15px;
+			animation: jump_shake 2s linear infinite;
+		}
 
 		&:hover {
-			color: $color_2;
+			color: $landing_color_2;
+			animation: none;
+
+			background-color: #082233;
+		}
+	}
+
+	.navBar {
+		position: fixed;
+		height: 15vh;
+		width: 100%;
+		z-index: 99;
+		backdrop-filter: blur(3px);
+
+		display: flex;
+		align-items: center;
+
+		.phone-nav {
+			display: none;
+		}
+
+		.ul {
+			display: flex;
+			align-items: center;
+			justify-content: space-evenly;
+
+			li {
+				list-style: none;
+				text-align: center;
+				border-radius: 10px;
+
+				.link {
+					text-decoration: none;
+					display: inline-block;
+					padding: 10px 0;
+					width: 150px;
+				}
+			}
+		}
+
+		.ulLeft {
+			width: 60%;
+
+			li {
+				background-color: #8DEAFF;
+				
+				.link {
+					color: black;
+				}
+			}
+		}
+
+		.ulRight {
+			width: 40%;
+
+			li {
+				background-color: #082233;
+				.link {
+					color: white;
+				}
+			}
 		}
 	}
 }
 
 ::-webkit-scrollbar {
 	width: 20px;
-	background-color: $background-color_1;
+	background-color: $landing_background-color;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -49,7 +116,7 @@ $background-color_1: #f5f5f5;
 	box-shadow: inset 0 0 1px 1px #5c6670;
 
 	&:hover {
-		background: linear-gradient(to left, #8391a6, #536175);
+		background-image: linear-gradient(to left, #8391a6, #536175);
 	}
 }
 
@@ -58,10 +125,71 @@ $background-color_1: #f5f5f5;
 	background: #eee;
 	box-shadow: 0 0 1px 1px #bbb, inset 0 0 7px rgba(0, 0, 0, 0.3);
 }
-
-@media screen and (max-width: 480px) {
+/* =========================== Phone =========================== */
+@media screen and (max-width: 600px) {
 	.landing-container {
-		background-position: right;
+		.navBar {
+			position: static;
+			height: 10vh;
+			backdrop-filter: none;
+			z-index: 999;
+
+			.phone-nav {
+				display: block;
+				position: fixed;
+				top: 0;
+				width: 100%;
+				height: 10vh;
+				padding: 0 10px;
+				backdrop-filter: blur(3px);
+				z-index: 999;
+
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+
+				img {
+					height: 100%;
+					z-index: inherit;
+				}
+
+				img:nth-child(2) {
+					cursor: pointer;
+				}
+			}
+			.ulLeft {
+				width: 100%;
+				opacity: 0;
+				position: fixed;
+				top: 10vh;
+				flex-flow: column;
+				left: 101%;
+				transition: 0.5s;
+				z-index: 999;
+
+				li {
+					width: 100%;
+					position: relative;
+					border-radius: 0;
+					margin-top: 5px;
+					.link {
+						height: 100%;
+						width: 100%;
+					}
+				}
+			}
+			.ulLeft-open {
+				left: 0;
+				opacity: 100%;
+			}
+			.ulRight {
+				position: fixed;
+				bottom: 0;
+				width: 100%;
+				padding-bottom: 5vh;
+				z-index: 99;
+			}
+		}
 	}
 }
 
@@ -76,3 +204,14 @@ $background-color_1: #f5f5f5;
 		width: 100%;
 	}
 }
+
+@keyframes jump_shake {
+	0% { transform: translateX(0) }
+	25% { transform: translateY(-9px) }
+	35% { transform: translateY(-9px) rotate(17deg) }
+	45% { transform: translateY(-9px) rotate(-17deg) }
+	55% { transform: translateY(-9px) rotate(17deg) }
+	65% { transform: translateY(-9px) rotate(-17deg) }
+	85% { transform: translateY(0px) rotate(0) }
+	100% { transform: translateY(0) rotate(0) }
+  }

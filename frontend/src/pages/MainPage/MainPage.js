@@ -4,7 +4,7 @@ import SideBar from '../../components/sidebar/Sidebar.js';
 import HeartComponent from '../../components/HeartComponent/HeartComponent';
 import ThirdPart from '../../components/ThirdPart/ThirdPart';
 import { Outlet } from 'react-router-dom';
-import Navbar from '../../components/Navbar/Navbar';
+import Navbar from '../../components/Navbar/Navbar'; 
 
 const MainPage = () => {
   
