@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<head>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        .logo-wrapper{
+            background-color: #082233;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+        .logo{
+            width: 300px;
+        }
+        .welcome{
+            font-size: 30px;
+            padding: 5px;
+        }
+        .body{
+            padding: 10px;
+        }
+        .username{
+            font-size: 1.1em;
+            text-decoration: underline;
+        }
+        .para{
+            
+            font-size: 22px;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-wrapper">
+        <img class='logo'src="${img}" alt="" srcset="">
+    </div>
+    <div class="body">
+        <h1 class="welcome">
+            Hello <strong class="username">${username}</strong>
+        </h1>
+        <p class="para">We and the developers team are glad that we have a new user in our platform</p>
+        <h2>You Verification code is <strong class="username">${verfication_code}</strong></h2>
+    </div>
+</body>

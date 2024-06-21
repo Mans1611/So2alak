@@ -454,8 +454,7 @@ const dummySet = new Set([
     'don\'t', 'you\'re','every','like',
     'isn\'t','what','your','you\'ve','towards','holds','it\'s','into','how',
     'lies','up','down','then','these','beyond','behind','being','across','able','upon','still','overall','usually','so','might','together','other','between','may'
-  ]
-  )
+  ])
   
 function tokenize(text) {
     text =text.toLowerCase().split(/[^a-z_]+/).filter(Boolean);
