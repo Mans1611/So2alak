@@ -6,12 +6,12 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { AppState } from "../../App";
 
 const CourseCard = ({ course }) => {
-  const { dark, user_courses, setUserCourses,isTeacher } = useContext(AppState);
+  const { dark, studentCourses, setStuCourses } = useContext(AppState);
 
   const addCourse = () => {
-    if (user_courses.some((Course) => Course.course_id === course.course_id))
+    if (studentCourses.some((Course) => Course.course_id === course.course_id))
       return;
-      setUserCourses((courses) => [...courses, course]);
+    setStuCourses((courses) => [...courses, course]);
   };
   let img = null;
   if (course.course_logo){
@@ -26,7 +26,7 @@ const CourseCard = ({ course }) => {
         <h5 className="course-code">{course?.course_id}</h5>
       </div>
       <button onClick={addCourse} className="folw-btn">
-        {isTeacher?'Teach': 'Follow'}
+        Follow
       </button>
     </div>
   );
@@ -52,12 +52,11 @@ export const LoadingCard = () => {
   );
 };
 
-export const DefaultCourse = ({ course, setUserCourses }) => {
+export const DefaultCourse = ({ course, setStuCourses }) => {
   let img = null;
   if (course.course_logo){
     img = `data:${course.mimtype};base64,${course.data}`
   }
-  const {isTeacher} = useContext(AppState);
   return (
     <div className="default course-card">
       <div className="course-details">
@@ -71,13 +70,13 @@ export const DefaultCourse = ({ course, setUserCourses }) => {
       </div>
       <button
         onClick={() =>
-          setUserCourses((courses) =>
+          setStuCourses((courses) =>
             courses.filter((Course) => Course.course_id !== course.course_id)
           )
         }
         className="folw-btn followed-btn"
       >
-        {isTeacher?'Teached':'Followed'}
+        Followed
         <CheckCircleOutlineIcon style={{ marginLeft: "5px" }} />
       </button>
     </div>

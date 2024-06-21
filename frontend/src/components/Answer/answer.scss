@@ -1,34 +1,6 @@
 @import './../../mainStyle.scss';
 @import './../../.mainStyle.scss';
 .answer{
-    margin-left: 100px;
 
-    .help-counts{
-        font-size: 20px !important;
-    }
-    .question-details{
-        margin: 0 !important;
-    }
-    .verified_ans{
-        width: 40px !important;
-        height: 40px !important;
-        margin-top: 15px;
-        .verify_btn{
-            margin: auto;
-            
-                width: 30px;
-                height: 40px;
-                
-            }
-    }
-    .circle{
-        width: 40px !important;
-        width: 40px !important;
-        svg{
-            width: 40px;
-            height: 40px;
-            font-weight: 600;
-        }
-    }
-   
+    
 }

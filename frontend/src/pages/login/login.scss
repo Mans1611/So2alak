@@ -1,15 +1,15 @@
-$color_1: #0c2c43;
-$color_2: #0c2c4399;
-$color_3: red;
-$color_4: #fffffe;
-$color_5: #e7e7e7;
-$color_6: #fffffe99;
-$background-color_1: white;
-$background-color_2: black;
-$background-color_3: rgba(141, 234, 255, 0.4);
-$background-color_4: #0c2c43;
-$background-color_5: #007a9f;
-$background-color_6: rgba(141, 234, 255, 0.15);
+$login_color_1: #0c2c43;
+$login_color_2: #0c2c4399;
+$login_color_3: red;
+$login_color_4: #fffffe;
+$login_color_5: #e7e7e7;
+$login_color_6: #fffffe99;
+$login_background-color_1: white;
+$login_background-color_2: black;
+$login_background-color_3: rgba(141, 234, 255, 0.4);
+$login_background-color_4: #0c2c43;
+$login_background-color_5: #007a9f;
+$login_background-color_6: rgba(141, 234, 255, 0.15);
 
 .login-container {
   width: 100%;
@@ -26,7 +26,7 @@ $background-color_6: rgba(141, 234, 255, 0.15);
     left: 25px;
     width: 50px;
     height: 50px;
-    background-color: $background-color_1;
+    background-color: $login_background-color_1;
     border-radius: 50%;
     box-shadow: 0 2px 5px #000;
     display: flex;
@@ -40,7 +40,7 @@ $background-color_6: rgba(141, 234, 255, 0.15);
       position: absolute;
       width: 35px;
       height: 35px;
-      background-color: $background-color_2;
+      background-color: $login_background-color_2;
       border-radius: 50%;
       transition: 0.5;
     }
@@ -50,7 +50,7 @@ $background-color_6: rgba(141, 234, 255, 0.15);
       position: absolute;
       width: 35px;
       height: 35px;
-      background-color: $background-color_2;
+      background-color: $login_background-color_2;
       border-radius: 50%;
       width: 25px;
       height: 25px;
@@ -67,13 +67,13 @@ $background-color_6: rgba(141, 234, 255, 0.15);
     flex-flow: column;
 
     .signin-label {
-      color: $color_1;
+      color: $login_color_1;
       font-size: 64px;
       user-select: none;
     }
 
     .caption {
-      color: $color_1;
+      color: $login_color_1;
       margin-bottom: 20px;
       user-select: none;
     }
@@ -81,8 +81,8 @@ $background-color_6: rgba(141, 234, 255, 0.15);
     .signin-input-container {
       position: relative;
       .signin-input {
-        background-color: $background-color_3;
-        color: $color_1;
+        background-color: $login_background-color_3;
+        color: $login_color_1;
         width: 300px;
         height: 45px;
         line-height: 45px;
@@ -94,7 +94,7 @@ $background-color_6: rgba(141, 234, 255, 0.15);
         margin-bottom: 30px;
 
         &::placeholder {
-          color: $color_2;
+          color: $login_color_2;
           opacity: 1;
         }
       }
@@ -123,18 +123,18 @@ $background-color_6: rgba(141, 234, 255, 0.15);
         font-size: 12px;
         overflow: hidden;
         text-align: left;
-        color: $color_3;
+        color: $login_color_3;
         user-select: none;
       }
     }
 
     .signin-btn {
-      background-color: $background-color_4;
+      background-color: $login_background-color_4;
       text-align: center;
       width: 300px;
       height: 45px;
       line-height: 45px;
-      color: $color_4;
+      color: $login_color_4;
       font-size: 16px;
       font-weight: bolder;
       border-radius: 10px;
@@ -162,13 +162,13 @@ $background-color_6: rgba(141, 234, 255, 0.15);
         content: "@eng.asu.edu.eg";
         position: absolute;
         right: 0;
-        background-color: $background-color_4;
+        background-color: $login_background-color_4;
         border-radius: 0 10px 10px 0;
         font-size: 20px;
         height: 45px;
         width: 60%;
         line-height: 45px;
-        color: $color_5;
+        color: $login_color_5;
       }
     }
   }
@@ -189,27 +189,27 @@ $background-color_6: rgba(141, 234, 255, 0.15);
 
   .signin-form {
     .signin-label {
-      color: $color_4;
+      color: $login_color_4;
     }
     .caption {
-      color: $color_4;
+      color: $login_color_4;
     }
 
     .signin-btn {
-      background-color: $background-color_5;
+      background-color: $login_background-color_5;
     }
 
     .signin-input-container {
       .signin-input {
-        background-color: $background-color_6;
-        color: $color_4;
+        background-color: $login_background-color_6;
+        color: $login_color_4;
 
         &:focus {
           outline: none;
         }
 
         &::placeholder {
-          color: $color_6;
+          color: $login_color_6;
         }
       }
       .eye {
@@ -226,7 +226,7 @@ $background-color_6: rgba(141, 234, 255, 0.15);
 
     .identifier {
       &::before {
-        background-color: $background-color_5;
+        background-color: $login_background-color_5;
       }
     }
   }
@@ -240,7 +240,7 @@ $background-color_6: rgba(141, 234, 255, 0.15);
 
 /* =========================== Phone =========================== */
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 600px) {
   .login-container {
     flex-flow: column;
     justify-content: space-around;
@@ -249,7 +249,7 @@ $background-color_6: rgba(141, 234, 255, 0.15);
       text-align: center;
 
       .signin-logo-img {
-        width: 80%;
+        width: 60%;
       }
     }
     .signin-form {

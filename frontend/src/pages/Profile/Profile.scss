@@ -1,36 +1,69 @@
 @import '../../mainStyle.scss';
 
+// دي انا عاملها في الملف الرئيسي فملهاش لزمه 
+// زود الفونت سايز بتاع حاجات زي الاسئلة اللي اتجاوبت و زود الفونت وايت بتاعها بحيث انها يكون شكلها جذاب و كانها معلومه رئيسيه
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+// دي بتسمع في الفايلات كلها مش بس البروفايل 
+::selection {
+    color: white;
+    background-color: #0c2c43;
+}
+
 .profile_container {
+    height: 100vh;
+    display: flex;
     flex-direction: column;
-    padding-left: 250px;
-    flex: 10;
-    width: 100%;
+    .nav_bar {
+        border: 2px solid #f0f0f0;
+        @include centerChild;
+        flex: 1;
+        box-shadow: 2px 0px 4px #888888;
+    }
+    
     .content {
-        min-height: 92vh;
+        flex: 11;
+        display: flex;
+        // شيل دي عشان عندي السايد بار
+        .side_bar {
+            border: 2px solid #f0f0f0;
+            box-shadow: 0px 2px 4px #888888;
+            flex: 2;
+            @include centerChild;
+            background-color: #f0f0f0;
+        }
+        
         .info {
-            min-height: fit-content;
-            .preUpper {
-                display: none;
-            }
+            flex: 10; // ودي كمان 
+            flex-direction: column;
+            display: flex;
+
             .upper {
                 color: #0c2c43;
                 @include centerChild;
-                justify-content: space-around;
-                padding-top: 20px;
-                align-items: center;
-                font-size: 28px;
+                flex: 6;
+                font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+                font-size: 1.3em;
                 font-weight: 600;
+
                 .score {
+                    flex: 6;
                     @include centerChild;
-                    flex: 5;
+                    height: 100%;
+
                     .score_in {
-                        width: 80%;
-                        height: fit-content;
-                        padding: 20px;
+                        box-shadow: 2px 2px 4px #888888;
+                        height: 40%;
                         background-color: #f0f0f0;
+                        width: 80%;
                         @include centerChild;
                         gap: 50px;
                         border-radius: 10px;
+
                         .achieved {
                             @include centerChild;
                             flex-direction: column;
@@ -38,55 +71,69 @@
                         }
                     }
                 }
+
+                .badges {
+                    flex: 6;
+                    @include centerChild;
+                    height: 100%;
                     
+                    .badges_in {
+                        box-shadow: 2px 2px 4px #888888;
+                        height: 60%;
+                        width: 80%;
+                        background-color: #f0f0f0;
+                        @include centerChild;
+                        border-radius: 10px;
+                    }
                 }
+            }
 
             .lower {
+                flex: 6;
                 @include centerChild;
                 align-items: flex-start;
+
                 .lower_in{
+                    width: 90%;
                     @include centerChild;
                     align-items: flex-start;
                     flex-direction: column;
-                    margin-top: 30px;
+                    gap: 30px;
+
                     h1 {
+                        // شيل اي فونت فاميلي عشان فيه فونت رئيسي جبته من على جوجل 
+                        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; 
                         color: #0c2c43;
                         font-size: 2.3em;
-                        margin-bottom: 10px;
                     }
-                    padding: 10px;
+    
                     .calendar {
                         width: 100%;
                         @include centerChild;
-                        justify-content: flex-start;
-                        flex-wrap: nowrap;
-                        gap: 10px;
-                        overflow: scroll;
-                        &::-webkit-scrollbar {
-                            height: 0;
-                        }
-                        background-color: #f0f0f0;
-                        padding: 5px;
-                        border-radius: 5px;
+                        gap: 20px;
+    
                         .month {
-                            min-width: 75px;
+                            flex: 1;
                             @include centerChild;
                             flex-direction: column;
-                            gap: 1px;
+                            gap: 10px;
+                            
                             .cells {
-                                display: grid;
-                                grid-template-rows: repeat(7,12px);
-                                grid-template-columns: repeat(6,12px);
+                                @include centerChild;
                                 flex-wrap: wrap;
+                                gap: 10px;
+
                                 .cell {
                                     width: 10px;
                                     height: 10px;
-                                    margin: auto;
                                     border-radius: 2px;
-                                    background-color: #b9b9b9;
-                                    cursor: pointer;
+
                                     &.active {
                                         background-color: #28c244;
+                                    }
+
+                                    &.passive {
+                                        background-color: #d9d9d9;
                                     }
                                 }
                             }
@@ -95,6 +142,7 @@
                                 color: #0c2c43;
                                 font-size: 1.4em;
                                 font-weight: 600;
+                                font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
                             }
                         }
                     }
@@ -102,150 +150,4 @@
             }
         }
     }
-
-    &.dark{
-        background-color: #041622;
-        .content{
-            .info{
-                .upper{
-                    color: #8deaff;
-                    .badges_in, .score_in {
-                        background-color: #082233;
-                        box-shadow: 1px 1px 4px #217487;
-                    }
-                }
-                .lower{
-                    background-color: #041622;
-                    .lower_in{
-                        h1{
-                            color: #8deaff;
-                        }
-                        .calendar{
-                            background-color: $semi-dark-blue;
-                        
-                            .month_name{
-                                color: #8deaff;
-                            }
-                            .month{
-                                .cells{
-                                    .cell{
-                                        background-color: $fully-dark-blue;
-                                        &.active {
-                                            background-color: #28c244;
-                                        }
-                                    
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-@media (max-width: 1023px) {
-    .profile_container {
-
-        .content{
-
-            .side_bar{
-                display: none;
-            }
-
-            .info{
-                width: 100%;
-                .preUpper {
-                    align-self: flex-start;
-                    margin: 30px 0 0 5%;
-                    @include centerChild;
-                    gap: 50px;
-
-                    p{
-                        font-size: 1.8em;
-                        font-weight: 600;
-                        color: #0c2c43;
-                    }
-
-                    p:nth-of-type(2){
-                        font-size: 1em;
-                        font-weight: 300;
-                    }
-
-                    img {
-                        width: 90px;
-                        height: 90px;
-                    }
-                }
-
-                .upper{
-                    flex: none;
-                    margin: 30px 0 30px 5%;
-                    gap: 30px;
-                    font-size: 1.1em;
-                    flex-direction: column;
-                    align-items: flex-start;
-
-                    .score{
-                        flex: none;
-                        height: fit-content;
-                        
-                        .score_in{
-                            width: 90dvw;
-                            min-height: 15dvh;
-                        }
-                    }
-
-                    .badges{
-                        flex: none;
-                        height: fit-content;
-                      
-                    }
-                }
-
-                .lower{
-                    flex: none;
-
-                    .lower_in{
-                        gap: 10px;
-
-                        h1{
-                            font-size: 1.6em;
-                        }
-
-                        .calendar{
-                            margin-bottom: 30px;
-
-                            .month{
-
-                                .month_name{
-                                    font-size: 1.1em;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        &.dark{
-            .content{
-
-                .side_bar{
-                    display: none;
-                }
-    
-                .info{
-                    width: 100%;
-    
-                    .preUpper {
-                        p{
-                            color: #8deaff;
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
 }

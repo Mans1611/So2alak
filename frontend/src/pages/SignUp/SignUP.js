@@ -4,10 +4,10 @@ import "./SignUp.scss"
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import logo from "../../assets/Logo(122)5.png";
-// import axios from 'axios';
+import axios from 'axios';
 import { levDeps } from '../../data/LevelsDepartments';
 import { AppState } from '../../App';
-import axios from 'axios'
+
 /* comments : 
     - delete states like passwordAlarm, rePasswordLength state.  ==> solved
     - I moved (username,id) state in app context, as i need it in welcome page and all other pages,
@@ -19,19 +19,19 @@ import axios from 'axios'
 /*
 
 */ 
-
+ 
 const SignUP = () => {
     document.title = 'SignUp' // for naming the page the tab.
     const navigate = useNavigate(); // to navigate to anotehr page
     const bttnRef = useRef(null); //button ref
 
     //states
-    const {setUserCourses,setIsTeacher,setStudentInfo,setAuth} = useContext(AppState);
+    const {setStuCourses,
+        username,setUsername,
+        id,setId
+    } = useContext(AppState);
     const levels = ['Freshmen', 'Somophore', 'Junior', 'Senior1', 'Senior2'];
     const departments = levDeps;
-    
-    const [username, setUsername] = useState('');
-    const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const [repassword, setRepassword] = useState('');
     const [level, setLevel] = useState('');
@@ -39,8 +39,6 @@ const SignUP = () => {
     const [subdepartment, setSubdepartment] = useState('');
     const [visiblePassword, setVisiblePassword] = useState(false);
     const [visibleRepassword, setVisibleRepassword] = useState(false);
-    const [type, setType] = useState("");
-    const [title, setTitle] = useState("Doctor"); // this for teacher even a teacher or a teacher assistant.
     
     //alarms
     const [userNameAlarm, setUserNameAlarm] = useState({ show: false, msg: "" });
@@ -77,15 +75,11 @@ const SignUP = () => {
     };
 
     const handleIdAlarm = () => {
-        if (id.match(/\d\d(\d|p|q|t|w)\d\d\d\d/i)) {
-            setType("student");
-        } else if (id.match(/^(?![0-9])[a-zA-Z].*$/)) {
-            setType("Doctor");
-        }
-
         if (id === '') {
             setIdAlarm({ show: true, msg: "Enter your id" });
-        } else if (!id.match(/\d\d(\d|p|q|t|w)\d\d\d\d/i) && !id.match(/^(?![0-9])[a-zA-Z].*$/) && type !== 'Doctor') {
+        } else if (id.length !== 7) {
+            setIdAlarm({ show: true, msg: "Must be 7 characters" });
+        } else if (!id.match(/\d\d(\d|p|q|t|w)\d\d\d\d/i)) {
             setIdAlarm({ show: true, msg: "Enter a valid id" });
         }
     };
@@ -137,9 +131,7 @@ const SignUP = () => {
     };
 
     const handleHoverDisable = () => {
-        if (type ==='Doctor' && department !== '' && subdepartment!=='')
-            return 
-        else if (primaryStates.includes("")) {
+        if (primaryStates.includes("")) {
             bttnRef.current.disabled = true;
         } else if (level === 'Junior' || level === 'Senior1' || level === 'Senior2') {
             if (secondaryStates.includes('')) {
@@ -149,72 +141,35 @@ const SignUP = () => {
     };
 
     const handleSubmit = async (e) => {
-        
         e.preventDefault();
-        if ( !alarms.includes(true) && 
-            ( !primaryStates.includes("") || (level === "" && type === "Doctor") ) &&
+        if (!alarms.includes(true) && !primaryStates.includes("") &&
             ((level === 'Junior' || level === 'Senior1' || level === 'Senior2') ?
-                ((secondaryStates.includes('')) ? false : true) : 
-                (level === "" && type === "Doctor") ? ((secondaryStates.includes('')) ? false : true) : true) ) {
+                ((secondaryStates.includes('')) ? false : true) : true)) {
 
-           
-           
             try{
                 //send a request to backend.
-                if(type==='student'){
-                    const result = await axios.post(`${process.env.REACT_APP_API_URL}/person/signup`,
-                    {
-                        username,
-                        student_id: id,
-                        password,
-                        studnet_level: level,
-                        student_department: department,
-                        student_subdepartment: subdepartment
-                    })
-                    console.log(result)
-                    if(result.status === 201){
-                        setUserCourses(result.data.sugesstedCourses); // here I set the default courses for the student, which comes from server
-                        console.log(result.data)
-                        setStudentInfo(result.data.data);
-                        setAuth(true)
-                        navigate('/welcome'); // then navigate to welcome page. 
-                    }
-                }
-                else{
-                    const result = await axios.post(`${process.env.REACT_APP_API_URL}/teacher/signup`,{
-                        username,
-                        id,
-                        password,
-                        department,
-                        title,
-                        subdepartment,
-                    })
-                    if(result.status === 201){
-                        setIsTeacher(true);
-                        setStudentInfo(result.data.data);
-                        setAuth(true)
-                        navigate('/welcome'); // then navigate to welcome page. 
-                    }
-                }
+                const result = await axios.post('http://localhost:8000/person/signup',
+                {
+                    username,
+                    student_id: id,
+                    password,
+                    studnet_level: level,
+                    student_department: department,
+                    student_subdepartment: subdepartment
+                })
+                setStuCourses(result.data.sugesstedCourses); // here I set the default courses for the student, which comes from server
+                navigate('/welcome'); // then navigate to welcome page. 
             }catch(error){
                 // handle error coming from api
-                console.log(error)
-                if(error?.response?.data.msg){
-                    setIdAlarm({show:true,msg:error.response.data.msg})
+                if(error.isAxiosError){
+                    console.log(error.isAxiosError)
+                }else if(error.response){
+                    console.log(error.response)
                 }
             }
 
         }
     };
-    const handleIdInput = (e)=>{
-        if (e.target.value.match(/\d\d(\d|p|q|t|w)\d\d\d\d/i)) {
-            setType("student");
-        } else if (e.target.value.match(/^[a-zA-Z]+$/)) {
-            setType("Doctor");
-        }
-
-        setId(e.target.value);
-    }
     return (
         <>
             <div className='signup-container'>
@@ -235,18 +190,17 @@ const SignUP = () => {
                         </input>
                         {userNameAlarm.show && <div className='alarm-container'><p className='alarm'>*{userNameAlarm.msg}!</p></div>}
 
-                        {/* ----------------------id----------------------------- */}
+
                         <div className='id-container'>
                             <input className={idAlarm.show ? "in id invalid" : "in id"}
-                                value={id} name='id' type="text" placeholder='ID' maxLength={type === 'student' && "7"}
-                                onChange={handleIdInput} onBlur={handleIdAlarm}
-                                onFocus={() => {setIdAlarm({ show: false, msg: "" }); setType("") }}>
+                                value={id} name='id' type="text" placeholder='ID' maxLength="7"
+                                onChange={(e) => setId(e.target.value)} onBlur={handleIdAlarm}
+                                onFocus={() => setIdAlarm({ show: false, msg: "" })}>
                             </input>
                             <p className={idAlarm.show ? "invalid" : "at"}>@eng.asu.edu.eg</p>
                         </div>
                         {idAlarm.show && <div className='alarm-container'><p className='alarm'>*{idAlarm.msg}!</p></div>}
 
-                        {/* ----------------------password----------------------------- */}
                         <div className='password-container'>
                             <input className={passwordAlarm.show ? "in pass invalid" : "in pass"}
                                 value={password} name='password' type={visiblePassword ? "text" : "password"} placeholder='Password'
@@ -276,25 +230,21 @@ const SignUP = () => {
                             <div className='alarm-container'><p className='alarm'>*{repasswordAlarm.msg}!</p></div>}
 
 
-                        {(type === "student") && 
-                        <>
-                            <select className={level === '' ? (levelAlarm.show ? "in invalid holder" : "in holder") :
-                                (levelAlarm.show ? "in invalid" : "in")}
-                                value={level} onChange={(e) => setLevel(e.target.value)} onBlur={handleLevelAlarm}
-                                onFocus={() => setLevelAlarm({ show: false, msg: "" }) }>
-                                <option value="" disabled selected hidden >
-                                    Select Your Level
-                                </option>
-                                {levels.map(lev => (<option value={lev}>{lev}</option>))}
-                            </select>
-                            {levelAlarm.show && <div className='alarm-container'><p className='alarm'>*{levelAlarm.msg}!</p></div>}
-                        </>
-                        }
+                        <select className={level === '' ? (levelAlarm.show ? "in invalid holder" : "in holder") :
+                            (levelAlarm.show ? "in invalid" : "in")}
+                            value={level} onChange={(e) => setLevel(e.target.value)} onBlur={handleLevelAlarm}
+                            onFocus={() => setLevelAlarm({ show: false, msg: "" }) }>
+                            <option value="" disabled selected hidden >
+                                Select Your Level
+                            </option>
+                            {levels.map(lev => (<option value={lev}>{lev}</option>))}
+                        </select>
+                        {levelAlarm.show && <div className='alarm-container'><p className='alarm'>*{levelAlarm.msg}!</p></div>}
+
 
                         {/*  departments (Electrical - Civil - Mechanical) */}
                         {
-                            (level === 'Junior' || level === 'Senior1' || level === 'Senior2' || level === 'Somophore' ||
-                            (level === "" && type === "Doctor")) &&
+                            (level === 'Junior' || level === 'Senior1' || level === 'Senior2' || level === 'Somophore') &&
                             (
                                 <>
                                     <select className={department === '' ? (departmentAlarm.show ? "in invalid holder" : "in holder") :
@@ -316,8 +266,7 @@ const SignUP = () => {
                         {/* Sub departments (Elctronics - Computer - Power) */}
                         {
                             // condition
-                            ((level === 'Junior' || level === 'Senior1' || level === 'Senior2' || 
-                            (level === "" && type === "Doctor")) && (department === 'Electrical'
+                            ((level === 'Junior' || level === 'Senior1' || level === 'Senior2') && (department === 'Electrical'
                                 || department === 'Mechanical' || department === 'Civil' || department === 'Architectural')) &&
 
                             (
@@ -340,13 +289,6 @@ const SignUP = () => {
                                 </>
                             )
                         }
-                        {
-                            type === 'Doctor' && 
-                            <select value ={title} onChange={(e)=>setTitle(e.target.value)} className='in holder'>
-                                <option value={'Doctor'}>Doctor</option>
-                                <option value={'TA'}>TA</option>
-                            </select>
-                        }
 
                         <button className='signup-button' type='submit' disabled={alarms.includes(true)} ref={bttnRef}
                             onMouseOver={handleHoverDisable}
@@ -358,5 +300,6 @@ const SignUP = () => {
         </>
     )
 }
+
 export default SignUP
 

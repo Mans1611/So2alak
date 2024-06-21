@@ -10,7 +10,7 @@ import axios from "axios";
 const Login = () => {
   document.title = "Sign In"; // Making the title for the page.
   const navigate = useNavigate();
-  const { dark, setDark,setAuth,setIsTeacher,setStudentInfo,setUserCourses } = useContext(AppState); // this is how to import any state and its handler from app without props drilling
+  const { dark, setDark } = useContext(AppState); // this is how to import any state and its handler from app without props drilling
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -91,51 +91,26 @@ const Login = () => {
 
   const onSubmitForm = async (e) => {
     e.preventDefault();
-    // /* here I used this function before sending a request to backend,
-    //    if it return a validation error i will return and not complete sending a request.
-    // */
-    // if (!handleCheck(e)) return;
+
+    /* here I used this function before sending a request to backend,
+       if it return a validation error i will return and not complete sending a request.
+    */
+    if (!handleCheck(e)) return;
 
     // sending a request to the backendafter passing the validations
     setLoading(true); // I will set the loading state to be ture
     let res;
     try {
       // sending a request to sign in api, {id,password}
-     
-      if(form.email.match(/[a-zA-Z]/g)){
-        res = await axios.post(`${process.env.REACT_APP_API_URL}/teacher/signin`, {
-          teacher_id: form.email,
-          password: form.password,
-        });
-        if (res.request.status === 200){
-          // this means that the user is signed in
-          navigate("/main/feedpage");
-          setAuth(true);
-          setIsTeacher(true);
-          setStudentInfo(res.data.data);
-          setUserCourses(res.data.courses);
-        }
-      }
-      else{
-
-        res = await axios.post(`${process.env.REACT_APP_API_URL}/person/signin`, {
-          student_id: form.email,
-          password: form.password,
-        });
-        if (res.request.status === 200){
-          // this means that the user is signed in
-          navigate("/main/feedpage");
-          setAuth(true);
-          setIsTeacher(false);
-          setStudentInfo(res.data.student)
-        }
-      }
-
-      // sign in complete.
-      
-
+      res = await axios.post(`http://localhost:8000/person/signin`, {
+        student_id: form.email,
+        password: form.password,
+      });
+      console.log(res.request.status);
+      if (res.request.status === 200)
+        // this means that the user is signed in
+        navigate("/feedpage");
     } catch (error) {
-      console.log(res)
       if (error.isAxiosError)
         // this means that you have a network error or server is not working
         setErrors((e) => {

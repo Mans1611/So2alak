@@ -2,15 +2,13 @@
 @import './../../.mainStyle.scss';
 @import url('https://fonts.googleapis.com/css2?family=Seymour+One&display=swap');
 .question{
-    width:80%;
-    margin: 0px auto;
+    width:90%;
+    margin: 20px auto;
     height: fit-content;
     margin-bottom: 40px;
-    cursor: pointer;
     .question-details{
         margin-left: 30px;
         margin-bottom: 10px;
-        position: relative;
         a{
             font-size: 1.2em;
             font-weight: 600;
@@ -21,21 +19,86 @@
                 color: #000000;
             }
         }
-    };
-    .help-wrapper,.options{
-        position: sticky;
-        top: 70px;
     }
-   
-    .answer-question-input{
-        width: 100%;
-        background-color: #E0E0E0;
-        height: 40px;
-        border-radius: 10px;
-        outline: none;
-        padding: 5px;
-        font-size: 18px;
-
+    .flex{
+        display: flex;
+        .question-help{
+            flex: 1;
+            margin-right: 5px;
+            cursor: pointer;
+            .help-wrapper{
+                position: sticky;
+                top: 10px;
+            }
+            .circle{
+                font-family: 'Seymour One', sans-serif;
+                width: 50px;
+                height: 50px;
+                background-color: #dddddd;
+                border-radius: 50%;
+                transition: all 300ms;
+                @include centerChild;
+                margin: auto;
+                padding: 5px;
+                svg{
+                    width: 50px;
+                    height: 50px;
+                    font-weight: 600;
+                }
+                &:hover,&.active{
+                    background-color: $semi-dark-blue;
+                    color: #ffffff;
+                }
+            }
+            .help-counts{
+                font-size: 24px;
+                font-weight: 600;
+                margin-top: 5px;
+                text-align: center;
+               
+            }
+        }
+        .question-wrapper{
+            flex: 10;
+                .question-content{
+                    color: $semi-dark-blue;
+                    font-weight: 500;
+                    padding: 20px;
+                    
+                    font-size: 20px;
+                    background-color: $light-white ;
+                    border-radius: 10px;
+                    font-family: sans-serif;
+                    min-height: 100px;
+                    position: relative;
+            }
+            
+            .time{
+                position: absolute;
+                bottom: 5px;
+                right: 15px;
+                color: $fully-dark-blue;
+                text-align: right;
+                font-size: 17px;
+                
+            }
+            
+        }
+        .reply-btn{
+            margin-left: 5px;
+            cursor: pointer;
+            transition: all 200ms;
+            width: 45px;
+            height: 50px;
+            position: sticky;
+            top: 10px;
+            color: $fully-dark-blue;
+            &:hover{
+                transform: scale(1.1);
+            }
+            flex: 1;
+        }
+        
     }
     .answer-wrapper{
         margin-top: 5px;
@@ -44,7 +107,16 @@
         padding: 10px;
         float: right;
         transition: all 200ms;
-       
+        input{
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            width: 90%;
+            outline: none;
+            padding: 5px;
+            height: 40px;
+            margin-right: 5px;
+            @include input;
+        }
         button{
            @include btn;
            background-color: $semi-dark-blue;
@@ -64,137 +136,4 @@
            }
         }
     }
-    
 }
-.flex{
-    display: flex;
-    .question-wrapper{
-        flex: 10;
-        &.deleted{
-            background-color: $light-white;
-            border-radius: 10px;
-            padding: 10px;
-        }
-            .question-content{
-                padding: 0px 0 20px;
-                background-color: $light-white ;
-                border-radius: 10px;
-                font-family: sans-serif;
-                position: relative;
-                    &.loading{
-                        animation: blinking 1600ms alternate forwards infinite;
-                    }
-                img{
-                    width: 100%;
-                    border-top-right-radius: 10px;
-                    border-top-left-radius: 10px;
-                }
-                p{
-                    color: $semi-dark-blue;
-                    font-weight: 500;
-                    font-size: 20px;
-                    padding: 5px;
-                   
-                }
-        }
-        &>div{
-            margin-top: 5px;
-            margin-left: 10px;
-            &.downQuestion{
-                display: flex;
-                align-items: center;
-            }
-            .icon-wrapper{
-                color: $fully-dark-blue;
-                margin: 0 5px;
-                display: flex;
-                align-items: center;
-                margin-left: 10px;
-            }
-            .post-icons{
-                color: $semi-dark-blue;
-                font-size: 25px;
-                font-weight: 600;
-                margin: 0 5px;
-                
-            }
-        }
-        .time{
-            position: absolute;
-            bottom: 5px;
-            right: 15px;
-            color: $fully-dark-blue;
-            text-align: right;
-            font-size: 14px;
-            
-        }
-        
-    }
-    .reply-btn{
-        margin-left: 5px;
-        cursor: pointer;
-        transition: all 200ms;
-        width: 45px;
-        height: 50px;
-        position: sticky;
-        top: 10px;
-        color: $fully-dark-blue;
-        &:hover{
-            transform: scale(1.1);
-        }
-        flex: 1;
-    }
-    .options{
-        font-size: 30px;
-        font-weight: 700;
-        margin-top: 5px;
-        cursor: pointer;
-    }
-    
-}
-.dark {
-    .question{
-        .question-details{
-            color: $full-white;
-            transition: all 200ms;
-            a{
-                color: $sky-blue;
-                &:hover{
-                    color: #f0f0f0;
-                }
-            }
-        }
-        .flex{
-            .question-wrapper{
-                &.deleted{
-                    background-color: $semi-dark-blue;
-                    color: #f0f0f0;
-                    
-                }
-                .question-content{
-                    background-color: $semi-dark-blue ;
-                    p{
-                        color: $full-white;
-                    }
-                }
-                .icon-wrapper{
-                    color: $full-white;
-                }
-                .post-icons{
-                    color: $full-white;
-                    
-                }
-                .time{
-                    color: #b1b1b1a1;
-                }
-            }
-            .reply-btn{
-                color: $full-white;  
-            }
-            .options{
-               color: $full-white;
-            }
-        }
-    }
-}
-@include blinking;
