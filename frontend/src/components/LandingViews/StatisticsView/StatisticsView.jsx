@@ -26,44 +26,56 @@ const StatisticsView = () => {
       <div className="feedbacks">
         <div className="title">Students Feedbacks</div>
         <div className="feeds">
-          <div className="feed">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga mollitia sapiente vitae ex odit. Nobis est veritatis consectetur sit nam sunt obcaecati ratione ipsam? Recusandae dolorem culpa molestiae impedit!
-          </div>
-          <div className="feed">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga mollitia sapiente vitae ex odit. Nobis est veritatis consectetur sit nam sunt obcaecati ratione ipsam? Recusandae dolorem culpa molestiae impedit!
-          </div>
-          <div className="feed">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga mollitia sapiente vitae ex odit. Nobis est veritatis consectetur sit nam sunt obcaecati ratione ipsam? Recusandae dolorem culpa molestiae impedit!
-          </div>
-          <div className="feed">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga mollitia sapiente vitae ex odit. Nobis est veritatis consectetur sit nam sunt obcaecati ratione ipsam? Recusandae dolorem culpa molestiae impedit!
-          </div>
-          <div className="feed">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga mollitia sapiente vitae ex odit. Nobis est veritatis consectetur sit nam sunt obcaecati ratione ipsam? Recusandae dolorem culpa molestiae impedit!
-          </div>
-          <div className="feed">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga mollitia sapiente vitae ex odit. Nobis est veritatis consectetur sit nam sunt obcaecati ratione ipsam? Recusandae dolorem culpa molestiae impedit!
-          </div>
+          <p className="feed">
+            "So?alak is a lifesaver! I can easily find answers to tricky homework questions and connect with peers in my classes. It's intuitive and saves me so much time."
+            <i>Sarah</i>
+          </p>
+          <p className="feed">
+            "Navigating So?alak is straightforward, and the community is supportive. Whenever I post a question, I receive helpful responses quickly. It's become my go-to for academic help and advice."
+            <i>Emily</i>
+          </p>
+          <p className="feed">
+            "So?alak needs more integration with real-time notifications. Sometimes I miss updates on questions I'm following. Otherwise, it's a great resource for studying and networking with classmates."
+            <i>Amr</i>
+          </p>
+          <p className="feed">
+            "So?alak has been instrumental in helping me prepare for exams. The variety of questions and detailed explanations from fellow students make studying more effective and less stressful."
+            <i>Ali</i>
+          </p>
+          <p className="feed">
+            "I appreciate how So?alak encourages interaction among students from different majors. It's not just about getting answers; it's about learning from diverse perspectives and expanding my knowledge."
+            <i>Lily</i>
+          </p>
+          <p className="feed">
+            "The mobile app version of So?alak is handy when I'm on the go. It's responsive and easy to use, which is crucial for staying connected with academic discussions outside of class."
+            <i>Adel</i>
+          </p>
         </div>
         <div className="feeds">
-          <div className="feed">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga mollitia sapiente vitae ex odit. Nobis est veritatis consectetur sit nam sunt obcaecati ratione ipsam? Recusandae dolorem culpa molestiae impedit!
-          </div>
-          <div className="feed">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga mollitia sapiente vitae ex odit. Nobis est veritatis consectetur sit nam sunt obcaecati ratione ipsam? Recusandae dolorem culpa molestiae impedit!
-          </div>
-          <div className="feed">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga mollitia sapiente vitae ex odit. Nobis est veritatis consectetur sit nam sunt obcaecati ratione ipsam? Recusandae dolorem culpa molestiae impedit!
-          </div>
-          <div className="feed">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga mollitia sapiente vitae ex odit. Nobis est veritatis consectetur sit nam sunt obcaecati ratione ipsam? Recusandae dolorem culpa molestiae impedit!
-          </div>
-          <div className="feed">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga mollitia sapiente vitae ex odit. Nobis est veritatis consectetur sit nam sunt obcaecati ratione ipsam? Recusandae dolorem culpa molestiae impedit!
-          </div>
-          <div className="feed">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga mollitia sapiente vitae ex odit. Nobis est veritatis consectetur sit nam sunt obcaecati ratione ipsam? Recusandae dolorem culpa molestiae impedit!
-          </div>
+          <p className="feed">
+            "So?alak is a lifesaver! I can easily find answers to tricky homework questions and connect with peers in my classes. It's intuitive and saves me so much time."
+            <i>Sarah</i>
+          </p>
+          <p className="feed">
+            "Navigating So?alak is straightforward, and the community is supportive. Whenever I post a question, I receive helpful responses quickly. It's become my go-to for academic help and advice."
+            <i>Emily</i>
+          </p>
+          <p className="feed">
+            "So?alak needs more integration with real-time notifications. Sometimes I miss updates on questions I'm following. Otherwise, it's a great resource for studying and networking with classmates."
+            <i>Amr</i>
+          </p>
+          <p className="feed">
+            "So?alak has been instrumental in helping me prepare for exams. The variety of questions and detailed explanations from fellow students make studying more effective and less stressful."
+            <i>Ali</i>
+          </p>
+          <p className="feed">
+            "I appreciate how So?alak encourages interaction among students from different majors. It's not just about getting answers; it's about learning from diverse perspectives and expanding my knowledge."
+            <i>Lily</i>
+          </p>
+          <p className="feed">
+            "The mobile app version of So?alak is handy when I'm on the go. It's responsive and easy to use, which is crucial for staying connected with academic discussions outside of class."
+            <i>Adel</i>
+          </p>
         </div>
       </div>
     </div>

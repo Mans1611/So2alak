@@ -5,25 +5,6 @@ import { HashLink } from 'react-router-hash-link';
 import "./landing.scss";
 
 import MainView from "../../components/LandingViews/MainView/MainView";
-/*
-import BadgesView from "./../../components/LandingViews/BadgesView/BadgesView";
-import QuestionsView from "./../../components/LandingViews/QuestionsView/QuestionsView";
-import StatisticsView from "./../../components/LandingViews/StatisticsView/StatisticsView";
-
-
-
-
-import answers from "../../assets/landing/answers.svg";
-import inquiries from "../../assets/landing/inquiries.svg";
-import suggestions from "../../assets/landing/suggestions.svg";
-
-import QandA from "../../assets/landing/QandA.png";
-import courses from "../../assets/landing/courses.png";
-*/
-
-
-//import AOS from "aos";
-//import "aos/dist/aos.css";
 
 import logo from "../../assets/logo.png";
 import menu from "../../assets/landing/menu.svg";
@@ -32,10 +13,6 @@ import StatisticsView from "../../components/LandingViews/StatisticsView/Statist
 import FeaturesView from "../../components/LandingViews/FeaturesView/FeaturesView";
 
 const Landing = () => {
-
-  /*useEffect(() => {
-    AOS.init({ duration: 1000 }); 
-  }, []);*/
 
   const [device, setDevice] = useState(false);
 
