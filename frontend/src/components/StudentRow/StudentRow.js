@@ -4,6 +4,7 @@ import first from '../../assets/medals/first.png';
 import second from '../../assets/medals/second.png';
 import third from '../../assets/medals/third.png';
 import { AppState } from '../../App';
+import { Link } from 'react-router-dom';
 const medals = [
     first,
     second,
@@ -12,15 +13,17 @@ const medals = [
 const StudentRow = ({student,rank}) => {
     const {stundetInfo} = useContext(AppState);
   return (
-    <div className={`grid ${stundetInfo.username === student.username ? 'active':''}`}>
-        <div className="field">
-            {rank <= 3  && <img src={medals[rank-1]} className='medal' />}
-            {rank}
-        </div>
-        <div className="field">{student.username}</div>
-        <div className="field">{student.student_level}</div>
-        <div className="field">{student.points}</div>
-    </div>
+    <Link className='standing-link' to={`/main/profile/?username${student.username}&student_id=${student.student_id}`}>
+      <div className={`grid ${stundetInfo.username === student.username ? 'active':''}`}>
+          <div className="field">
+              {rank <= 3  && <img src={medals[rank-1]} className='medal' />}
+              {rank}
+          </div>
+          <div className="field">{student.username}</div>
+          <div className="field">{student.student_level}</div>
+          <div className="field">{student.points}</div>
+      </div>
+    </Link>
   )
 }
 

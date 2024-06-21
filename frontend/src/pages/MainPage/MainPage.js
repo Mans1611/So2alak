@@ -7,11 +7,10 @@ import { AppState } from '../../App';
 import Portal from '../../Portal/Portal.js';
 import NotificationPortal from '../../Portal/NotificationPortal/NotificationPortal.js';
 
+
 const MainPage = () => {
   const {dark,auth,showNotification} = useContext(AppState);
   const nav = useNavigate();
-  
-
   useEffect(()=>{
     if (!auth)
       nav('/signin');
@@ -21,14 +20,14 @@ const MainPage = () => {
   if (auth){
       return (
         <div className="main-page">
-      <Navbar/>
-      <div className={`body-content ${dark?'dark':''}`}>
-          <SideBar/>
-          <Outlet/>  
-      </div>
-      {showNotification&&
-      <Portal children={<NotificationPortal />}/>
-      }
+          <Navbar/>
+          <div className={`body-content ${dark?'dark':''}`}>
+              <SideBar/>
+              <Outlet/>  
+          </div>
+          {showNotification&&
+          <Portal children={<NotificationPortal />}/>
+          }
       </div>
     )
   }

@@ -7,19 +7,24 @@ import NotFound from "./pages/NotFound/NotFound";
 
 import { createContext, useEffect, useRef, useState } from "react";
 import SignUP from "./pages/SignUp/SignUP";
+
+import Landing from "./pages/LandingPage/Landing";
+
 import MainPage from "./pages/MainPage/MainPage";
 import FeedPage from "./pages/FeedPage/FeedPage";
 import About from "./pages/About/About";
 import Profile from './pages/Profile/Profile';
 import TeacherProfile from "./pages/TeacherProfile/TeacherProfile";
-import Landing from "./pages/LandingPage/Landing";
 import { QueryClient, QueryClientProvider} from 'react-query'
 import Course from "./pages/Course/Course";
 import FullQuestion from "./pages/FullQuestion/FullQuestion";
 import ListsPage from "./pages/Lists/ListsPage";
 import LeaderBoard from "./pages/LeaderBoard/LeaderBoard";
 import ListPage from "./pages/ListPage/ListPage";
+import MyQuestions from './pages/MyQuestions/MyQuestions.js';
+
 export const AppState = createContext(null); // I export it to be accessable in the whole components
+
 
 const queryClient = new QueryClient();
 
@@ -61,7 +66,8 @@ function App() {
               <Route path="teacherprofile/:teacher_id" element={<TeacherProfile />} />
               <Route path="feedpage" element={<FeedPage/>} />
               <Route path="leaderboard" element={<LeaderBoard/>} />
-              <Route path="profile/:user_id" element={<Profile />} />
+              <Route path="myquestions/:username" element={<MyQuestions/>} />
+              <Route path="profile/" element={<Profile />} />
               <Route path=":course_code" element={<Course/>} />
               <Route path="question/:question_id" element={<FullQuestion/>} />
               <Route path="lists/:student_id" element={<ListsPage/>}/>
@@ -70,6 +76,7 @@ function App() {
             
             <Route path="/loading" element={<Loading />} />
             <Route path="/about" element={<About />} />
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AppState.Provider>

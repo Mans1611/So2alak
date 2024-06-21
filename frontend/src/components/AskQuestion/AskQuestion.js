@@ -97,10 +97,8 @@ const AskQuestion = ({isAnswer,questionDetails}) => {
             questionInput.current.innerText = 'Answer to Question';
             setPost(null);
             setImgPrev(false);
-            console.log(course_code,res.data.data)
             if(!isAnswer && course_code === res.data.data.course_id){
                 setQuestions(questions=>{return[res.data.data,...questions]});
-                console.log('first')
             }
 
             if (res.data.badge){
@@ -114,29 +112,31 @@ const AskQuestion = ({isAnswer,questionDetails}) => {
    
     const clearPlaceholder = ()=>{
         questionWrapper.current.style.height = 'fit-content'
-        if(question.trim() ==='')
+        if(questionInput.current.innerHTML.trim() === '' || questionInput.current.innerHTML === 'Ask Question')
             questionInput.current.innerHTML= '';
     }
     const HandleInput = ()=>{
         setPost(questionInput.current.innerHTML)
     }
+
     
     useEffect(()=>{
         questionInput.current.innerText = (question==='' && isAnswer) ? `Answer to ${questionDetails.q_username}'s Question`: (question === '' && isTeacher) ? `Ask A Bouns Question`:`Ask Question`;
     },[])
-   return (
+    let default_course = user_courses.find(course=>course.course_id === course_code)
+    return (
     <div className={`askQuestion-container ${isAnswer&& 'post-answer'}`}>
         <div ref={questionWrapper} className="askQuestion-wrapeer">
             {
                 imgPreview &&
-                <img  className='img-preview' src={imgPreview} alt="" srcset="" />
+                <img className='img-preview' src={imgPreview} alt="" srcset="" />
             }
             <div contentEditable = {true}
-            slot='rte'
-            ref={questionInput}
-            onFocus={clearPlaceholder}
-            onInput={HandleInput}
-            className='askQuestion-content'>
+                slot='rte'
+                ref={questionInput}
+                onFocus={clearPlaceholder}
+                onInput={HandleInput}
+                className='askQuestion-content'>
             </div>
             <div className="down-options">
                 <div className="files-wrapper">
@@ -148,7 +148,7 @@ const AskQuestion = ({isAnswer,questionDetails}) => {
                 {
                     !isAnswer && 
                     <div className="course-selection">
-                        <select defaultValue={'CSE471'} onChange={(e)=>{course_code = e.target.value }} >
+                        <select defaultValue={default_course?default_course.course_id:'CSE471'} onChange={(e)=>{course_code = e.target.value }} >
                             {user_courses?.map(course=><option selected = {course_code === course?.course_id}  key={course.course_id} value={course.course_id}>{course.course_name}</option>)}
                         </select>
                     </div>

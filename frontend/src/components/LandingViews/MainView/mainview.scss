@@ -1,0 +1,151 @@
+$main_color_1: black;
+$main_color_2: white;
+$font-family_1: "Times New Roman", Times, serif;
+$main_background-color1: #2992aa;
+$main_background-color2: #028064;
+
+/* =========================== Phone =========================== */
+
+
+.mainview-container {
+	height: 100vh;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	font-size: 16px;
+	padding-top: 15vh;
+
+
+	.mianimg-container {
+		width: 50%;
+		height: 85vh;
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		.main-img {
+			width: 80%;
+		}
+
+	}
+
+	.mainview-description {
+		display: flex;
+		flex-flow: column;
+		align-items: center;
+		justify-content: center;
+		height: 85vh;
+		width: 50%;
+
+		.mainlogo {
+			width: 50%;
+
+			animation: zoom linear both;
+				animation-timeline: scroll();
+				animation-range: exit 5% 20%;
+		}
+
+		.description {
+			width: 75%;
+			color: $main_color_1;
+			font-size: 130%;
+			padding: 5%;
+			text-align: center;
+			font-family: $font-family_1;
+			line-height: 25px;
+
+
+			animation: fade linear both;
+			animation-timeline: scroll();
+			animation-range: exit 10% 25%;
+		}
+
+	}
+}
+
+@media screen and (max-width: 600px) {
+	.mainview-container {
+		flex-flow: column;
+		justify-content: center;
+		height: 80vh;
+		margin-bottom: 10vh;
+		padding-top: 0vh;
+
+		.mianimg-container {
+			z-index: -1;
+			position: relative;
+			order: 1;
+			width: 80%;
+			margin-top: 0vh;
+
+			height: 40vh;
+		}
+
+		.mainview-description {
+			order: 2;
+			width: 100%;
+			height: 30vh;
+			margin-top: 0vh;
+
+			.description {
+				font-size: 110%;
+				line-height: 20px;
+			}
+
+			.mainlogo {
+				display: none;
+			}
+		}
+	}
+}
+
+
+
+/* Animations */
+/*
+@keyframes fade-right {
+	from {
+		transform: translateX(0px);
+		opacity: 1;
+	}
+
+	to {
+		transform: translateX(100px);
+		opacity: 0;
+	}
+}
+@keyframes fade-left {
+	from {
+		transform: translateX(0px);
+		opacity: 1;
+	}
+
+	to {
+		transform: translateX(-100px);
+		opacity: 0;
+	}
+}
+
+
+@keyframes zoom {
+	from {
+		transform: scale(1);
+		opacity: 1;
+	}
+
+	to {
+		transform: scale(0);
+		opacity: 0;
+	}
+}
+
+@keyframes fade {
+	from {
+		opacity: 1;
+	}
+
+	to {
+		opacity: 0;
+	}
+}*/

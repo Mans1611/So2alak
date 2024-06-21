@@ -6,15 +6,12 @@ import { useParams,Link, useNavigate } from 'react-router-dom'
 import { AppState } from '../../App'
 const PersonalDetail = ({user_id}) => {
     const [userDetails,setUserDetails] = useState({});
-    const {user_id:id} = useParams();
     const {stundetInfo} = useContext(AppState); 
     useEffect(()=>{
         const fetchPersonalDetails = async()=>{
             try{
-                const res = await axios.get(`${process.env.REACT_APP_API_URL}/person/getStudnetPersonalDetails/${user_id?user_id:id}`);
+                const res = await axios.get(`${process.env.REACT_APP_API_URL}/person/getStudnetPersonalDetails/${user_id}`);
                 setUserDetails(res.data.data);
-                console.log(res.data.data)
-
             }catch(err){
                 console.log(err);
             }
@@ -24,7 +21,7 @@ const PersonalDetail = ({user_id}) => {
   return (
     <>
     
-        <div className='username'>Username : {stundetInfo.username}</div>
+        <div className='username'>Username : {userDetails.username}</div>
         <div className='personal_details'>
             <div>Level: {userDetails.student_level}</div>
             <div>Department : {userDetails.student_department?userDetails.student_department:'-'}</div>

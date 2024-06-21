@@ -2,7 +2,7 @@ export const AggregateQuestionsAnswers = (data)=>{
     let ids =  {} // the id of each question and it corresponding index in the 
     let i = 0;
     let quest = []
-    data.forEach(({question_id,q_time,question,q_username,q_upvotes,q_verified,course_id,course_name,answer,ans_username,ans_upvotes,activity_type,ans_downvotes,ans_time,ans_verified,id,img_url,answer_id,ans_img_url})=>{
+    data.forEach(({question_id,q_user_id,q_time,question,q_username,q_upvotes,q_verified,course_id,course_name,answer,ans_username,ans_upvotes,activity_type,ans_downvotes,ans_time,ans_verified,id,img_url,answer_id,ans_img_url})=>{
         if (ids[question_id] === undefined){ 
             if (answer == null){ // has no answer.
                 ids[question_id] = i++;
@@ -10,6 +10,7 @@ export const AggregateQuestionsAnswers = (data)=>{
                     question_id,
                     question,
                     q_username,
+                    q_user_id,
                     q_upvotes,
                     helped : activity_type==='help',
                     q_time,
@@ -26,6 +27,7 @@ export const AggregateQuestionsAnswers = (data)=>{
                     question_id,
                     question,
                     q_username,
+                    q_user_id,
                     q_upvotes,
                     q_time,
                     q_verified,

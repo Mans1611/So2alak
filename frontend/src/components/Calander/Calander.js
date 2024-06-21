@@ -10,7 +10,7 @@ const Calander = ({user_id}) => {
     useEffect(()=>{
         const fetchCalander = async()=>{
             try{
-                const {data} = await axios.get(`${process.env.REACT_APP_API_URL}/person/get_activity_log/${stundetInfo.student_id}`);
+                const {data} = await axios.get(`${process.env.REACT_APP_API_URL}/person/get_activity_log/${user_id}`);
                 
                 const dates = data.dates?.map(date=>new Date(`${date.slice(3,5)}-${date.slice(0,2)}-${date.slice(6,10)}`).toDateString());
                 

@@ -43,6 +43,7 @@ const CourseDetails = ({setTop}) => {
       setUserCourses(courses=>[...courses,res.data.course])
     }
   }
+  console.log(courseDetails.top3)
   return (
     <div ref={course_details_div} className='third_part_child'>
         <div className="header">

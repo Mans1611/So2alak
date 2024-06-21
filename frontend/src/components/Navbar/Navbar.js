@@ -8,6 +8,7 @@ import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import Search from '../Search/Search';
 import Person from '@mui/icons-material/Person';
+import { useHidePop } from '../../hooks/useHidePop';
 
 const Navbar = () => {
   // states
@@ -31,22 +32,9 @@ const Navbar = () => {
   const handleActive=(param)=>{
     setSideBarSelected(param)
   }
-  const divRef = useRef(null);
-    const handleClickOutside = (event) => {
-        if (divRef.current && !divRef.current.contains(event.target)) {
-          setShowToggleList(false);
-        }
-    };
-    useEffect(()=>{
-        document.addEventListener('mousedown', handleClickOutside);
-    
-        return () => {
-        // Cleanup the event listener on component unmount
-        document.removeEventListener('mousedown', handleClickOutside);
-        };
-
-    })
-  return (
+  
+    const {divRef} = useHidePop(setShowToggleList);
+    return (
     <div id='navbar' className={`navbar ${dark ? 'dark':''}`}>
         <div className="logo-wrapper">
             <img src={logo} alt="So2alak" srcSet="" />
@@ -72,7 +60,7 @@ const Navbar = () => {
               <ul className='toggle-list'>
                 <li><Link to={isTeacher?
                   `/main/teacherprofile/${stundetInfo.user_id.replace(" ","")}`
-                  :`/main/profile/${stundetInfo.username.replace(" ","")}`}>My profile</Link></li>
+                  :`/main/profile/?username=${stundetInfo.username.replace(" ","")}&student_id=${stundetInfo.student_id}`}>My profile</Link></li>
                 <li onClick={logout}>Log Out</li>
               </ul>
             }

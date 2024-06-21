@@ -11,7 +11,7 @@ const ListsPage = () => {
   
   const {student_id} = useParams();
   const [lists,setLists] = useFetchLists(student_id);
-  
+  console.log(lists)
   const handleCreateList = ()=>{
     setShowCreateModal(true);
   }

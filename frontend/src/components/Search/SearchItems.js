@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import './searchitems.scss'
 import avatar from '../../assets/avatar.png' 
 import Person from '@mui/icons-material/Person';
+import course from '../../assets/course.png'
 const SearchItems = ({setShowSearch,title,items}) => {
   if (title === 'Students')
     return (
@@ -53,8 +54,8 @@ const SearchItems = ({setShowSearch,title,items}) => {
             {items.map((item,key)=>
                <li onClick={()=>setShowSearch(false)} className='search-li'>
                   <Link key={key} to = {`/main/${item.course_id}`}>
-                        <div className="flex">
-                          <img src={avatar} alt="" srcset="" />
+                        <div className="flex">                          
+                            <img src={item.img_url?item.img_url:course} alt={item.course_name} srcset="" />
                           <div className="main_title">{item.course_name}</div>
                         </div>
                   </Link>

@@ -55,6 +55,7 @@ post.get('/allTeacherQuestions/:teacher_id',async(req,res)=>{
         let sqlCommand = ` SELECT * FROM questions AS q
         LEFT JOIN (
             SELECT * FROM answers  
+            SELECT * FROM answers  
             ORDER BY ans_verified DESC, ans_upvotes DESC , ans_time DESC
         ) AS ans ON ans.q_id = q.question_id
         LEFT JOIN (SELECT course_name,course_id FROM courses) AS cor ON cor.course_id = q.course_id
@@ -73,12 +74,14 @@ post.get('/allTeacherQuestions/:teacher_id',async(req,res)=>{
         con.release();
     }
 })
-post.post('/createQuestion',uploader.single('image'),async(req,res,next)=>{
+post.post('/createQuestion',uploader.single('image'),async(req,res)=>{
     // this api need to check the the auth of the user.
     const {course_id,student_id,username,question} = req.body;
     let con = null;
     try{
         con = await client.connect(); 
+        let sqlCommand = null;
+        let result = null;
         // to check if the student exist or not
         if (! await CheckValueExisit('students','username',username,client))
         return res.status(400).json({msg:"this user is not exist"})
@@ -87,7 +90,6 @@ post.post('/createQuestion',uploader.single('image'),async(req,res,next)=>{
     if (! await CheckValueExisit('courses','course_id',course_id,client))
     return res.status(400).json({msg:"this course is not exist"})
         let resResult;
-        let sqlCommand;
         if (req.file){
             const imgCloud = await cloudinary.uploader.upload_stream({
                 folder: 'questions' // Optional: specify the folder
@@ -97,8 +99,8 @@ post.post('/createQuestion',uploader.single('image'),async(req,res,next)=>{
                 }
                 
                 globalThis.img_url = result.secure_url;
-                sqlCommand = `INSERT INTO questions (course_id,q_username,question,img_url) 
-                VALUES ('${course_id}','${username}','${question}','${result.secure_url}')
+                sqlCommand = `INSERT INTO questions (course_id,q_username,question,img_url,q_user_id) 
+                VALUES ('${course_id}','${username}','${question}','${result.secure_url}','${student_id}')
                 RETURNING *;`;
                 resResult = await con.query(sqlCommand);
                 const badge = await AfterQuestion(student_id,resResult,course_id,con)
@@ -106,8 +108,8 @@ post.post('/createQuestion',uploader.single('image'),async(req,res,next)=>{
             })
             imgCloud.end(req.file.buffer);
         }else{
-            sqlCommand = `INSERT INTO questions (course_id,q_username,question) 
-            VALUES ('${course_id}','${username}','${question}')
+            sqlCommand = `INSERT INTO questions (course_id,q_username,question,q_user_id) 
+            VALUES ('${course_id}','${username}','${question}','${student_id}')
             RETURNING *;`;
             resResult = await con.query(sqlCommand);
             const badge = await AfterQuestion(student_id,resResult,course_id,con)
@@ -242,7 +244,6 @@ post.get('/getQuestion/',async(req,res)=>{
                                 LEFT JOIN activity_log AS al 
                                 ON al.question_id = q.question_id
                                 WHERE q.question_id = ${question_id} 
-                                AND al.student_id = ${student_id? `'${student_id}'`: null }
                                 ORDER BY ans.ans_verified DESC , ans.ans_upvotes DESC,
                                 ans.ans_time DESC;`;
         }else{
@@ -569,11 +570,12 @@ post.get('/search/:search',async(req,res)=>{
             courses,
             questions
         })
-        con.release();
     }
     catch(err){
-        con.release();
         console.log(err)
+    }
+    finally{
+        con.release();
     }
 });
 

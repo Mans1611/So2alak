@@ -15,10 +15,18 @@ const FullQuestion = () => {
     useEffect(()=>{
         let subscribe = true;
         const fetchQuestion = async()=>{
-            const {data} = await axios.get(`${process.env.REACT_APP_API_URL}/post/getQuestion/?question_id=${question_id}&student_id=${stundetInfo.student_id}`);
-            setQuestion(data[0]);
-            setLoading(false);
-            document.title = data[0]?.question;
+            try{
+                console.log("fetching question")
+                const {data,status} = await axios.get(`${process.env.REACT_APP_API_URL}/post/getQuestion/?question_id=${question_id}&student_id=${stundetInfo.student_id}`);
+                if(status ===200){
+                    setQuestion(data[0]);
+                    console.log(data)
+                    setLoading(false);
+                }
+                document.title = data[0]?.question;
+            }catch(err){
+                console.log(err);
+            }
         }
         if (subscribe) fetchQuestion();
         return ()=>{

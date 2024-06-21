@@ -111,7 +111,7 @@ const Question = ({singleQuestion,question,setQuestion}) => {
                 <HelpCircle question={question} circle={circle} stoplimit={stoplimit}/>
                 <div className='question-wrapper'>
                     <div ref={questionContent} className="question-content">
-                        {question.img_url && <img src={question.img_url} className='ques_img' />}
+                        {question?.img_url && <img src={question?.img_url} className='ques_img' />}
                         <p ref={questionText}></p>
                         <div className="time">asked {getTime(question.q_time)}</div>
                     </div>
@@ -135,6 +135,7 @@ const Question = ({singleQuestion,question,setQuestion}) => {
                 <div className="options">
                     <MoreVertIcon onClick = {handleQuestionOptions} className='options'/> 
                     {showQuesOptions &&  <PostOptions 
+                                setShowQuesOptions = {setShowQuesOptions}
                                 question= {question}
                                 setDeletedQuestion={setDeletedQuestion}/>}
                 </div>

@@ -1,7 +1,7 @@
 @import '../../.mainstyle.scss';
 .sidebar{
     flex: 2;
-    overflow: auto;
+    overflow: scroll;
     background: $light-white;
     height:fit-content;
     background-color: #f0f0f0;

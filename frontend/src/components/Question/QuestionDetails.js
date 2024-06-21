@@ -21,7 +21,7 @@ const QuestionDetails = ({question}) => {
                 onMouseLeave={()=>handleProfile(false)} 
                 onMouseOver={()=>handleProfile(true)} 
                 onClick={(e)=>e.stopPropagation()}
-                to={`/main/profile/${question?.q_username?.replace(" ","")}`}> 
+                to={`/main/profile/?username=${question?.q_username?.replace(" ","")}&student_id=${question.q_user_id}`}> 
                 {question.q_username}</Link> related to &nbsp; 
                 <Link onClick={handleNav} 
                     to={`/main/${question.course_id}`}>

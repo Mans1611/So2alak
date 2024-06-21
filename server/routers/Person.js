@@ -9,6 +9,7 @@ import multer from "multer";
 const storage = multer.memoryStorage();
 const uploader = multer({storage:storage})
 import {v2 as cloudinary} from 'cloudinary';
+import { AggregateQuestionsAnswers } from "../utilis/AggregateQuestionsAnswers.js";
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUDNAME,
     api_key: process.env.CLOUDINARY_APIKEY,
@@ -69,6 +70,7 @@ person.post('/signup',async(req,res)=>{
     }
 })
 
+
 // for siging in 
 person.post('/signin',async(req,res)=>{
     const {student_id,password} = req.body;
@@ -124,6 +126,26 @@ person.post('/registercourse',async(req,res)=>{
         
     }
 
+})
+person.get('/myquestions/:username',async(req,res)=>{
+    const {username} = req.params;
+    let con;
+    try{
+        con = await client.connect();
+        let sqlCommand = `SELECT * 
+            FROM questions AS Q
+            LEFT JOIN answers AS ans
+            ON Q.question_id = ans.q_id 
+            WHERE Q.q_username = '${username}';`;
+        let result = await con.query(sqlCommand);
+        result = AggregateQuestionsAnswers(result.rows);
+        res.status(200).json(result);
+    }catch(err){
+        console.log(err)
+    }
+    finally{
+        con.release();
+    }
 })
 person.get('/smallprofile/:username',async(req,res)=>{
     const {username} = req.params;
@@ -210,7 +232,22 @@ person.get('/getStudentCourses/:s_name',async(req,res)=>{
         console.log(err);
     }
 })
-
+person.get('/getfulldata/:username',async(req,res)=>{
+    const {username} = req.params;
+    let con;
+    try{
+        con = await client.connect();
+        let sqlCommand = `SELECT * FROM students WHERE username='${username}';`;
+        const {rows} = await con.query(sqlCommand);
+        if (rows.length > 0)
+            return res.status(200).json(rows[0]);
+        return res.status(404).json({msg:"This userNot Exisit"});
+    }catch(err){
+        console.log(err)
+    }finally{
+        con.release();
+    }
+})
 person.get('/personalInfo/:student_name',async(req,res)=>{
     // don't forget to add badges count and auth for that.
     const {student_name} = req.params;
@@ -290,19 +327,11 @@ person.get('/getStudnetPersonalDetails/:student_id',async(req,res)=>{
         sqlCommand = `
         SELECT * FROM (SELECT
             *,
-         ROW_NUMBER() OVER (ORDER BY points) AS row_rank
+         ROW_NUMBER() OVER (ORDER BY points DESC) AS row_rank
          FROM
          students) AS ranked
          WHERE ranked.student_id = '${student_id}';`
          const {rows} = await con.query(sqlCommand) 
-         sqlCommand = `
-         SELECT * FROM (SELECT
-             *,
-          ROW_NUMBER() OVER (ORDER BY points) AS row_rank
-          FROM
-          students) AS ranked
-          WHERE ranked.username = '${student_id}';`
-
         const {rows:usernameData} = await con.query(sqlCommand)
         res.status(200).json({data:{...rows[0],...usernameData[0]}})
         con.release()

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import './sidebar.scss';
 import axios from 'axios';
 import { AppState } from '../../App';
-import { useParams,Link, useNavigate } from 'react-router-dom'
+import { useParams,Link, useNavigate, useSearchParams } from 'react-router-dom'
 import PersonIcon from '@mui/icons-material/Person';
 import EditIcon from '@mui/icons-material/Edit';
 import Portal from '../../Portal/Portal';
@@ -35,6 +35,10 @@ const SideBar = React.memo(() => {
         setLoading(false);
       }
     }
+
+
+
+
     if (link.includes('profile')){
       setProfilePage(true);
     }
@@ -50,16 +54,17 @@ const SideBar = React.memo(() => {
       setCourseImg({show:false,img_url:null})
     }
   },[link]);
-  //console.log(user_courses)
+
   const handleActive=(selected)=>{
       setSideBarSelected(selected)
-  }
+  } 
   const NavToRegister = ()=>{
     nav('/welcome');
   }
 
   const [profileImg,setImgProfile] = useState(null);
   const [imgFile,setImgFile]=useState(null);
+  
   const handleImageUpload = (e)=>{
     const file = e.target.files[0];
     setImgFile(file)
@@ -93,19 +98,48 @@ const SideBar = React.memo(() => {
     if(file)
       reader.readAsDataURL(file);
   }
-  
+  let [searchParams] = useSearchParams();
+  const username = searchParams.get('username');
+  const student_id = searchParams.get('student_id');
+  const [userData,setUserData] = useState({});
+  const [otherProfile,setOtherProfile] = useState(false);
+
+  useEffect(()=>{
+    const fetchPerson = async()=>{
+      
+      try{
+        const {data,statuts} = await axios.get(`${process.env.REACT_APP_API_URL}/person/getfulldata/${username}`)
+        if(statuts === 200){
+          setUserData(data);
+        }
+      }catch(err){
+        console.log(err);
+      }
+    }
+    if(stundetInfo.username !== username){
+      setOtherProfile(true);
+      fetchPerson();
+    }else{
+      setOtherProfile(false);
+    }
+  },[link])
 
   return (
     <div className={`sidebar ${dark?'dark':''}`}>
       <div className="sidebar-logo">
         {
-          profilePage?
+          profilePage ?
           <div className="profile_img">
             <label htmlFor="profile_img">
-              <EditIcon className='edit'/>
+              {!otherProfile && <EditIcon className='edit'/>}
             </label>
             <input accept='image/*'onChange={handleImageUpload} type="file" name="" id="profile_img" />
-            {stundetInfo?.img_url ? <img className='profile-img' src={stundetInfo.img_url}/>:<PersonIcon className='person'/>}
+            
+            {
+              !otherProfile?
+              stundetInfo?.img_url? <img className='profile-img' src={stundetInfo.img_url}/>:<PersonIcon className='person'/>:
+              userData?.img_url? <img className='profile-img' src={userData.img_url}/>:<PersonIcon className='person'/>
+            }
             
           </div>
           :
@@ -117,7 +151,7 @@ const SideBar = React.memo(() => {
         }
       </div>
       <hr/>
-      {profilePage && <PersonalDetail user_id={user_id}/>}
+      {profilePage && <PersonalDetail user_id={student_id}/>}
         <div className="side-bar-items">
           <h2 className='title'>You</h2>
           <ul className='list'>
@@ -127,10 +161,12 @@ const SideBar = React.memo(() => {
                 My List
               </li>
           </Link>
+          <Link to={`myquestions/${stundetInfo.username}`}>
             <li className='items'>
               <i className="fi fi-sr-messages-question"></i>
                 My Questions
               </li>
+          </Link>
             <li className='items'>
                 <i className="fi fi-sr-answer"></i>
                 My Answers

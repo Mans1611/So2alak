@@ -13,12 +13,11 @@ export class Lists{
             if (student_id){
                 let cachedValue = undefined;
                 cachedValue = await redisClient.get(`lists:${student_id}`)
+                console.log(cachedValue);
                 if(isValidJSON(cachedValue)){
                     cachedValue = JSON.parse(cachedValue)
                 }
-
                 if(cachedValue && cachedValue.length !== 0){
-
                     return res.status(200).json({data:cachedValue})
                 }
                 const {rows} = await con.query(sqlCommand); // sending the query above to the database instance 

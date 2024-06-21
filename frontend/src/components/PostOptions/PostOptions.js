@@ -6,8 +6,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { AppState } from '../../App';
 import axios from 'axios';
+import { useHidePop, userHidePop } from '../../hooks/useHidePop';
 
-const PostOptions = ({question,setDeletedQuestion}) => {
+const PostOptions = ({question,setDeletedQuestion,setShowQuesOptions}) => {
     const handleClick = (e)=>{
         e.stopPropagation()
     }
@@ -25,8 +26,10 @@ const PostOptions = ({question,setDeletedQuestion}) => {
             console.log(err)
           }
     }
+    const {divRef} = useHidePop(setShowQuesOptions);
+
   return (
-    <div onClick={handleClick} className='post_options'>
+    <div ref={divRef} onClick={handleClick} className='post_options'>
         <ul>
             {
               AUTH && 

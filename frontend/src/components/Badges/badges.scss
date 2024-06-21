@@ -1,4 +1,8 @@
 @import '../../mainStyle.scss';
+.badges_in, .score_in {
+    background-color: #082233;
+    box-shadow: 1px 1px 4px #217487;
+}
 .badges {
     flex: 6;
     .badges_in{

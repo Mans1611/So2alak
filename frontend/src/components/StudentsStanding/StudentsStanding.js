@@ -3,6 +3,7 @@ import './studentsstanding.scss'
 import standing from '../../assets/standing.png'
 import StudentRow from '../StudentRow/StudentRow'
 const StudentsStanding = ({user_standing}) => {
+  console.log(user_standing[0])
   return (
     <div className='students_standing'>
        <div className="header">

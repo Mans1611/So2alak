@@ -1,0 +1,10 @@
+@import '../../mainStyle.scss';
+.myquestions-page{
+    padding-left: 250px;
+    flex: 8;   
+    .username-title{
+        padding: 20px;
+        font-size: 62px;
+        color: $semi-dark-blue;
+    }
+}

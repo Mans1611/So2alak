@@ -1,4 +1,8 @@
 @import '../../mainStyle.scss';
+.standing-link{
+    text-decoration: none;
+    color: $semi-dark-blue;
+}
 .grid{
     display: grid;
     grid-template-columns: 10% 40% 20% 30%;
@@ -13,7 +17,7 @@
         height: 20px;
         left: 2px;
     }
-    &.active{
+    &.active, &:hover{
         background-color: $sky-blue;
         color: #ffffff;
     }

@@ -22,8 +22,7 @@ export const FilterSQLQuery = (filter='all',student_id,student_name)=>{
             LEFT JOIN (SELECT course_name,course_id FROM courses) AS cor ON cor.course_id = q.course_id
             INNER JOIN students_courses AS SC ON SC.student_name = '${student_name}' AND cor.course_id = SC.course_id
             LEFT JOIN activity_log as al ON al.question_id = q.question_id
-            WHERE al.student_id = '${student_id}'
-            AND ans.ans_verified = true
+            WHERE ans.ans_verified = true
             ORDER BY q.q_time DESC , ans_verified DESC , ans_upvotes DESC; ` 
             return sqlCommand
         case 'unsolved':
@@ -32,7 +31,7 @@ export const FilterSQLQuery = (filter='all',student_id,student_name)=>{
             LEFT JOIN (SELECT course_name,course_id FROM courses) AS cor ON cor.course_id = q.course_id
             INNER JOIN students_courses AS SC ON SC.student_name = '${student_name}' AND cor.course_id = SC.course_id
             LEFT JOIN activity_log as al ON al.question_id = q.question_id
-            WHERE al.student_id = '${student_id}'
+           
             AND ans.q_id IS NULL
             ORDER BY q.q_time DESC , ans_verified DESC , ans_upvotes DESC; ` 
             return sqlCommand
@@ -42,7 +41,7 @@ export const FilterSQLQuery = (filter='all',student_id,student_name)=>{
             LEFT JOIN (SELECT course_name,course_id FROM courses) AS cor ON cor.course_id = q.course_id
             INNER JOIN students_courses AS SC ON SC.student_name = '${student_name}' AND cor.course_id = SC.course_id
             LEFT JOIN activity_log as al ON al.question_id = q.question_id
-            WHERE al.student_id = '${student_id}'
+           
             ORDER BY q.q_upvotes DESC, ans_verified DESC , ans_upvotes DESC;` 
             return sqlCommand
     }

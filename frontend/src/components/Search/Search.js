@@ -2,6 +2,7 @@ import  axios  from 'axios';
 import React, { useEffect, useRef, useState } from 'react'
 import SearchItems from './SearchItems';
 import { useNavigate } from "react-router-dom";
+import { useHidePop } from '../../hooks/useHidePop';
 const Search = () => {
     const [search,setSearchString] = useState('');
     const [searchResult,setSearchResult] = useState([]);
@@ -52,42 +53,27 @@ const Search = () => {
             setShowSearch(false);
         }
     }
-
-    const divRef = useRef(null);
-    const handleClickOutside = (event) => {
-        if (divRef.current && !divRef.current.contains(event.target)) {
-            setShowSearch(false);
-        }
-    };
-    useEffect(()=>{
-        document.addEventListener('mousedown', handleClickOutside);
-    
-        return () => {
-        // Cleanup the event listener on component unmount
-        document.removeEventListener('mousedown', handleClickOutside);
-        };
-
-    })
+    const {divRef} = useHidePop(setShowSearch)
     
     return (
-    <div ref={divRef} onClick={hideSearchResult} className="search-wrapper">
-        <input 
-        onKeyUp={handleKeyUp} 
-        ref={searchInput} 
-        onChange={handleSearch} value={search}
-        placeholder='Search for question, course,colleague..' id='search' type="text" name="search-box"/>
-        {(searchResult.students?.length > 0 || 
-            searchResult.questions?.length || 
-            searchResult.courses?.length) 
-            && 
-            showSearch && 
-            (<div className="search-result">
-                {searchResult.students?.length > 0 && <SearchItems setShowSearch={setShowSearch} title={'Students'} items={searchResult.students}/>}
-                {searchResult.questions?.length > 0 && <SearchItems setShowSearch={setShowSearch}  title={'Questions'} items={searchResult.questions}/>}
-                {searchResult.courses?.length > 0 && <SearchItems setShowSearch={setShowSearch} title={'Courses'} items={searchResult.courses}/>}
-            </div>)
-        }
-    </div>
+        <div ref={divRef} onClick={hideSearchResult} className="search-wrapper">
+            <input 
+            onKeyUp={handleKeyUp} 
+            ref={searchInput} 
+            onChange={handleSearch} value={search}
+            placeholder='Search for question, course,colleague..' id='search' type="text" name="search-box"/>
+            {(searchResult.students?.length > 0 || 
+                searchResult.questions?.length || 
+                searchResult.courses?.length) 
+                && 
+                showSearch && 
+                (<div className="search-result">
+                    {searchResult.students?.length > 0 && <SearchItems setShowSearch={setShowSearch} title={'Students'} items={searchResult.students}/>}
+                    {searchResult.questions?.length > 0 && <SearchItems setShowSearch={setShowSearch}  title={'Questions'} items={searchResult.questions}/>}
+                    {searchResult.courses?.length > 0 && <SearchItems setShowSearch={setShowSearch} title={'Courses'} items={searchResult.courses}/>}
+                </div>)
+            }
+        </div>
   )
 }
 
