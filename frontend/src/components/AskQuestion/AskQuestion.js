@@ -112,7 +112,10 @@ const AskQuestion = ({isAnswer,questionDetails}) => {
    
     const clearPlaceholder = ()=>{
         questionWrapper.current.style.height = 'fit-content'
-        if(questionInput.current.innerHTML.trim() === '' || questionInput.current.innerHTML === 'Ask Question')
+        if(questionInput.current.innerHTML.trim() === '' || 
+            questionInput.current.innerHTML === 'Ask Question' || 
+            questionInput.current.innerHTML.includes('Answer to')
+        )
             questionInput.current.innerHTML= '';
     }
     const HandleInput = ()=>{

@@ -10,7 +10,6 @@ import PostOptions from '../PostOptions/PostOptions';
 import { io } from 'socket.io-client';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
-import ShareIcon from '@mui/icons-material/Share';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import ListOptions from '../ListOptions/ListOptions';
 import { useAddToList } from '../../hooks/useAddToList';
@@ -18,6 +17,7 @@ import Portal from '../../Portal/Portal';
 import QuestionModal from '../../Portal/QuestionModal/QuestionModal';
 import QuestionDetails from './QuestionDetails';
 import HelpCircle from './HelpCircle';
+import ShareButton from '../ShareButton/ShareButton';
 const socket = io(process.env.REACT_APP_API_URL);
 
 const Question = ({singleQuestion,question,setQuestion}) => {
@@ -129,7 +129,7 @@ const Question = ({singleQuestion,question,setQuestion}) => {
                                     question={question}/>
                             }
                         </div>
-                        <ShareIcon className='post-icons'/>
+                        <ShareButton/>
                     </div>
                 </div>
                 <div className="options">

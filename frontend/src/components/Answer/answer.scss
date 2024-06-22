@@ -1,8 +1,32 @@
 @import './../../mainStyle.scss';
 @import './../../.mainStyle.scss';
+.modal{
+    .answer{
+        margin-left: 0px;
+        .help-counts{
+            font-size: 18px !important;
+        }
+        .verified_ans{
+            width: 30px !important;
+            height: 30px !important;
+            margin-top: 15px;
+            
+        }
+        .question-content{
+            padding: 5px !important;
+            p{
+                font-size: 18px !important;
+            }
+            .time{
+                font-size: 12px !important;
+                font-weight: 500;
+
+            }
+        }
+    }
+}
 .answer{
     margin-left: 100px;
-
     .help-counts{
         font-size: 20px !important;
     }

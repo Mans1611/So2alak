@@ -1,3 +1,4 @@
+@import '../../.mainStyle.scss';
 .modal{
     background-color: #0d0d0de4;
     .question{
@@ -14,8 +15,6 @@
         .img-container{
             flex: 8;
             border-radius: inherit;
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
             overflow: hidden;
             .img-modal{
                 width: 100%;
@@ -29,16 +28,18 @@
             flex: 4;
             background-color: #e1e1e1;
             padding: 10px;
+            .question{
+                margin-bottom: 20px;
+            }
             .question-content{
                 flex: 8;
-                padding: 10px;
-                padding-top: 20px;
-                font-size: 30px;
+                padding: 15px;
+                font-size: 24px;
                 font-weight: 600;
                 margin: auto;
-                border-radius: 10px;
+                border-radius: 15px;
                 background-color: #d1d1d1;
-
+                color: $semi-dark-blue;
             }
             .question-options{
                 display: flex;
@@ -46,4 +47,18 @@
             }
         }
     }
+    &.dark{
+        .question-modal-container{
+            background-color: $fully-dark-blue;
+            .question-details{
+                flex: 4;
+                background-color: $fully-dark-blue;
+                .question-content{
+                    background-color: #051119;
+                    color: $full-white;
+                }
+            }
+        }
+    }
 }
+

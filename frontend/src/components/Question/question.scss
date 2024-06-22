@@ -197,4 +197,10 @@
         }
     }
 }
+.dark{
+
+    .question-options{
+        color: $light-white !important; 
+    }
+}
 @include blinking;
