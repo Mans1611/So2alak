@@ -1,18 +1,18 @@
+import React, { useContext, useEffect, useState } from 'react'
+
+import './myanswers.scss';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 import { AppState } from '../../App';
 import LoadingQuestion from '../../components/Question/LoadingQuestion';
-import QuestionContainer from '../../components/QuestionContainer/QuestionContainer';
-import './myquestions.scss';
-
-import React, { useContext, useEffect, useState } from 'react'
 import Question from '../../components/Question/Question';
-import { useParams } from 'react-router-dom';
 
-const MyQuestions = () => {
-    const {stundetInfo} = useContext(AppState);
+const MyAnswers = () => {
     const [questions,setQuestions] = useState([]);
     const [loading,setLoading]=useState(false);
     const {username} = useParams();
+    const {stundetInfo} = useContext(AppState);
+    
     useEffect(()=>{
         const fetchMyQuestions = async()=>{
             try{
@@ -27,10 +27,11 @@ const MyQuestions = () => {
         }
         fetchMyQuestions()
     },[])
+
   return (
-    <div className='myquestions-page'>
-        <h1 className='username-title'>
-            { username === stundetInfo.username ? 'My' : username+`'s`} Questions 
+    <div className='myanswers-page'>
+          <h1 className='username-title'>
+            { username === stundetInfo.username ? 'My' : username+`'s`} Answers 
         </h1>
         <div className="questions-list">
           {loading ? <LoadingQuestion/> : questions.map((question,key)=><Question question={question} key={key}/>)}
@@ -39,4 +40,4 @@ const MyQuestions = () => {
   )
 }
 
-export default MyQuestions
+export default MyAnswers

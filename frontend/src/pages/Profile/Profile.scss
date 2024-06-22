@@ -6,7 +6,7 @@
     flex: 10;
     width: 100%;
     .content {
-        min-height: 92vh;
+        min-height: fit-content;
         .info {
             min-height: fit-content;
             .preUpper {
@@ -20,6 +20,13 @@
                 align-items: center;
                 font-size: 28px;
                 font-weight: 600;
+                margin-top: 30px;
+                .badges-wrapper{
+                    padding: 10px;
+                    background-color:#f0f0f0 ;
+                    width: 80%;
+                    border-radius: 10px;
+                }
                 .score {
                     @include centerChild;
                     flex: 5;
@@ -109,9 +116,13 @@
             .info{
                 .upper{
                     color: #8deaff;
-                    .badges_in, .score_in {
+                    .badges-wrapper{
                         background-color: #082233;
-                        box-shadow: 1px 1px 4px #217487;
+
+                    }
+                    .score_in {
+                        background-color: #082233;
+                       
                     }
                 }
                 .lower{

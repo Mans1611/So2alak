@@ -19,17 +19,20 @@ const Badges = ({user_id}) => {
     },[])
   return (
     <div className='badges'>
-        <div className="badges_in">
-        <h3>Badges</h3>
-        {
-            badges?.length>0?
-        badges?.map((badge)=>{
-            return AllBadges.find(Allbadge=> Allbadge.badge_name === badge.badge_name)
-        }).map((badge,key)=><Badge key={key} badge={badge}/>):
-        <div>Haven't won any badges yet</div>
-        }
+        <div  className="badges-wrapper">
+
+       
+            <h3>Badges</h3>
+            <div className="badges_in">
+            {
+                badges?.length>0?
+            badges?.map((badge)=>{
+                return AllBadges.find(Allbadge=> Allbadge.badge_name === badge.badge_name)
+            }).map((badge,key)=><Badge key={key} badge={badge}/>):
+            <div>Haven't won any badges yet</div>
+            }
+            </div>
         </div>
-        
     </div>
   )
 }

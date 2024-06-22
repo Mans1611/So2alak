@@ -22,6 +22,7 @@ import ListsPage from "./pages/Lists/ListsPage";
 import LeaderBoard from "./pages/LeaderBoard/LeaderBoard";
 import ListPage from "./pages/ListPage/ListPage";
 import MyQuestions from './pages/MyQuestions/MyQuestions.js';
+import MyAnswers from "./pages/MyAnswers/MyAnswers.js";
 
 export const AppState = createContext(null); // I export it to be accessable in the whole components
 
@@ -67,6 +68,7 @@ function App() {
               <Route path="feedpage" element={<FeedPage/>} />
               <Route path="leaderboard" element={<LeaderBoard/>} />
               <Route path="myquestions/:username" element={<MyQuestions/>} />
+              <Route path="myanswers/:username" element={<MyAnswers/>} />
               <Route path="profile/" element={<Profile />} />
               <Route path=":course_code" element={<Course/>} />
               <Route path="question/:question_id" element={<FullQuestion/>} />

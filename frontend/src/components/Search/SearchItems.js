@@ -35,9 +35,9 @@ const SearchItems = ({setShowSearch,title,items}) => {
             {items.map((item,key)=>
                   <li onClick={()=>setShowSearch(false)} className='search-li'>
                 <Link key={key} to = {`/question/${item.question_id}`}>
-                      <div className="flex">
-                        <img src={avatar} alt="" srcset="" />
+                      <div className="flex flex-search">
                         <div className="main_title">{item.question?.slice(0,60)}</div>
+                       {item.img_url && <img src={item.img_url} alt="" srcset="" />}
                       </div>
                 </Link>
                   </li>

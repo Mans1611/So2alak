@@ -21,11 +21,11 @@ const PersonalDetail = ({user_id}) => {
   return (
     <>
     
-        <div className='username'>Username : {userDetails.username}</div>
         <div className='personal_details'>
-            <div>Level: {userDetails.student_level}</div>
-            <div>Department : {userDetails.student_department?userDetails.student_department:'-'}</div>
-            <div>Rank : {userDetails.row_rank}</div>
+            <div className='username'>Username : {userDetails.username}</div>
+            <div className='username'>Level: {userDetails.student_level}</div>
+            <div className='username'>Department : {userDetails.student_department?userDetails.student_department:'-'}</div>
+            <div className='username'>Rank : {userDetails.row_rank}</div>
         </div>
         <hr/>
     </>

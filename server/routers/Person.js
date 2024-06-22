@@ -147,6 +147,26 @@ person.get('/myquestions/:username',async(req,res)=>{
         con.release();
     }
 })
+person.get('/myanswers/:username',async(req,res)=>{
+    const {username} = req.params;
+    let con;
+    try{
+        con = await client.connect();
+        let sqlCommand = `SELECT 
+                * FROM answers as ans
+                LEFT JOIN questions as q
+                ON ans.q_id = q.question_id
+                WHERE ans_username = '${username}'`;
+        let result = await con.query(sqlCommand);
+        result = AggregateQuestionsAnswers(result.rows);
+        res.status(200).json(result);
+    }catch(err){
+        console.log(err)
+    }
+    finally{
+        con.release();
+    }
+})
 person.get('/smallprofile/:username',async(req,res)=>{
     const {username} = req.params;
     let con;

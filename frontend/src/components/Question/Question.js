@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import './question.scss'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Answer from '../Answer/Answer';
 import { AppState } from '../../App';
 import { getTime } from '../../utilis/getTime';
@@ -93,6 +93,7 @@ const Question = ({singleQuestion,question,setQuestion}) => {
             navbar.style.zIndex = 10;
         }
     },[showQuestionModal]);
+    const {username} = useParams();
     if(deletedQuestion){
         return (<div className='question'>
             <div className="flex">
@@ -106,11 +107,10 @@ const Question = ({singleQuestion,question,setQuestion}) => {
     <>
         <div onClick={showFullQuestion} className={`question ${dark && 'dark'}`}>
             <QuestionDetails question={question}/>
-            
             <div className="flex">
                 <HelpCircle question={question} circle={circle} stoplimit={stoplimit}/>
                 <div className='question-wrapper'>
-                    <div ref={questionContent} className="question-content">
+                    <div ref={questionContent} className={`question-content ${username === question.q_username?'active':''}`}>
                         {question?.img_url && <img src={question?.img_url} className='ques_img' />}
                         <p ref={questionText}></p>
                         <div className="time">asked {getTime(question.q_time)}</div>

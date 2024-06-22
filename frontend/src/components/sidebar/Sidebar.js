@@ -36,9 +36,6 @@ const SideBar = React.memo(() => {
       }
     }
 
-
-
-
     if (link.includes('profile')){
       setProfilePage(true);
     }
@@ -64,7 +61,7 @@ const SideBar = React.memo(() => {
 
   const [profileImg,setImgProfile] = useState(null);
   const [imgFile,setImgFile]=useState(null);
-  
+
   const handleImageUpload = (e)=>{
     const file = e.target.files[0];
     setImgFile(file)
@@ -155,22 +152,24 @@ const SideBar = React.memo(() => {
         <div className="side-bar-items">
           <h2 className='title'>You</h2>
           <ul className='list'>
-          <Link to={`lists/${stundetInfo.student_id}`}>
-            <li className='items'>
-              <i className="fi fi-sr-home"></i>
-                My List
+          <Link onClick={()=>handleActive('My Lists')} to={`lists/${stundetInfo.student_id}`}>
+            <li  className={`items  ${(sidebarSelected?.includes('Lists'))?'active':''}`}>
+              <i  className="fi fi-sr-home"></i>
+                My Lists
               </li>
           </Link>
-          <Link to={`myquestions/${stundetInfo.username}`}>
-            <li className='items'>
+          <Link  onClick={()=>handleActive('My Questions')} to={`myquestions/${stundetInfo.username}`}>
+            <li  className={`items  ${(sidebarSelected?.includes('Questions'))?'active':''}`}>
               <i className="fi fi-sr-messages-question"></i>
                 My Questions
               </li>
           </Link>
-            <li className='items'>
+          <Link  onClick={()=>handleActive('My Answers')} to={`myanswers/${stundetInfo.username}`}>
+            <li  className={`items  ${(sidebarSelected?.includes('Answers'))?'active':''}`}>
                 <i className="fi fi-sr-answer"></i>
                 My Answers
             </li>
+          </Link>
         
           </ul>
       </div>
@@ -192,7 +191,7 @@ const SideBar = React.memo(() => {
              {user_courses.map((course,id)=>
              <Link key={id} to={`${course.course_id}`}>
                 <li key={course.course_id} onClick={()=>handleActive(course.course_id)} className={`items ${
-                  ( sidebarSelected === course.course_id)?'active':''}`}>{course.course_name}
+                  (sidebarSelected === course.course_id)?'active':''}`}>{course.course_name}
                   </li>
               </Link>
              )}

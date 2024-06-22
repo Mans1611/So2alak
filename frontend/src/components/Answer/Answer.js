@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react'
 import '../Question/question.scss';
 import './answer.scss';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { getTime } from '../../utilis/getTime';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
@@ -73,11 +73,12 @@ const Answer = ({answer}) => {
         }
         }
     }
+    const {username} = useParams();
     if(answer.answer){
         setTimeout(()=>{
             answerText.current.innerHTML = answer.answer
         },0)
-
+       
         return (
             <div className='answer question'>
                 <div className="question-details">
@@ -92,7 +93,7 @@ const Answer = ({answer}) => {
                         </div>}
                     </div>
                     <div className='question-wrapper'>
-                        <div className="question-content">
+                        <div className={`question-content ${username === answer.ans_username ? 'active':''}`}>
                         {answer.ans_img_url && <img src={answer.img_url} className='ques_img' />}
                             <p ref={answerText}></p>
                             <div className="time">answered {getTime(answer.ans_time)}</div>

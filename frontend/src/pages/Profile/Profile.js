@@ -6,7 +6,6 @@ import Calander from '../../components/Calander/Calander';
 import { useParams, useSearchParams } from 'react-router-dom'
 import Badges from '../../components/Badges/Badges';
 import PersonalData from '../../components/PersonalData/PersonalData';
-import axios from 'axios';
 const Profile = () => {
     // get the user id or name for the link as a params.
 
@@ -17,20 +16,7 @@ const Profile = () => {
     const student_id = searchParams.get('student_id');
 
     const {dark,} = useContext(AppState);
-    const [userData,setUserData] = useState({})
     
-    // useEffect(()=>{
-    //     const fetchPerson = async()=>{
-    //         try{
-    //             const res = await axios.get(`${process.env.REACT_APP_API_URL}/person/personalInfo/${username}`);
-    //             if(res.status === 200)
-    //                 setUserData(res.data.data);
-    //         }catch(err){
-    //             console.log(err)
-    //         }
-    //     }
-       
-    // })
  
 
     return (

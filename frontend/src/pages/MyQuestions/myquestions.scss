@@ -1,10 +1,42 @@
 @import '../../mainStyle.scss';
-.myquestions-page{
+.myquestions-page,.myanswers-page{
     padding-left: 250px;
     flex: 8;   
     .username-title{
         padding: 20px;
         font-size: 62px;
         color: $semi-dark-blue;
+    }
+    
+}
+.myquestions-page{
+    .question:not(.answer){
+        .question-content{
+            &.active{
+                background-color: #32cbde !important;
+            }
+        }
+    }
+}
+.myanswers-page{
+    .answer{
+        .question-content{
+            &.active{
+                background-color: #32cbde !important;
+            }
+        }
+    }
+}
+.dark{
+    .myquestions-page{
+        .username-title{
+            color: $full-white;
+        }
+        .question-content{
+            &.active{
+                background-color: #005467 !important;
+            }
+    
+        }
     }
 }
