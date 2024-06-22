@@ -4,9 +4,11 @@ import axios from 'axios'
 
 import { useParams,Link, useNavigate } from 'react-router-dom'
 import { AppState } from '../../App'
+import { ProfileContext } from '../sidebar/Sidebar'
 const PersonalDetail = ({user_id}) => {
-    const [userDetails,setUserDetails] = useState({});
+    
     const {stundetInfo} = useContext(AppState); 
+    const {userDetails,setUserDetails} = useContext(ProfileContext);
     useEffect(()=>{
         const fetchPersonalDetails = async()=>{
             try{

@@ -7,6 +7,9 @@ import axios from 'axios'
 import { useParams } from 'react-router-dom'
 import QuestionFilter from '../QuestionFilter/QuestionFilter';
 import { FeedPageContext } from '../../pages/FeedPage/FeedPage';
+import { io } from 'socket.io-client';
+
+const socket = io(process.env.REACT_APP_API_URL);
 
 const reducer = (state,{type})=>{
     switch(type){
@@ -87,8 +90,16 @@ const QuestionContainer = React.memo(()=>{
     };
     data();
   },[sidebarSelected,course_code,filter])
-    
   
+  useEffect(()=>{
+   
+    if(socket.connected){
+      socket.on('postQuestion',(newQuestion)=>{
+        setQuestions(questions=>[newQuestion,...questions]);
+      })
+    }
+  },[socket])
+
   return (
     <div  className='questions-container'>
         <QuestionFilter filter = {filter} dispatchFilter={dispatchFilter}/>

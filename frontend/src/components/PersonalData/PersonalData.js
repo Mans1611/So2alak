@@ -13,7 +13,6 @@ const PersonalData = () => {
             try{
                 const result = await axios.get(`${process.env.REACT_APP_API_URL}/person/personalInfo/${username}`)
                 setData(result.data);
-                console.log(result.data)
             }catch(err){
                 console.log(err);
             }

@@ -55,12 +55,10 @@ post.get('/allTeacherQuestions/:teacher_id',async(req,res)=>{
         let sqlCommand = ` SELECT * FROM questions AS q
         LEFT JOIN (
             SELECT * FROM answers  
-            SELECT * FROM answers  
             ORDER BY ans_verified DESC, ans_upvotes DESC , ans_time DESC
         ) AS ans ON ans.q_id = q.question_id
         LEFT JOIN (SELECT course_name,course_id FROM courses) AS cor ON cor.course_id = q.course_id
         INNER JOIN teaching AS SC ON SC.teacher_id = '${teacher_id}' AND cor.course_id = SC.course_id
-        
         ORDER BY q.q_time DESC , ans_verified DESC , ans_upvotes DESC;`
         con = await client.connect();
         const result = await con.query(sqlCommand);
@@ -115,6 +113,8 @@ post.post('/createQuestion',uploader.single('image'),async(req,res)=>{
             const badge = await AfterQuestion(student_id,resResult,course_id,con)
             res.status(201).json({'msg':'Your question is posted',data:resResult?.rows[0],badge});
         }
+        io.emit('postQuestion',resResult.rows[0]);
+
         con.release();
     }catch(error){
         con.release();
@@ -219,6 +219,7 @@ post.put('/verifyQuestion/:q_id', async(req, res)=>{
             WHERE question_id = ${q_id};
         `;
         await con.query(sqlCommand);
+        io.emit('verifyquestion',{q_id,verified:true});
         con.release();
         res.status(200).send('Question is verified');
     } catch(err) {
@@ -312,7 +313,6 @@ post.post("/createAnswer",uploader.single('image'),async(req, res)=>{
             VALUES ('${answer}', '${ans_username}', ${question_id})
             RETURNING *;`;
         }
-
         const {rows} = await con.query(sqlCommand);
         const badge = await GiveSimpleBadge(student_id,'First Answer',null,con)
         if (badge){
@@ -418,18 +418,18 @@ post.put('/downvoteAnswer/:ans_id',async(req, res)=>{
     }
 });
 
-post.put('/verifyAnswer/:ans_id', async(req, res)=>{
-    const {ans_id} = req.params;
+post.put('/verifyAnswer', async(req, res)=>{
+    const {ans_id,q_id} = req.query;
     let con;
     try {
         con = await client.connect();
         const sqlCommand = `
             UPDATE answers 
             SET ans_verified = true
-            WHERE answer_id = ${ans_id}
-            ;`;
+            WHERE answer_id = ${ans_id};`;
+
         await con.query(sqlCommand);
-        io.emit('verifyAnswer',{ans_id,verified:true});
+        io.emit('verifyAnswer',{q_id,ans_id,verified:true});
         res.status(201).send('Answer is verified');
     } 
     catch(err) {

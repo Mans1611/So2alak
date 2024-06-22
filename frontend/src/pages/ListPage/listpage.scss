@@ -1,3 +1,4 @@
+@import '../../.mainStyle.scss';
 .listpage{
     flex: 10;
     padding-left: 250px;
@@ -6,16 +7,21 @@
         display: flex;
         justify-content: space-around;
         .pdf-btn{
+            cursor: pointer;
             background-color: #c63535;
             border-radius: 10px;
             padding: 5px;
             display: flex;
             align-items: center;
             justify-content: center;
+            color: #ffffff;
             .pdf-logo{
                 width: 25px;
                 height: 25px;
                 margin-left: 5px;
+            }
+            &.copy-btn{
+                background-color: $sky-blue;
             }
             a{
                 color: #ffffff !important;

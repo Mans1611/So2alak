@@ -1,22 +1,24 @@
-import React, { useLayoutEffect, useState } from 'react'
+import React, { useContext, useEffect, useLayoutEffect, useState } from 'react'
 import './listpage.scss';
 import List from '../../components/List/List';
 import Portal from '../../Portal/Portal';
 import CreateListModal from '../../Portal/CreateList/CreateListModal';
 import {useParams} from 'react-router-dom';
 import { useFetchLists } from '../../hooks/useFetchLists';
+import { AppState } from '../../App';
+import axios from 'axios';
 
 const ListsPage = () => {
   const [showCreateModal,setShowCreateModal] = useState(false);
   
   const {student_id} = useParams();
-  const [lists,setLists] = useFetchLists(student_id);
-  console.log(lists)
+  const {stundetInfo} = useContext(AppState);
+  const [lists,setLists] = useFetchLists(student_id,student_id === stundetInfo.student_id);
+
   const handleCreateList = ()=>{
     setShowCreateModal(true);
   }
-  
-
+ 
   useLayoutEffect(()=>{
     const navbar = document.getElementById('navbar');
     if (showCreateModal){
@@ -32,13 +34,16 @@ const ListsPage = () => {
         <h1>Your List</h1>
       </div>
       <div className="create-wrapper">
-       <button onClick={handleCreateList}>Create a List</button>
+        {
+          stundetInfo.student_id===student_id && 
+          <button onClick={handleCreateList}>Create a List</button>
+        }
       </div>
        <div className="list-container">
           {
             lists.length > 0?lists.map((list,key)=><List setLists={setLists} key = {key} list={list}/>):
             <div style={{fontSize:'30px'}} className='centerChild'>
-                create a your list now.
+                {stundetInfo.student_id === student_id? 'Create your list now' : 'This User has no lists'}
             </div>
           }
        </div>

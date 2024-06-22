@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import './sidebar.scss';
 import axios from 'axios';
 import { AppState } from '../../App';
@@ -9,6 +9,7 @@ import Portal from '../../Portal/Portal';
 import ImagePreview from '../../Portal/ImagePreview/ImagePreview';
 import PersonalDetail from '../PersonalDetail/PersonalDetail';
 
+export const ProfileContext = createContext(null);
 
 const SideBar = React.memo(() => {
   const [loading,setLoading]=useState(false);
@@ -100,7 +101,7 @@ const SideBar = React.memo(() => {
   const student_id = searchParams.get('student_id');
   const [userData,setUserData] = useState({});
   const [otherProfile,setOtherProfile] = useState(false);
-
+  const [userDetails,setUserDetails] = useState({});
   useEffect(()=>{
     const fetchPerson = async()=>{
       
@@ -113,97 +114,107 @@ const SideBar = React.memo(() => {
         console.log(err);
       }
     }
-    if(stundetInfo.username !== username){
+    if(link.includes('profile')&&stundetInfo.username !== username){
       setOtherProfile(true);
       fetchPerson();
     }else{
       setOtherProfile(false);
     }
   },[link])
-
   return (
-    <div className={`sidebar ${dark?'dark':''}`}>
-      <div className="sidebar-logo">
-        {
-          profilePage ?
-          <div className="profile_img">
-            <label htmlFor="profile_img">
-              {!otherProfile && <EditIcon className='edit'/>}
-            </label>
-            <input accept='image/*'onChange={handleImageUpload} type="file" name="" id="profile_img" />
-            
-            {
-              !otherProfile?
-              stundetInfo?.img_url? <img className='profile-img' src={stundetInfo.img_url}/>:<PersonIcon className='person'/>:
-              userData?.img_url? <img className='profile-img' src={userData.img_url}/>:<PersonIcon className='person'/>
-            }
-            
-          </div>
-          :
-          courseImg.show?
-          <img  src={courseImg.img_url}/>
-          :
-          <i className="fi fi-sr-home"></i>
-          
-        }
-      </div>
-      <hr/>
-      {profilePage && <PersonalDetail user_id={student_id}/>}
-        <div className="side-bar-items">
-          <h2 className='title'>You</h2>
-          <ul className='list'>
-          <Link onClick={()=>handleActive('My Lists')} to={`lists/${stundetInfo.student_id}`}>
-            <li  className={`items  ${(sidebarSelected?.includes('Lists'))?'active':''}`}>
-              <i  className="fi fi-sr-home"></i>
-                My Lists
-              </li>
-          </Link>
-          <Link  onClick={()=>handleActive('My Questions')} to={`myquestions/${stundetInfo.username}`}>
-            <li  className={`items  ${(sidebarSelected?.includes('Questions'))?'active':''}`}>
-              <i className="fi fi-sr-messages-question"></i>
-                My Questions
-              </li>
-          </Link>
-          <Link  onClick={()=>handleActive('My Answers')} to={`myanswers/${stundetInfo.username}`}>
-            <li  className={`items  ${(sidebarSelected?.includes('Answers'))?'active':''}`}>
-                <i className="fi fi-sr-answer"></i>
-                My Answers
-            </li>
-          </Link>
-        
-          </ul>
-      </div>
-      <hr/>
-        <div className="side-bar-items">
-            <h2 className='title'>Your Courses</h2>
-            <ul className='list'>
-      {
-        loading? 
-          <LoadingCourses/>
-          :
-          <>
-          {user_courses.length === 0 && 
-            <div className='NoCourses'>
-              <p>You have Not Register any course yet</p>
-              <button className='nav-register' onClick={NavToRegister}>Register Now</button>
+    <ProfileContext.Provider value={{userDetails,setUserDetails}}>
+      <div className={`sidebar ${dark?'dark':''}`}>
+        <div className="sidebar-logo">
+          {
+            profilePage ?
+            <div className="profile_img">
+              <label htmlFor="profile_img">
+                {!otherProfile && <EditIcon className='edit'/>}
+              </label>
+              <input accept='image/*'onChange={handleImageUpload} type="file" name="" id="profile_img" />
+              
+              {
+                !otherProfile?
+                stundetInfo?.img_url? <img className='profile-img' src={stundetInfo.img_url}/>:<PersonIcon className='person'/>:
+                userData?.img_url? <img className='profile-img' src={userData.img_url}/>:<PersonIcon className='person'/>
+              }
+              
             </div>
+            :
+            courseImg.show?
+            <img  src={courseImg.img_url}/>
+            :
+            <i className="fi fi-sr-home"></i>
+            
           }
-             {user_courses.map((course,id)=>
-             <Link key={id} to={`${course.course_id}`}>
-                <li key={course.course_id} onClick={()=>handleActive(course.course_id)} className={`items ${
-                  (sidebarSelected === course.course_id)?'active':''}`}>{course.course_name}
-                  </li>
-              </Link>
-             )}
-          </>
-            }
+        </div>
+        <hr/>
+        {profilePage && <PersonalDetail user_id={student_id}/>}
+          <div className="side-bar-items">
+            <h2 className='title'>You</h2>
+            <ul className='list'>
+            <Link onClick={()=>handleActive('My Lists')} to={`lists/${otherProfile? userDetails.student_id : stundetInfo.student_id}`}>
+              <li className={`items  ${(sidebarSelected?.includes('Lists'))?'active':''}`}>
+                <i className="fi fi-sr-home"></i>
+                {
+                  profilePage&&otherProfile ? `${userDetails.username?.slice(0,10)}'s Lists`:
+                  'My Lists'
+                }
+                </li>
+            </Link>
+            <Link  onClick={()=>handleActive('My Questions')} to={`myquestions/${otherProfile? userDetails.username : stundetInfo.username}`}>
+              <li  className={`items  ${(sidebarSelected?.includes('Questions'))?'active':''}`}>
+                <i className="fi fi-sr-messages-question"></i>
+                {
+                  profilePage&&otherProfile ? `${userDetails.username?.slice(0,10)}'s Questions`:
+                  'My Questions'
+                }
+                </li>
+            </Link>
+            <Link  onClick={()=>handleActive('My Answers')} to={`myanswers/${otherProfile? userDetails.username : stundetInfo.username}`}>
+              <li className={`items  ${(sidebarSelected?.includes('Answers'))?'active':''}`}>
+                  <i className="fi fi-sr-answer"></i>
+                  {
+                  profilePage&&otherProfile ? `${userDetails.username?.slice(0,10)}'s Answers`:
+                  'My Answers'
+                }
+              </li>
+            </Link>
+          
             </ul>
         </div>
+        <hr/>
+          <div className="side-bar-items">
+              <h2 className='title'>Your Courses</h2>
+              <ul className='list'>
         {
-          profileImg &&
-          <Portal children={<ImagePreview setImgProfile={setImgProfile} imgFile={imgFile} setProfileImage={setImgProfile} img={profileImg}/>}/>
-        }
-    </div>
+          loading? 
+            <LoadingCourses/>
+            :
+            <>
+            {user_courses.length === 0 && 
+              <div className='NoCourses'>
+                <p>You have Not Register any course yet</p>
+                <button className='nav-register' onClick={NavToRegister}>Register Now</button>
+              </div>
+            }
+              {user_courses.map((course,id)=>
+              <Link key={id} to={`${course.course_id}`}>
+                  <li key={course.course_id} onClick={()=>handleActive(course.course_id)} className={`items ${
+                    (sidebarSelected === course.course_id)?'active':''}`}>{course.course_name}
+                    </li>
+                </Link>
+              )}
+            </>
+              }
+              </ul>
+          </div>
+          {
+            profileImg &&
+            <Portal children={<ImagePreview setImgProfile={setImgProfile} imgFile={imgFile} setProfileImage={setImgProfile} img={profileImg}/>}/>
+          }
+      </div>
+    </ProfileContext.Provider>
   )
 })
 

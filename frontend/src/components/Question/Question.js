@@ -18,6 +18,7 @@ import QuestionModal from '../../Portal/QuestionModal/QuestionModal';
 import QuestionDetails from './QuestionDetails';
 import HelpCircle from './HelpCircle';
 import ShareButton from '../ShareButton/ShareButton';
+
 const socket = io(process.env.REACT_APP_API_URL);
 
 const Question = ({singleQuestion,question,setQuestion}) => {
@@ -67,6 +68,18 @@ const Question = ({singleQuestion,question,setQuestion}) => {
                         ...state,
                         answers:[data,...state.answers]
                     }))
+                }
+            })
+            socket.on('verifyAnswer',({q_id,ans_id,verified})=>{
+                console.log("on verifing")
+                if(q_id === question.question_id){
+                    setQuestion(ques=>{
+                        return {...ques,answers:ques.answers.map((ans)=>{
+                            if(ans.ans_id === ans_id)
+                                return {...ans,ans_verified:true}
+                            return ans
+                        })}
+                    })
                 }
             })
         }

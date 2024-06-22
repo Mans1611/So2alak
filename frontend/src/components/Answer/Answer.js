@@ -12,16 +12,20 @@ import { AppState } from '../../App';
 import { io } from 'socket.io-client';
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import axios from 'axios';
-const intialState = {
+import VerifiedIcon from '@mui/icons-material/Verified';
+
+let intialState = {
     upvote:false,
     downvote:false,
     upvote_count:0,
     downvote_count:0
 }
 
+
 const reducer = (state,{type})=>{
     switch(type){
-        case 'upvote' : 
+        case 'upvote' :
+           
         return {
             downvote:false,
             upvote:!state.upvote,
@@ -29,6 +33,7 @@ const reducer = (state,{type})=>{
             downvote_count : state.downvote ?  state.downvote_count - 1 : state.downvote_count 
         }
         case 'downvote' : 
+
         return {
             upvote:false,
             downvote:!state.downvote,
@@ -44,27 +49,35 @@ const reducer = (state,{type})=>{
 
 const socket = io(process.env.REACT_APP_API_URL);
 const Answer = ({answer}) => {
-    
+    intialState = {
+        upvote:false,
+        downvote:false,
+        upvote_count:answer.ans_upvotes,
+        downvote_count:answer.ans_downvotes
+    }
     const [answerState,dispatch] = useReducer(reducer,intialState);
     const {isTeacher} = useContext(AppState); 
     
-    const handleUpVotes = (e)=>{
+    const handleUpVotes = async(e)=>{
         e.stopPropagation();
         dispatch({type:'upvote'})
+        await axios.put(`${process.env.REACT_APP_API_URL}/post/upvoteAnswer/${answer.answer_id}`);
     }
-    const handleDownVotes = (e)=>{
+    const handleDownVotes = async(e)=>{
         e.stopPropagation();
-        dispatch({type:'downvote'})
+        dispatch({type:'downvote'});
+        await axios.put(`${process.env.REACT_APP_API_URL}/post/downvoteAnswer/${answer.answer_id}`);
     }
     const navToProfile = (e)=> e.stopPropagation(); 
     const answerText = useRef(null);
     const [isVerified,setIsVerified] = useState(answer.ans_verified);
 
     
-    const handleVerify = async()=>{
+    const handleVerify = async(e)=>{
+        e.stopPropagation();
         if(isTeacher){
             try{
-                const res = await axios.put(`${process.env.REACT_APP_API_URL}/post/verifyAnswer/${answer.answer_id}`)
+                const res = await axios.put(`${process.env.REACT_APP_API_URL}/post/verifyAnswer?ans_id=${answer.answer_id}&q_id=${answer.q_id}`)
                 if(res.status === 201){
                     setIsVerified(true);
                 }
@@ -89,7 +102,9 @@ const Answer = ({answer}) => {
                         { isVerified && <img className='verified_ans' src={verified}/>}
                         {isTeacher && !isVerified  && 
                         <div className='verified_ans '>
-                            <DoneOutlineIcon onClick={handleVerify}  className='verify_btn'/>
+                            <div onClick={handleVerify} className="circle verify_btn">
+                                <VerifiedIcon/>
+                            </div>
                         </div>}
                     </div>
                     <div className='question-wrapper'>
