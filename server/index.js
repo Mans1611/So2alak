@@ -60,13 +60,15 @@ io.on('connection',(socket)=>{
     
 })
 
-export const channel = await ConnectToChannel(); // creating channel for message queue and send message to othe microservives.
+ // creating channel for message queue and send message to othe microservives.
 await intializeRedis(); // intiating the redis instance with the cloud.
 
+export const channel = await ConnectToChannel();
 server.listen(port,async ()=>{
     console.log(`http://localhost:${port}`);
     try{
     }catch(err){
+      
         console.log(err)
     }
 })

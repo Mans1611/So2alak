@@ -1,0 +1,45 @@
+version: "3"
+services:
+  postgres:
+    image: postgres
+    container_name: postgres-sql-server 
+    environment:
+      - POSTGRES_DB=so2alak
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mans1611
+      - POSTGRES_PORT=5432
+    volumes:
+      - postgres-sql-volume:/var/lib/postgres/data
+      - ./so2alak.dump:/backup/so2alak.dump
+      - ./datareplication.sh:/docker-entrypoint-initdb.d/init.sh
+    ports:
+      - "5432:5432"
+  so2alak-server:
+    build: .
+    container_name: so2alak-server-container
+    ports:
+      - "8000:8000"
+    volumes:
+      - postgres-sql-volume:/var/lib/postgres/data
+      - ./:/var/lib/postgres/data
+    env_file:
+      - ./.env
+  front-end:
+    build: ../frontend
+    env_file:
+      - ../frontend/.env
+    ports:
+      - "3000:3000"
+  rabbitMQ:
+    image: rabbitmq
+    container_name: rabbitMQ 
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  nginx:
+    image: nginx
+    container_name: LoadBalancer
+    ports:
+      - "80:80"
+volumes:
+  postgres-sql-volume:

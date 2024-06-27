@@ -21,6 +21,7 @@ import {v2 as cloudinary} from 'cloudinary';
 import { AfterQuestion } from "../utilis/checkActivity.js";
 import { TrendingQueue } from "../RabbitMQ/Queues/TrendingQueue.js";
 import { Answers } from "../Controllers/Answers.js";
+import { FilterSQLTeacher } from "../utilis/FilterSQLTeacher.js";
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUDNAME,
@@ -30,14 +31,21 @@ cloudinary.config({
 
 
 post.get('/allquestions/',async(req,res)=>{
+    console.log("hello manosur")
     const {student_name,student_id,filter} = req.query;
     try {
         const con = await client.connect();
+        console.log("passed after TCP/ connection");
          //LIMIT ${length} OFFSET ${page * 5} this for pagination.
-        let sqlCommand = FilterSQLQuery(filter,student_id,student_name); // this will return the appropirate sql query. based on filter which is send
+        let sqlCommand = `SELECT table_name
+                FROM information_schema.tables
+                WHERE table_schema = 'public';`
+        console.log(await con.query(sqlCommand).rows);
+
+        sqlCommand = FilterSQLQuery(filter,student_id,student_name); // this will return the appropirate sql query. based on filter which is send
         const result = await con.query(sqlCommand);
         const data = AggregateQuestionsAnswers(result.rows);
-        //await TrendingQueue(channel,'ProcessTrending',{data:data.map(ques=>ques.question)});
+        await TrendingQueue(channel,'ProcessTrending',{data:data.map(ques=>ques.question)});
         con.release();
         
         return res
@@ -48,18 +56,12 @@ post.get('/allquestions/',async(req,res)=>{
     }
 })
 
-post.get('/allTeacherQuestions/:teacher_id',async(req,res)=>{
-    const {teacher_id} = req.params;
+post.get('/allTeacherQuestions',async(req,res)=>{
+    const {teacher_id,filter,username} = req.query;
     let con;
-    try{ 
-        let sqlCommand = ` SELECT * FROM questions AS q
-        LEFT JOIN (
-            SELECT * FROM answers  
-            ORDER BY ans_verified DESC, ans_upvotes DESC , ans_time DESC
-        ) AS ans ON ans.q_id = q.question_id
-        LEFT JOIN (SELECT course_name,course_id FROM courses) AS cor ON cor.course_id = q.course_id
-        INNER JOIN teaching AS SC ON SC.teacher_id = '${teacher_id}' AND cor.course_id = SC.course_id
-        ORDER BY q.q_time DESC , ans_verified DESC , ans_upvotes DESC;`
+    try{
+    
+        let sqlCommand = FilterSQLTeacher(filter,teacher_id,username) ;
         con = await client.connect();
         const result = await con.query(sqlCommand);
         let data = await GetFiles(result.rows,con);
@@ -124,16 +126,7 @@ post.post('/createQuestion',uploader.single('image'),async(req,res)=>{
 });
 
 
-post.get('/getPicture',async(req,res)=>{
-    let auth = await b2.authorize() 
-    let result = await axios.get(`${auth.data.apiUrl}/file/${process.env.BUCKET_NAME}/question_57`,{
-        responseType: 'arraybuffer',
-        headers:{
-            Authorization: auth.data.authorizationToken,
-        }
-    })
-    return res.send(Buffer.from(result.data).toString('base64'))
-})
+
 post.delete('/deleteQuestion/:q_id',async(req,res)=>{
     // delete the question for the database, still need :
     //  1 - Auth & Authorization.
@@ -270,21 +263,23 @@ const answers = new Answers();
 post.get('/getQuestionsAnswers',answers.getQuestionAnswers);
 
 post.get('/getUnverifiedQuestions', async(req, res)=>{
+    let con;
     try {
-        const con = await client.connect();
+        con = await client.connect();
         const sqlCommand = `
             SELECT * 
             FROM questions
             WHERE q_verified = false;`;
         const {rows} = await con.query(sqlCommand);
-        con.release();
+      
         res.status(200).json({
             'data': rows
         });
     } catch(err) {
-        con.release();
         console.log(err);
         res.send(err);
+    }finally{
+        con?.release();
     }
 });
 globalThis.name = 'mans'
@@ -546,12 +541,12 @@ post.get('/:course_code',async(req,res,next)=>{
         const result = await con.query(sqlCommand);
         let newData =  await GetFiles(result.rows,con)
         const data = AggregateQuestionsAnswers(newData)
-        con.release()
         res.status(200).json({data:data})
-        next()
     }catch(err){
+        console.log(err)
+    }
+    finally{
         con.release()
-
     }
 })
 

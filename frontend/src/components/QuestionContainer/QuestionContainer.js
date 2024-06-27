@@ -78,7 +78,7 @@ const QuestionContainer = React.memo(()=>{
     const data= async()=> {
       let response = null;
       if(isTeacher){
-        response = await axios.get(`${process.env.REACT_APP_API_URL}/post/allTeacherQuestions/${stundetInfo.user_id}`);
+        response = await axios.get(`${process.env.REACT_APP_API_URL}/post/allTeacherQuestions?teacher_id=${stundetInfo.user_id}&username=${stundetInfo.username}&filter=${filter.filter.toLowerCase()}`);
       }
       else if(sidebarSelected || course_code){
         response = await axios.get(`${process.env.REACT_APP_API_URL}/post/${sidebarSelected?sidebarSelected:course_code}`)
@@ -92,7 +92,6 @@ const QuestionContainer = React.memo(()=>{
   },[sidebarSelected,course_code,filter])
   
   useEffect(()=>{
-   
     if(socket.connected){
       socket.on('postQuestion',(newQuestion)=>{
         setQuestions(questions=>[newQuestion,...questions]);

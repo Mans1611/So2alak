@@ -1,4 +1,4 @@
-import { isValidJSON } from "../../trending_serviece/utilis/isVailidJSON.js";
+import { isValidJSON } from "../utilis/isVailidJSON.js";
 import client from "../databse.js";
 import redisClient  from "../redis.js";
 

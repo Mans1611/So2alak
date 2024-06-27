@@ -49,6 +49,7 @@ const reducer = (state,{type})=>{
 
 const socket = io(process.env.REACT_APP_API_URL);
 const Answer = ({answer}) => {
+    
     intialState = {
         upvote:false,
         downvote:false,

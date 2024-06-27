@@ -17,7 +17,9 @@ const SideBar = React.memo(() => {
   const {dark,
     sidebarSelected,setSideBarSelected,
     stundetInfo,
-    user_courses, setUserCourses} = useContext(AppState);
+    user_courses, setUserCourses,
+    isTeacher
+  } = useContext(AppState);
 
   const link = window.location.href;
   const {user_id} = useParams();
@@ -102,9 +104,9 @@ const SideBar = React.memo(() => {
   const [userData,setUserData] = useState({});
   const [otherProfile,setOtherProfile] = useState(false);
   const [userDetails,setUserDetails] = useState({});
+
   useEffect(()=>{
     const fetchPerson = async()=>{
-      
       try{
         const {data,statuts} = await axios.get(`${process.env.REACT_APP_API_URL}/person/getfulldata/${username}`)
         if(statuts === 200){
@@ -149,41 +151,43 @@ const SideBar = React.memo(() => {
           }
         </div>
         <hr/>
-        {profilePage && <PersonalDetail user_id={student_id}/>}
-          <div className="side-bar-items">
-            <h2 className='title'>You</h2>
-            <ul className='list'>
-            <Link onClick={()=>handleActive('My Lists')} to={`lists/${otherProfile? userDetails.student_id : stundetInfo.student_id}`}>
-              <li className={`items  ${(sidebarSelected?.includes('Lists'))?'active':''}`}>
-                <i className="fi fi-sr-home"></i>
-                {
-                  profilePage&&otherProfile ? `${userDetails.username?.slice(0,10)}'s Lists`:
-                  'My Lists'
-                }
-                </li>
-            </Link>
-            <Link  onClick={()=>handleActive('My Questions')} to={`myquestions/${otherProfile? userDetails.username : stundetInfo.username}`}>
-              <li  className={`items  ${(sidebarSelected?.includes('Questions'))?'active':''}`}>
-                <i className="fi fi-sr-messages-question"></i>
-                {
-                  profilePage&&otherProfile ? `${userDetails.username?.slice(0,10)}'s Questions`:
-                  'My Questions'
-                }
-                </li>
-            </Link>
-            <Link  onClick={()=>handleActive('My Answers')} to={`myanswers/${otherProfile? userDetails.username : stundetInfo.username}`}>
-              <li className={`items  ${(sidebarSelected?.includes('Answers'))?'active':''}`}>
-                  <i className="fi fi-sr-answer"></i>
+        {!isTeacher&&profilePage && <PersonalDetail user_id={student_id}/>}
+          {!isTeacher && 
+            <div className="side-bar-items">
+              <h2 className='title'>You</h2>
+              <ul className='list'>
+              <Link onClick={()=>handleActive('My Lists')} to={`lists/${otherProfile? userDetails.student_id : stundetInfo.student_id}`}>
+                <li className={`items  ${(sidebarSelected?.includes('Lists'))?'active':''}`}>
+                  <i className="fi fi-sr-home"></i>
                   {
-                  profilePage&&otherProfile ? `${userDetails.username?.slice(0,10)}'s Answers`:
-                  'My Answers'
-                }
-              </li>
-            </Link>
-          
-            </ul>
+                    profilePage&&otherProfile ? `${userDetails.username?.slice(0,10)}'s Lists`:
+                    'My Lists'
+                  }
+                  </li>
+              </Link>
+              <Link  onClick={()=>handleActive('My Questions')} to={`myquestions/${otherProfile? userDetails.username : stundetInfo.username}`}>
+                <li  className={`items  ${(sidebarSelected?.includes('Questions'))?'active':''}`}>
+                  <i className="fi fi-sr-messages-question"></i>
+                  {
+                    profilePage&&otherProfile ? `${userDetails.username?.slice(0,10)}'s Questions`:
+                    'My Questions'
+                  }
+                  </li>
+              </Link>
+              <Link  onClick={()=>handleActive('My Answers')} to={`myanswers/${otherProfile? userDetails.username : stundetInfo.username}`}>
+                <li className={`items  ${(sidebarSelected?.includes('Answers'))?'active':''}`}>
+                    <i className="fi fi-sr-answer"></i>
+                    {
+                    profilePage&&otherProfile ? `${userDetails.username?.slice(0,10)}'s Answers`:
+                    'My Answers'
+                  }
+                </li>
+              </Link>
+            
+              </ul>
+              <hr/>
         </div>
-        <hr/>
+        }
           <div className="side-bar-items">
               <h2 className='title'>Your Courses</h2>
               <ul className='list'>

@@ -14,9 +14,9 @@ const TeacherProfile = () => {
     const [description, setDescription] = useState("Senior CSE Student @ ASU");
     const {stundetInfo} = useContext(AppState);
     
-    const [verified, setVerified] = useState(0);
-    const [unVerified, setUnVerified] = useState(0);
-    const [unAnswered, setUnAnswered] = useState(0);
+    const [verified, setVerified] = useState(1);
+    const [unVerified, setUnVerified] = useState(5);
+    const [unAnswered, setUnAnswered] = useState(5);
 
    
     

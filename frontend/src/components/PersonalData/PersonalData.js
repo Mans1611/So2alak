@@ -23,7 +23,7 @@ const PersonalData = () => {
   return (
     <div className='score'>
         <div className='score_in'>
-            <div className='achieved'><p>{data.points?data.points:0}</p> <p>Points</p></div>
+            <div className='achieved'><p>{data.points?data.points:5}</p> <p>Points</p></div>
             <div className='achieved'><p>{data.no_questions?data.no_questions:0}</p> <p>Questions</p></div>
             <div className='achieved'><p>{data.no_answers?data.no_answers:0}</p> <p>Answers</p></div>
         </div>

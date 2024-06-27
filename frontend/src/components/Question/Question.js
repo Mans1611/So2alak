@@ -24,7 +24,7 @@ const socket = io(process.env.REACT_APP_API_URL);
 const Question = ({singleQuestion,question,setQuestion}) => {
     const nav = useNavigate();
     
-    const {dark,stundetInfo} = useContext(AppState);
+    const {dark,stundetInfo,isTeacher} = useContext(AppState);
     
     // states:
     const [showQuesOptions,setShowQuesOptions] = useState(false);
@@ -128,7 +128,7 @@ const Question = ({singleQuestion,question,setQuestion}) => {
                         <p ref={questionText}></p>
                         <div className="time">asked {getTime(question.q_time)}</div>
                     </div>
-                    <div className='downQuestion'>
+                    {!isTeacher && <div className='downQuestion'>
                         {
                             bookMarked?<BookmarkIcon onClick={AddToList} className='post-icons'/> : 
                             <BookmarkBorderIcon onClick={AddToList} className='post-icons'/>
@@ -137,13 +137,12 @@ const Question = ({singleQuestion,question,setQuestion}) => {
                             <PlaylistAddIcon onClick={showListsModal} style={{fontSize:'30px'}} className='post-icons'/>
                             {
                                 showlists&&
-                                <ListOptions 
-                                     
+                                <ListOptions
                                     question={question}/>
                             }
                         </div>
                         <ShareButton/>
-                    </div>
+                    </div>}
                 </div>
                 <div className="options">
                     <MoreVertIcon onClick = {handleQuestionOptions} className='options'/> 

@@ -34,11 +34,11 @@ if (process.env.env == 'prod'){
     client = new Pool({
         // data base information
         driver : 'pg',
-        user : process.env.User,
-        host:process.env.Host,
-        database:process.env.DataBase,
-        port:process.env.Port_DB, // 5432
-        password:process.env.Pass
+        user : process.env.POSTGRES_USER,
+        host:process.env.POSTGRES_HOST,
+        database:process.env.POSTGRES_DB,
+        port:process.env.POSTGRES_PORT, // 5432
+        password:process.env.POSTGRES_PASSWORD
     })
     console.log("Dev Database");
 

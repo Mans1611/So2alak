@@ -97,9 +97,7 @@ const AskQuestion = ({isAnswer,questionDetails}) => {
             questionInput.current.innerText = 'Answer to Question';
             setPost(null);
             setImgPrev(false);
-            if(!isAnswer && course_code === res.data.data.course_id){
-                setQuestions(questions=>{return[res.data.data,...questions]});
-            }
+            
 
             if (res.data.badge){
                 setShowNotification(true)
@@ -113,7 +111,7 @@ const AskQuestion = ({isAnswer,questionDetails}) => {
     const clearPlaceholder = ()=>{
         questionWrapper.current.style.height = 'fit-content'
         if(questionInput.current.innerHTML.trim() === '' || 
-            questionInput.current.innerHTML === 'Ask Question' || 
+            questionInput.current.innerHTML.includes('Question') || 
             questionInput.current.innerHTML.includes('Answer to')
         )
             questionInput.current.innerHTML= '';
