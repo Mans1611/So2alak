@@ -14,42 +14,33 @@ services:
       - ./datareplication.sh:/docker-entrypoint-initdb.d/init.sh
     ports:
       - "5432:5432"
-  rabbitMQ:
-      image: rabbitmq:management
-      container_name: rabbitMQ 
-      ports:
-        - "5672:5672"
-        - "15672:15672"
   so2alak-server:
-    build: .
+    build: 
+      context: .
+      args:
+        - NODE_ENV=dev
     volumes:
       - postgres-sql-volume:/var/lib/postgres/data
       - ./:/var/lib/postgres/data
     env_file:
       - ./.env
-    depends_on:
-      - postgres
-      - rabbitMQ
-
+    environment:
+      - NODE_ENV=dev
+    command: npm run dev
   front-end:
     build: ../frontend
     env_file:
       - ../frontend/.env
     ports:
       - "3000:3000"
-
-  
-
+  rabbitMQ:
+    image: rabbitmq:management
+    container_name: rabbitMQ 
+    ports:
+      - "5672:5672"
+      - "15672:15672"
   nginx:
-    image: nginx
-    container_name: LoadBalancer
     ports:
       - "8000:80"
-    volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
-
-  redis:
-    image: redis
-
 volumes:
   postgres-sql-volume:

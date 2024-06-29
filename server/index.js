@@ -28,6 +28,7 @@ export const io = new Server(server,{
         }
 });
 
+app.enable('trust proxy')
 app.use(compression({
         level: 1, 
         threshold: 0, 
