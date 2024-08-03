@@ -37,12 +37,45 @@ if (process.env.env == 'prod'){
         user : process.env.POSTGRES_USER,
         host:process.env.POSTGRES_HOST,
         database:process.env.POSTGRES_DB,
-        port:process.env.POSTGRES_PORT, // 5432
+        port:process.env.POSTGRES_PORT || 5432, // 5432
         password:process.env.POSTGRES_PASSWORD
     })
-    console.log("Dev Database");
-
 }
 
+let shards = {
+  freshmen_shard:new Pool({
+    driver:'pg',
+    user:process.env.POSTGRES_USER,
+    host : process.env.POSTGRES_HOST_FRESHMEN,//container name
+    database:process.env.POSTGRES_DB,
+    port:process.env.POSTGRES_PORT || 5432,
+    password:process.env.POSTGRES_PASSWORD,  
 
+  }),
+  senior_shard:new Pool({
+    driver:'pg',
+    user:process.env.POSTGRES_USER,
+    host :process.env.POSTGRES_HOST_SENIOR ,//container name
+    database:process.env.POSTGRES_DB,
+    port:process.env.POSTGRES_PORT || 5433,
+    password:process.env.POSTGRES_PASSWORD,  
+  })
+}
+
+const selectShard = (level)=> level === 'freshmen'? shards.freshmen_shard : shards.senior_shard
+
+const executeQuery = async(query,params=[],level='freshmen')=>{
+  const shard = selectShard(level);
+  let con;
+  try{
+    con = await shard.connect();
+    return (await con.query(query,params)).rows
+    
+  }catch(err){
+    console.log(err)
+  }
+  finally{
+    con.release()
+  }
+}
 export default client;

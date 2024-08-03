@@ -1,19 +1,45 @@
 version: "3"
 services:
-  postgres:
+  postgres_freshmen:
     image: postgres
-    container_name: postgres-sql-server 
+    container_name: postgres-sql-server-freshmen 
     environment:
       - POSTGRES_DB=so2alak
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=mans1611
       - POSTGRES_PORT=5432
     volumes:
-      - postgres-sql-volume:/var/lib/postgres/data
+      - postgres-sql-volume-freshmen:/var/lib/postgresql/data
       - ./so2alak.dump:/backup/so2alak.dump
       - ./datareplication.sh:/docker-entrypoint-initdb.d/init.sh
     ports:
       - "5432:5432"
+  postgres_s:
+    image: postgres
+    container_name: postgres-sql-server-fr 
+    environment:
+      - POSTGRES_DB=so2alak
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mans1611
+      - POSTGRES_PORT=5434
+    volumes:
+      - postgres-sql-volume-mans:/var/lib/postgresql/data
+    ports:
+      - "5434:5434"
+  postgres_senior:
+    image: postgres
+    container_name: postgres-sql-server-senior 
+    environment:
+      - POSTGRES_DB=so2alak
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mans1611
+      - POSTGRES_PORT=5433
+    volumes:
+      - postgres-sql-volume-senior:/var/lib/postgresql/data
+      - ./so2alak.dump:/backup/so2alak.dump
+      - ./datareplication.sh:/docker-entrypoint-initdb.d/init.sh
+    ports:
+      - "5433:5433"
   rabbitMQ:
       image: rabbitmq:management
       container_name: rabbitMQ 
@@ -23,12 +49,13 @@ services:
   so2alak-server:
     build: .
     volumes:
-      - postgres-sql-volume:/var/lib/postgres/data
+      - server_postgres-sql-volume:/var/lib/postgresql/data
       - ./:/var/lib/postgres/data
     env_file:
       - ./.env
     depends_on:
-      - postgres
+      - postgres_senior
+      - postgres_freshmen
       - rabbitMQ
 
   front-end:
@@ -52,4 +79,7 @@ services:
     image: redis
 
 volumes:
-  postgres-sql-volume:
+  postgres-sql-volume-freshmen:
+  postgres-sql-volume-senior:
+  postgres-sql-volume-mans:
+  server_postgres-sql-volume:

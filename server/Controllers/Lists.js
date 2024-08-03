@@ -9,14 +9,12 @@ export class Lists{
         const con = await client.connect();
         const {sameUser} = req.query;
         try{
-            console.log("passed in here")
             let sqlCommand;
             if (sameUser === 'false'){
                 sqlCommand = `SELECT * FROM lists WHERE student_id = '${student_id}' AND private = false;`
             }else{
                 sqlCommand = `SELECT * FROM lists WHERE student_id = '${student_id}';`
             }
-            console.log(sameUser)
             if (student_id){
                 let cachedValue = undefined;
                 //cachedValue = await redisClient.get(`lists:${student_id}`)
